@@ -1,0 +1,655 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+
+\title{Guía de estudio: Estadística Descriptiva}
+\subtitle{Conceptos que suelen confundirse y relaciones jerárquicas}
+\author{Material de apoyo para estudio}
+\date{\today}
+
+\newcommand{\pregunta}[1]{\textbf{Pregunta que responde:} \emph{#1}}
+\newcommand{\errorcomun}[1]{\textbf{Error común:} #1}
+\newcommand{\diferencia}[1]{\textbf{Diferencia clave:} #1}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Cómo usar esta guía}
+\begin{itemize}
+  \item Cada diapositiva aclara un concepto central de estadística descriptiva.
+  \item La estructura se repite: definición formal, intuición, pregunta, ejemplo, diferencias y errores comunes.
+  \item El foco está en conceptos parecidos que suelen confundirse en evaluaciones y ejercicios.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Mapa general de tópicos}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{enumerate}
+  \item Introducción a la estadística
+  \item Conceptos fundamentales
+  \item Método estadístico
+  \item Clasificación de variables
+  \item Escalas de medición
+\end{enumerate}
+\column{0.48\textwidth}
+\begin{enumerate}\setcounter{enumi}{5}
+  \item Dimensionalidad
+  \item Estadística descriptiva
+  \item Tablas de frecuencia
+  \item Variables continuas e intervalos
+  \item Tablas de contingencia
+\end{enumerate}
+\end{columns}
+\end{frame}
+
+\section{Introducción}
+
+\begin{frame}{¿Qué es la estadística?}
+\textbf{Definición formal:} disciplina que recolecta, organiza, resume, analiza e interpreta datos para apoyar conclusiones y decisiones.
+\vspace{0.4em}
+\begin{itemize}
+  \item \textbf{Intuición:} convierte datos sueltos en evidencia comprensible.
+  \item \pregunta{¿Qué dicen los datos sobre el fenómeno que estudio?}
+  \item \textbf{Ejemplo:} resumir las notas de un curso mediante promedio, mediana y gráficos.
+  \item \errorcomun{creer que la estadística solo consiste en hacer cálculos; también implica diseñar, interpretar y comunicar.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Estadística y toma de decisiones}
+\textbf{Idea central:} la estadística reduce incertidumbre, pero no elimina totalmente el riesgo.
+\begin{block}{Flujo de decisión}
+Datos $\rightarrow$ análisis estadístico $\rightarrow$ información $\rightarrow$ decisión
+\end{block}
+\begin{itemize}
+  \item \textbf{Ejemplo:} una universidad analiza tasas de aprobación para decidir si refuerza un curso.
+  \item \diferencia{una decisión estadísticamente informada usa evidencia; una decisión intuitiva depende principalmente de percepción o experiencia.}
+  \item \errorcomun{confundir una conclusión probable con una certeza absoluta.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Estadística y método científico}
+\begin{enumerate}
+  \item Plantear problema.
+  \item Formular hipótesis.
+  \item Diseñar el estudio.
+  \item Recolectar datos.
+  \item Analizar resultados.
+  \item Concluir y comunicar.
+\end{enumerate}
+\begin{itemize}
+  \item \textbf{Rol de la estadística:} conecta observaciones con conclusiones verificables.
+  \item \pregunta{¿La evidencia empírica apoya la hipótesis?}
+  \item \errorcomun{analizar datos sin definir antes el problema o la hipótesis.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Descriptiva vs. inferencia estadística}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textbf{Estadística descriptiva}
+\begin{itemize}
+  \item Organiza y resume datos observados.
+  \item Usa tablas, gráficos y estadísticos.
+  \item No generaliza necesariamente a datos no observados.
+\end{itemize}
+\column{0.48\textwidth}
+\textbf{Inferencia estadística}
+\begin{itemize}
+  \item Usa muestras para concluir sobre poblaciones.
+  \item Incluye estimación y pruebas de hipótesis.
+  \item Trabaja explícitamente con incertidumbre.
+\end{itemize}
+\end{columns}
+\vspace{0.4em}
+\diferencia{describir es resumir lo observado; inferir es proyectar hacia lo no observado.}
+\end{frame}
+
+\section{Conceptos fundamentales}
+
+\begin{frame}{Universo}
+\textbf{Definición formal:} conjunto de individuos, unidades o elementos que forman el objeto de estudio.
+\begin{itemize}
+  \item \textbf{Intuición:} las personas, objetos o casos sobre los que se quiere estudiar algo.
+  \item \pregunta{¿Quiénes forman parte del estudio?}
+  \item \textbf{Ejemplo:} todos los alumnos de la UTFSM.
+  \item \diferencia{el universo contiene individuos; la población contiene valores de una variable medida sobre esos individuos.}
+  \item \errorcomun{usar ``universo'' y ``población'' como sinónimos sin distinguir individuos y valores.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Variable}
+\textbf{Definición formal:} característica, atributo o magnitud que se mide u observa en los individuos del universo.
+\begin{itemize}
+  \item \textbf{Intuición:} lo que se quiere conocer de cada individuo.
+  \item \pregunta{¿Qué estoy midiendo u observando?}
+  \item \textbf{Ejemplos:} edad, estatura, carrera, promedio académico.
+  \item \diferencia{la variable es la característica; el dato es un valor particular de esa característica.}
+  \item \errorcomun{confundir ``edad'' con ``20 años'': edad es variable; 20 es dato.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Población}
+\textbf{Definición formal:} conjunto de todos los valores que toma una variable específica en todos los individuos del universo.
+\begin{itemize}
+  \item \textbf{Intuición:} la lista completa de respuestas posibles observadas para una variable en todos los individuos relevantes.
+  \item \pregunta{¿Cuáles son todos los valores de la variable en el universo?}
+  \item \textbf{Ejemplo:} si la variable es edad, la población es \{20, 22, 19, \dots\} para todos los alumnos.
+  \item \diferencia{universo: alumnos; variable: edad; población: edades de todos los alumnos.}
+  \item \errorcomun{decir que la población son ``los alumnos'' cuando, en esta distinción, son los valores medidos.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Muestra}
+\textbf{Definición formal:} subconjunto de la población que se observa o mide efectivamente.
+\begin{itemize}
+  \item \textbf{Intuición:} una parte representativa, o al menos seleccionada, de los datos completos.
+  \item \pregunta{¿A quiénes o qué valores medí realmente?}
+  \item \textbf{Ejemplo:} edades de 100 alumnos seleccionados de la UTFSM.
+  \item \diferencia{la población es el conjunto completo de valores; la muestra es solo una parte.}
+  \item \errorcomun{asumir que cualquier muestra representa bien a la población sin revisar cómo fue seleccionada.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Censo}
+\textbf{Definición formal:} estudio en que se observa a todos los elementos de la población.
+\begin{itemize}
+  \item \textbf{Intuición:} no se toma una parte: se mide todo.
+  \item \pregunta{¿Medí absolutamente todos los valores de interés?}
+  \item \textbf{Ejemplo:} registrar la edad de todos los alumnos matriculados en la UTFSM.
+  \item \diferencia{una muestra puede ser pequeña o grande; un censo coincide con toda la población.}
+  \item \errorcomun{llamar censo a una encuesta grande pero incompleta.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Relación jerárquica: universo, variable, población y muestra}
+\centering
+\begin{tikzpicture}[
+  node distance=0.8cm,
+  box/.style={rectangle, rounded corners, draw=blue!60, fill=blue!8, align=center, minimum width=3.2cm, minimum height=0.75cm},
+  smallbox/.style={rectangle, rounded corners, draw=gray!70, fill=gray!8, align=center, minimum width=2.2cm, minimum height=0.55cm},
+  arrow/.style={-{Latex}, thick}
+]
+\node[box] (u) {Universo\\individuos};
+\node[box, below left=of u] (v) {Variable\\característica};
+\node[box, below right=of u] (p) {Población\\todos los valores};
+\node[smallbox, below=of p] (m) {Muestra\\parte medida};
+\node[smallbox, below=of m] (c) {Censo\\muestra = población};
+\draw[arrow] (u) -- (v);
+\draw[arrow] (u) -- (p);
+\draw[arrow] (p) -- (m);
+\draw[arrow] (m) -- (c);
+\end{tikzpicture}
+\vspace{0.5em}
+
+\textbf{Clave:} primero se define a quiénes se estudia, luego qué característica se mide y finalmente qué valores se observan.
+\end{frame}
+
+\begin{frame}{Dato, información y conocimiento}
+\begin{tabular}{>{\bfseries}p{0.22\textwidth}p{0.32\textwidth}p{0.32\textwidth}}
+\toprule
+Concepto & Intuición & Ejemplo \\
+\midrule
+Dato & Valor observado individual & 20 años \\
+Información & Dato interpretado y con significado & La edad promedio del curso es 20,8 años \\
+Conocimiento & Información combinada con experiencia y contexto & El curso es joven; conviene usar ejemplos de primeros años \\
+\bottomrule
+\end{tabular}
+\vspace{0.6em}
+\begin{itemize}
+  \item \pregunta{¿Estoy viendo un valor, una interpretación o una conclusión contextual?}
+  \item \errorcomun{creer que muchos datos equivalen automáticamente a conocimiento.}
+\end{itemize}
+\end{frame}
+
+\section{Método estadístico}
+
+\begin{frame}{Diseño del estudio}
+\textbf{Objetivo:} preparar el estudio antes de recolectar datos.
+\begin{itemize}
+  \item Definir el problema.
+  \item Formular hipótesis o preguntas de investigación.
+  \item Determinar universo, variable, población y muestra.
+  \item Elegir instrumentos y criterios de medición.
+\end{itemize}
+\begin{block}{Pregunta guía}
+¿Qué quiero responder y qué datos necesito para responderlo?
+\end{block}
+\errorcomun{empezar recolectando datos sin saber qué decisión o hipótesis se quiere evaluar.}
+\end{frame}
+
+\begin{frame}{Ejecución del estudio}
+\textbf{Objetivo:} producir y comunicar resultados a partir del diseño.
+\begin{enumerate}
+  \item Recolección de datos.
+  \item Depuración y tabulación.
+  \item Construcción de gráficos.
+  \item Cálculo de estadísticos.
+  \item Análisis e interpretación.
+\end{enumerate}
+\begin{itemize}
+  \item \diferencia{tabular organiza; graficar visualiza; analizar interpreta.}
+  \item \errorcomun{presentar tablas o gráficos sin explicar qué significan.}
+\end{itemize}
+\end{frame}
+
+\section{Clasificación de variables}
+
+\begin{frame}{Variables cualitativas}
+\textbf{Definición formal:} variables que describen atributos, categorías o cualidades no numéricas.
+\begin{itemize}
+  \item \textbf{Intuición:} clasifican a los individuos en grupos.
+  \item \pregunta{¿A qué categoría pertenece?}
+  \item \textbf{Ejemplos:} sexo, estado civil, color, carrera.
+  \item \diferencia{sus valores no representan cantidades medibles, aunque puedan codificarse con números.}
+  \item \errorcomun{pensar que una variable es cuantitativa solo porque se codifica como 1, 2 o 3.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Variables cuantitativas}
+\textbf{Definición formal:} variables cuyos valores representan cantidades numéricas sobre las que tiene sentido operar aritméticamente.
+\begin{itemize}
+  \item \textbf{Intuición:} miden cuánto hay de algo.
+  \item \pregunta{¿Cuánto mide, pesa, cuesta o cuenta?}
+  \item \textbf{Ejemplos:} edad, peso, estatura, ingreso, número de hijos.
+  \item \diferencia{a diferencia de las cualitativas, sus valores expresan magnitud.}
+  \item \errorcomun{confundir números identificadores, como RUT o código postal, con variables cuantitativas.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Cualitativa vs. cuantitativa}
+\begin{tabular}{p{0.24\textwidth}p{0.33\textwidth}p{0.33\textwidth}}
+\toprule
+Criterio & Cualitativa & Cuantitativa \\
+\midrule
+Qué expresa & Categoría o atributo & Cantidad o magnitud \\
+Pregunta & ¿Cuál tipo? & ¿Cuánto? \\
+Ejemplos & carrera, color & edad, ingreso \\
+Operaciones & contar categorías & sumar, promediar, comparar magnitudes \\
+\bottomrule
+\end{tabular}
+\vspace{0.6em}
+\begin{block}{Regla rápida}
+Si el número es una etiqueta, es cualitativa; si mide cantidad, es cuantitativa.
+\end{block}
+\end{frame}
+
+\begin{frame}{Variable binaria o dicotómica}
+\textbf{Definición formal:} variable que solo puede tomar dos valores posibles.
+\begin{itemize}
+  \item \textbf{Intuición:} responde una alternativa de dos opciones.
+  \item \pregunta{¿Sí o no? ¿Presente o ausente?}
+  \item \textbf{Ejemplos:} aprobado/reprobado, vivo/muerto, sí/no.
+  \item \diferencia{puede ser cualitativa, aunque a veces se codifique como 0 y 1.}
+  \item \errorcomun{tratar automáticamente toda variable 0/1 como cuantitativa continua.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Variable discreta}
+\textbf{Definición formal:} variable cuantitativa que toma valores contables, usualmente enteros.
+\begin{itemize}
+  \item \textbf{Intuición:} se cuenta, no se mide con infinitos decimales.
+  \item \pregunta{¿Cuántos elementos hay?}
+  \item \textbf{Ejemplos:} número de hijos, número de alumnos, cantidad de libros.
+  \item \diferencia{entre dos valores consecutivos no hay infinitos valores posibles dentro de la escala.}
+  \item \errorcomun{creer que discreta significa ``pocos valores''; lo esencial es que sean contables.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Variable continua}
+\textbf{Definición formal:} variable cuantitativa que puede tomar infinitos valores dentro de un intervalo.
+\begin{itemize}
+  \item \textbf{Intuición:} se mide y puede tener decimales según la precisión del instrumento.
+  \item \pregunta{¿Cuánto mide exactamente dentro de un rango?}
+  \item \textbf{Ejemplos:} peso, estatura, temperatura, tiempo.
+  \item \diferencia{la continua admite valores intermedios; la discreta se basa en conteos.}
+  \item \errorcomun{pensar que una medición redondeada deja de ser continua.}
+\end{itemize}
+\end{frame}
+
+\section{Escalas de medición}
+
+\begin{frame}{Escala nominal}
+\textbf{Definición formal:} escala que clasifica datos en categorías sin orden natural.
+\begin{itemize}
+  \item \textbf{Intuición:} solo pone nombres o etiquetas.
+  \item \pregunta{¿A qué grupo pertenece?}
+  \item \textbf{Ejemplo:} grupo sanguíneo, carrera, color de ojos.
+  \item \diferencia{no permite decir que una categoría es mayor o mejor que otra.}
+  \item \errorcomun{ordenar alfabéticamente categorías y creer que ese orden tiene significado estadístico.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Escala ordinal}
+\textbf{Definición formal:} escala que clasifica categorías con un orden, pero sin distancias numéricas comparables garantizadas.
+\begin{itemize}
+  \item \textbf{Intuición:} permite ordenar, no medir diferencias exactas.
+  \item \pregunta{¿Cuál está antes, después, más alto o más bajo?}
+  \item \textbf{Ejemplo:} malo, regular, bueno, excelente.
+  \item \diferencia{ordinal tiene orden; nominal no. Pero ordinal no asegura que los saltos sean iguales.}
+  \item \errorcomun{promediar categorías ordinales codificadas como si fueran distancias exactas.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Escala de intervalo}
+\textbf{Definición formal:} escala numérica donde las diferencias tienen significado, pero el cero no representa ausencia absoluta.
+\begin{itemize}
+  \item \textbf{Intuición:} se pueden comparar distancias, no proporciones absolutas.
+  \item \pregunta{¿Cuánto difieren dos valores?}
+  \item \textbf{Ejemplo:} temperatura en grados Celsius.
+  \item \diferencia{20 $^\circ$C no es ``el doble de calor'' que 10 $^\circ$C, porque el cero Celsius no es ausencia de temperatura.}
+  \item \errorcomun{interpretar razones cuando solo son válidas diferencias.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Escala de razón}
+\textbf{Definición formal:} escala numérica con diferencias significativas y cero absoluto.
+\begin{itemize}
+  \item \textbf{Intuición:} permite decir ``el doble'', ``la mitad'' o ``ausencia de''.
+  \item \pregunta{¿Cuánto y en qué proporción?}
+  \item \textbf{Ejemplos:} masa, distancia, tiempo, ingreso.
+  \item \diferencia{a diferencia del intervalo, el cero sí representa ausencia de la magnitud.}
+  \item \errorcomun{confundir intervalo y razón solo porque ambas son numéricas.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Resumen de escalas de medición}
+\centering
+\begin{tabular}{p{0.19\textwidth}p{0.18\textwidth}p{0.18\textwidth}p{0.24\textwidth}}
+\toprule
+Escala & Clasifica & Ordena & Permite \\
+\midrule
+Nominal & Sí & No & contar categorías \\
+Ordinal & Sí & Sí & comparar posiciones \\
+Intervalo & Sí & Sí & comparar diferencias \\
+Razón & Sí & Sí & comparar diferencias y proporciones \\
+\bottomrule
+\end{tabular}
+\vspace{0.6em}
+\begin{block}{Jerarquía}
+Razón $\supset$ intervalo $\supset$ ordinal $\supset$ nominal, en cantidad de operaciones interpretables.
+\end{block}
+\end{frame}
+
+\section{Dimensionalidad}
+
+\begin{frame}{Dimensionalidad de los datos}
+\begin{itemize}
+  \item \textbf{Unidimensional:} se estudia una sola variable. Ejemplo: edad.
+  \item \textbf{Bidimensional:} se estudian dos variables simultáneamente. Ejemplo: edad y peso.
+  \item \textbf{Multidimensional:} se estudian tres o más variables. Ejemplo: edad, peso, ingreso y carrera.
+\end{itemize}
+\begin{block}{Pregunta guía}
+¿Cuántas variables se analizan al mismo tiempo?
+\end{block}
+\errorcomun{confundir tamaño de muestra con dimensionalidad: muchos datos no implican muchas variables.}
+\end{frame}
+
+\section{Estadística descriptiva}
+
+\begin{frame}{Objetivos de la estadística descriptiva}
+\begin{columns}[T]
+\column{0.5\textwidth}
+\begin{itemize}
+  \item Organizar datos.
+  \item Resumir datos.
+  \item Presentar datos.
+  \item Visualizar datos.
+\end{itemize}
+\column{0.45\textwidth}
+\begin{block}{Herramientas}
+Tablas, gráficos y estadísticos como media, mediana, moda, rango y desviación estándar.
+\end{block}
+\end{columns}
+\vspace{0.5em}
+\pregunta{¿Cómo puedo entender rápidamente el comportamiento de los datos observados?}
+\end{frame}
+
+\section{Tablas de frecuencia}
+
+\begin{frame}{Tabla de frecuencia: idea general}
+\textbf{Definición formal:} tabla que resume cuántas veces aparece cada valor o categoría y, si corresponde, sus proporciones y acumulados.
+\begin{itemize}
+  \item \textbf{Intuición:} transforma una lista larga de datos en un resumen ordenado.
+  \item \pregunta{¿Cómo se distribuyen los datos entre valores o categorías?}
+  \item \textbf{Ejemplo:} contar cuántos estudiantes obtienen cada nota o pertenecen a cada carrera.
+  \item \diferencia{una tabla de frecuencia resume una variable; una tabla de contingencia cruza dos o más variables.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Frecuencia absoluta: $f_i$}
+\textbf{Definición formal:} número de veces que aparece el valor o categoría $i$.
+\begin{itemize}
+  \item \textbf{Intuición:} conteo directo.
+  \item \pregunta{¿Cuántas veces apareció?}
+  \item \textbf{Ejemplo:} si 8 estudiantes tienen nota 5, entonces $f_i=8$ para la nota 5.
+  \item \diferencia{es conteo, no proporción.}
+  \item \errorcomun{comparar frecuencias absolutas entre grupos de distinto tamaño sin considerar proporciones.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Frecuencia relativa: $h_i$}
+\textbf{Definición formal:} proporción que representa la frecuencia absoluta respecto del total: $h_i = f_i/n$.
+\begin{itemize}
+  \item \textbf{Intuición:} parte del total que corresponde a un valor o categoría.
+  \item \pregunta{¿Qué fracción o porcentaje representa?}
+  \item \textbf{Ejemplo:} si $f_i=8$ y $n=40$, entonces $h_i=8/40=0{,}20=20\%$.
+  \item \diferencia{la absoluta cuenta; la relativa divide por el total.}
+  \item \errorcomun{olvidar que la suma de frecuencias relativas debe ser 1, o 100\%.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Frecuencia absoluta acumulada: $F_i$}
+\textbf{Definición formal:} suma de frecuencias absolutas hasta el valor o clase $i$: $F_i=f_1+\cdots+f_i$.
+\begin{itemize}
+  \item \textbf{Intuición:} conteo acumulado desde el inicio de la tabla.
+  \item \pregunta{¿Cuántos datos van acumulados hasta aquí?}
+  \item \textbf{Ejemplo:} si hasta nota 4 se acumulan 25 estudiantes, entonces $F_i=25$.
+  \item \diferencia{acumulada considera valores anteriores; $f_i$ solo mira la fila actual.}
+  \item \errorcomun{acumular categorías nominales sin un orden significativo.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Frecuencia relativa acumulada: $H_i$}
+\textbf{Definición formal:} suma de frecuencias relativas hasta el valor o clase $i$: $H_i=h_1+\cdots+h_i$.
+\begin{itemize}
+  \item \textbf{Intuición:} porcentaje acumulado.
+  \item \pregunta{¿Qué porcentaje va acumulado hasta aquí?}
+  \item \textbf{Ejemplo:} si $H_i=0{,}75$, entonces el 75\% de los datos está en ese valor o por debajo de él.
+  \item \diferencia{$F_i$ acumula conteos; $H_i$ acumula proporciones.}
+  \item \errorcomun{interpretar $H_i$ sin revisar el orden de la variable.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo de tabla de frecuencia}
+\centering
+\begin{tabular}{ccccc}
+\toprule
+Nota & $f_i$ & $h_i$ & $F_i$ & $H_i$ \\
+\midrule
+3 & 4 & 0,10 & 4 & 0,10 \\
+4 & 10 & 0,25 & 14 & 0,35 \\
+5 & 16 & 0,40 & 30 & 0,75 \\
+6 & 8 & 0,20 & 38 & 0,95 \\
+7 & 2 & 0,05 & 40 & 1,00 \\
+\bottomrule
+\end{tabular}
+\vspace{0.6em}
+\begin{itemize}
+  \item Total de datos: $n=40$.
+  \item La última frecuencia absoluta acumulada debe ser $n$.
+  \item La última frecuencia relativa acumulada debe ser 1 o 100\%.
+\end{itemize}
+\end{frame}
+
+\section{Variables continuas e intervalos}
+
+\begin{frame}{Rango o recorrido}
+\textbf{Definición formal:} diferencia entre el valor máximo y el valor mínimo: $R=x_{\max}-x_{\min}$.
+\begin{itemize}
+  \item \textbf{Intuición:} extensión total que cubren los datos.
+  \item \pregunta{¿Qué tan separados están los extremos?}
+  \item \textbf{Ejemplo:} si la estatura mínima es 150 cm y la máxima 190 cm, entonces $R=40$ cm.
+  \item \diferencia{el rango describe extremos; no indica cómo se distribuyen los datos internamente.}
+  \item \errorcomun{concluir que dos conjuntos son similares solo porque tienen el mismo rango.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Intervalo de clase}
+\textbf{Definición formal:} grupo o tramo de valores usado para resumir variables continuas o datos numerosos.
+\begin{itemize}
+  \item \textbf{Intuición:} una ``caja'' donde caen valores cercanos.
+  \item \pregunta{¿En qué tramo cae este dato?}
+  \item \textbf{Ejemplo:} estaturas entre 160 y 170 cm.
+  \item \diferencia{el intervalo agrupa valores; el dato individual es un valor específico.}
+  \item \errorcomun{crear intervalos superpuestos o dejar huecos entre intervalos.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Amplitud del intervalo}
+\textbf{Definición formal:} ancho de cada intervalo de clase, usualmente calculado como $A=R/k$, donde $k$ es el número de intervalos.
+\begin{itemize}
+  \item \textbf{Intuición:} tamaño de cada tramo.
+  \item \pregunta{¿Cuánto mide cada intervalo?}
+  \item \textbf{Ejemplo:} si $R=40$ y se usan $k=5$ intervalos, entonces $A=8$.
+  \item \diferencia{rango mide la extensión total; amplitud mide el ancho de cada intervalo.}
+  \item \errorcomun{confundir amplitud con número de intervalos.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Marca de clase}
+\textbf{Definición formal:} punto medio de un intervalo: $m_i=(L_i+U_i)/2$, donde $L_i$ es el límite inferior y $U_i$ el superior.
+\begin{itemize}
+  \item \textbf{Intuición:} valor representativo del intervalo.
+  \item \pregunta{¿Qué valor resume este tramo?}
+  \item \textbf{Ejemplo:} para el intervalo [160, 170), la marca de clase es 165.
+  \item \diferencia{la marca no es un dato observado necesariamente; es un representante del intervalo.}
+  \item \errorcomun{creer que todos los datos del intervalo valen exactamente la marca de clase.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Número de intervalos: $\sqrt{n}$ y Sturges}
+\textbf{Objetivo:} elegir una cantidad razonable de intervalos para agrupar datos.
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Regla $\sqrt{n}$}
+$k \approx \sqrt{n}$
+\end{block}
+Simple y rápida para una primera aproximación.
+\column{0.48\textwidth}
+\begin{block}{Regla de Sturges}
+$k \approx 1+\log_2(n)$
+\end{block}
+Muy usada para construir histogramas y tablas agrupadas.
+\end{columns}
+\vspace{0.6em}
+\errorcomun{tratar estas reglas como verdades absolutas; son criterios prácticos, no leyes.}
+\end{frame}
+
+\begin{frame}{Ejemplo: construir intervalos}
+\begin{itemize}
+  \item Datos de estatura: mínimo 150 cm, máximo 190 cm, $n=25$.
+  \item Rango: $R=190-150=40$ cm.
+  \item Número de intervalos por $\sqrt{n}$: $k\approx\sqrt{25}=5$.
+  \item Amplitud: $A=R/k=40/5=8$ cm.
+  \item Primeros intervalos: [150,158), [158,166), [166,174), \dots
+\end{itemize}
+\begin{block}{Chequeo}
+Los intervalos deben cubrir todo el rango sin superponerse ni dejar valores fuera.
+\end{block}
+\end{frame}
+
+\section{Tablas de contingencia}
+
+\begin{frame}{Tabla de contingencia}
+\textbf{Definición formal:} tabla que cruza dos o más variables categóricas para estudiar la distribución conjunta y posible asociación entre ellas.
+\begin{itemize}
+  \item \textbf{Intuición:} muestra cómo se combinan categorías de dos variables.
+  \item \pregunta{¿Cómo se relacionan las categorías de una variable con las de otra?}
+  \item \textbf{Ejemplo:} carrera del estudiante versus aprobación del curso.
+  \item \diferencia{tabla de frecuencia: una variable; contingencia: dos o más variables.}
+  \item \errorcomun{concluir causalidad solo porque aparece asociación en la tabla.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Elementos de una tabla de contingencia}
+\begin{itemize}
+  \item \textbf{Variable fila:} variable ubicada en las filas de la tabla.
+  \item \textbf{Variable columna:} variable ubicada en las columnas.
+  \item \textbf{Categorías:} valores posibles de cada variable.
+  \item \textbf{Frecuencias conjuntas:} conteos dentro de cada celda.
+  \item \textbf{Totales marginales:} sumas por fila o columna.
+\end{itemize}
+\begin{block}{Pregunta clave}
+¿La distribución de una variable cambia según la categoría de la otra?
+\end{block}
+\end{frame}
+
+\begin{frame}{Ejemplo de tabla de contingencia}
+\centering
+\begin{tabular}{lccc}
+\toprule
+Carrera & Aprobó & Reprobó & Total \\
+\midrule
+Ingeniería & 45 & 10 & 55 \\
+Arquitectura & 20 & 8 & 28 \\
+Comercial & 30 & 12 & 42 \\
+\midrule
+Total & 95 & 30 & 125 \\
+\bottomrule
+\end{tabular}
+\vspace{0.7em}
+\begin{itemize}
+  \item Variable fila: carrera.
+  \item Variable columna: resultado del curso.
+  \item Las celdas muestran frecuencias conjuntas.
+  \item Para comparar carreras conviene usar porcentajes por fila, no solo conteos absolutos.
+\end{itemize}
+\end{frame}
+
+\section{Cierre}
+
+\begin{frame}{Errores comunes que debes evitar}
+\begin{itemize}
+  \item Confundir individuos del universo con valores de la población.
+  \item Llamar cuantitativa a una variable solo porque está codificada con números.
+  \item Usar acumulados en variables nominales sin orden natural.
+  \item Confundir rango, amplitud, intervalo y marca de clase.
+  \item Comparar frecuencias absolutas entre grupos de distinto tamaño.
+  \item Interpretar asociación en tablas de contingencia como causalidad automática.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Checklist de estudio rápido}
+\begin{enumerate}
+  \item ¿Sé distinguir universo, variable, población, muestra y censo?
+  \item ¿Puedo explicar la diferencia entre dato, información y conocimiento?
+  \item ¿Clasifico variables por naturaleza y por cantidad de valores posibles?
+  \item ¿Reconozco las escalas nominal, ordinal, intervalo y razón?
+  \item ¿Calculo e interpreto $f_i$, $h_i$, $F_i$ y $H_i$?
+  \item ¿Construyo intervalos usando rango, amplitud y marca de clase?
+  \item ¿Diferencio tabla de frecuencia y tabla de contingencia?
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Idea final}
+\centering
+\Large
+La estadística descriptiva no solo resume datos: ayuda a transformar observaciones en información clara para tomar mejores decisiones.
+\end{frame}
+
+\end{document}
