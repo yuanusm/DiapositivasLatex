@@ -4,7 +4,7 @@ Este repositorio contiene una presentación en LaTeX Beamer para estudiar concep
 
 ## Archivo principal
 
-- `guia_estadistica_descriptiva.tex`: presentación completa con diapositivas sobre universo, población, muestra, censo, variables, escalas de medición, frecuencias, intervalos de clase y tablas de contingencia.
+- `guia_estadistica_descriptiva.tex`: presentación completa con diapositivas sobre universo, población, muestra, censo, variables, escalas de medición, frecuencias, intervalos de clase, tablas de contingencia, representaciones gráficas, medidas de posición, cuantiles y medidas de dispersión.
 
 ## Compilación
 

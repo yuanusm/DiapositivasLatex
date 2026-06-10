@@ -10,6 +10,7 @@
 \usepackage[spanish,es-tabla]{babel}
 \usepackage{booktabs}
 \usepackage{array}
+\usepackage{amssymb}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,shapes.geometric}
 
@@ -650,6 +651,674 @@ Total & 95 & 30 & 125 \\
 \centering
 \Large
 La estadística descriptiva no solo resume datos: ayuda a transformar observaciones en información clara para tomar mejores decisiones.
+\end{frame}
+
+
+\section{Unidad 2: Estadística Descriptiva Avanzada}
+
+\begin{frame}{Unidad 2: mapa de contenidos}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{enumerate}
+  \item Representación gráfica de datos
+  \item Medidas de resumen
+  \item Medidas de posición
+\end{enumerate}
+\column{0.48\textwidth}
+\begin{enumerate}\setcounter{enumi}{3}
+  \item Percentiles y cuantiles
+  \item Medidas de dispersión
+  \item Resúmenes visuales por bloque
+\end{enumerate}
+\end{columns}
+\vspace{0.5em}
+\begin{block}{Continuidad con la unidad anterior}
+Las tablas ordenan los datos; los gráficos y medidas de resumen ayudan a interpretar forma, centro, posición y variabilidad.
+\end{block}
+\end{frame}
+
+\subsection{Representación gráfica de datos}
+
+\begin{frame}{Representación gráfica de datos}
+\textbf{Definición formal:} recurso visual que representa datos mediante posiciones, longitudes, áreas, sectores, símbolos o puntos.
+\begin{itemize}
+  \item \textbf{Intuición:} permite ver patrones que una tabla puede ocultar.
+  \item \pregunta{¿Qué forma, concentración, tendencia o relación muestran los datos?}
+  \item \diferencia{la tabla entrega valores exactos; el gráfico facilita comparación visual e interpretación global.}
+  \item \errorcomun{usar gráficos decorativos que distorsionan proporciones o dificultan comparar magnitudes.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Cuándo usar gráficos en lugar de tablas}
+\begin{itemize}
+  \item Usa \textbf{tablas} cuando necesites valores exactos, acumulados o cálculos posteriores.
+  \item Usa \textbf{gráficos} cuando quieras comparar categorías, detectar forma, observar acumulados o comunicar resultados rápidamente.
+  \item En reportes claros, tabla y gráfico se complementan: una muestra precisión y el otro muestra patrón.
+\end{itemize}
+\begin{block}{Limitación clave}
+Un gráfico puede sugerir una interpretación, pero no reemplaza revisar escala, total de datos, unidades y método de construcción.
+\end{block}
+\end{frame}
+
+\begin{frame}{Gráfico de barras}
+\textbf{Definición formal:} gráfico que representa frecuencias de valores discretos o categorías mediante barras separadas.
+\begin{itemize}
+  \item \textbf{Intuición:} cada barra es un conteo o porcentaje de una categoría.
+  \item \pregunta{¿Qué categoría o valor discreto aparece más o menos?}
+  \item \diferencia{en barras hay separación entre categorías; en histogramas las barras son contiguas porque representan intervalos continuos.}
+  \item \errorcomun{ordenar barras de una variable ordinal como si fueran nominales, perdiendo el sentido del orden.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo gráfico: barras y polígono de frecuencias}
+\centering
+\begin{tikzpicture}[x=1.25cm,y=0.18cm]
+  \draw[->] (0,0) -- (6.2,0) node[right]{Nota};
+  \draw[->] (0,0) -- (0,18) node[above]{$f_i$};
+  \foreach \x/\lab in {1/3,2/4,3/5,4/6,5/7}{\node[below] at (\x,0) {\lab};}
+  \foreach \y in {5,10,15}{\draw (-0.07,\y) -- (0.07,\y) node[left=3pt]{\y};}
+  \foreach \x/\h in {1/4,2/10,3/16,4/8,5/2}{\fill[blue!35] (\x-0.3,0) rectangle (\x+0.3,\h);}
+  \draw[red,thick] (1,4) -- (2,10) -- (3,16) -- (4,8) -- (5,2);
+  \foreach \x/\h in {1/4,2/10,3/16,4/8,5/2}{\fill[red] (\x,\h) circle (2pt);}
+\end{tikzpicture}
+\vspace{0.4em}
+\begin{itemize}
+  \item Ejemplo completo: de $n=40$, la nota 5 tiene $f_i=16$ y $h_i=16/40=40\%$.
+  \item La línea roja une puntos de frecuencia y funciona como polígono de frecuencias.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Gráfico sectorial o de torta}
+\textbf{Definición formal:} gráfico circular dividido en sectores proporcionales a frecuencias relativas o porcentajes.
+\begin{itemize}
+  \item \textbf{Intuición:} muestra cómo se reparte un total entre categorías.
+  \item \pregunta{¿Qué parte del total representa cada categoría?}
+  \item \diferencia{sirve para composición porcentual; no es ideal para comparar muchas categorías parecidas.}
+  \item \errorcomun{usar tortas con demasiadas categorías o sin indicar porcentajes, haciendo difícil comparar sectores.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo gráfico: sectores proporcionales}
+\centering
+\begin{tikzpicture}[scale=1.05]
+  \fill[blue!35] (0,0) -- (0:1.8) arc (0:144:1.8) -- cycle;
+  \fill[green!35] (0,0) -- (144:1.8) arc (144:234:1.8) -- cycle;
+  \fill[orange!45] (0,0) -- (234:1.8) arc (234:306:1.8) -- cycle;
+  \fill[red!35] (0,0) -- (306:1.8) arc (306:360:1.8) -- cycle;
+  \draw (0,0) circle (1.8);
+  \node at (70:1.05) {40\%};
+  \node at (188:1.05) {25\%};
+  \node at (270:1.05) {20\%};
+  \node at (335:1.05) {15\%};
+  \node[right] at (2.4,0.9) {\textcolor{blue!70}{\rule{0.6cm}{0.18cm}} Nota 5};
+  \node[right] at (2.4,0.45) {\textcolor{green!70}{\rule{0.6cm}{0.18cm}} Nota 4};
+  \node[right] at (2.4,0.0) {\textcolor{orange!80}{\rule{0.6cm}{0.18cm}} Nota 6};
+  \node[right] at (2.4,-0.45) {\textcolor{red!70}{\rule{0.6cm}{0.18cm}} Otras};
+\end{tikzpicture}
+\vspace{0.4em}
+\begin{itemize}
+  \item Ejemplo: si 16 de 40 estudiantes obtienen nota 5, el sector es $40\%$ del círculo.
+  \item Ángulo del sector: $0{,}40\times 360^\circ=144^\circ$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Histograma}
+\textbf{Definición formal:} gráfico para variables continuas agrupadas en intervalos, donde barras contiguas representan frecuencias por clase.
+\begin{itemize}
+  \item \textbf{Intuición:} muestra la forma aproximada de la distribución.
+  \item \pregunta{¿En qué intervalos se concentran los valores?}
+  \item \diferencia{usa intervalos y barras pegadas; el gráfico de barras usa categorías o valores discretos separados.}
+  \item \errorcomun{tratar la marca de clase como si fuera el valor real de todos los datos del intervalo.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo gráfico: histograma}
+\centering
+\begin{tikzpicture}[x=0.08cm,y=0.18cm]
+  \draw[->] (148,0) -- (194,0) node[right]{Estatura};
+  \draw[->] (150,0) -- (150,17) node[above]{$f_i$};
+  \foreach \x in {150,158,166,174,182,190}{\draw (\x,0) -- (\x,-0.4) node[below]{\x};}
+  \foreach \y in {5,10,15}{\draw (149.2,\y)--(150.8,\y) node[left=5pt]{\y};}
+  \fill[purple!35] (150,0) rectangle (158,3);
+  \fill[purple!35] (158,0) rectangle (166,7);
+  \fill[purple!35] (166,0) rectangle (174,12);
+  \fill[purple!35] (174,0) rectangle (182,8);
+  \fill[purple!35] (182,0) rectangle (190,5);
+  \draw (150,0) rectangle (158,3);
+  \draw (158,0) rectangle (166,7);
+  \draw (166,0) rectangle (174,12);
+  \draw (174,0) rectangle (182,8);
+  \draw (182,0) rectangle (190,5);
+\end{tikzpicture}
+\vspace{0.4em}
+\begin{itemize}
+  \item Intervalo con mayor frecuencia: [166,174), con $f_i=12$.
+  \item Marca de clase de [166,174): $(166+174)/2=170$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Pictograma}
+\textbf{Definición formal:} representación gráfica que usa símbolos o imágenes para indicar frecuencias según una escala definida.
+\begin{itemize}
+  \item \textbf{Intuición:} reemplaza barras por íconos contables.
+  \item \pregunta{¿Cuántos casos representa visualmente cada símbolo?}
+  \item \diferencia{un pictograma informa mediante una escala; un gráfico decorado solo agrega imágenes sin valor estadístico.}
+  \item \errorcomun{cambiar el tamaño del símbolo en alto y ancho, exagerando visualmente el área representada.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo gráfico: pictograma}
+\centering
+\begin{tabular}{ll}
+\toprule
+Categoría & Pictograma \\
+\midrule
+Sección A & $\blacksquare\ \blacksquare\ \blacksquare\ \blacksquare$ \\
+Sección B & $\blacksquare\ \blacksquare\ \blacksquare$ \\
+Sección C & $\blacksquare\ \blacksquare$ \\
+\bottomrule
+\end{tabular}
+\vspace{0.7em}
+\begin{block}{Escala}
+Cada $\blacksquare$ representa 5 estudiantes.
+\end{block}
+\begin{itemize}
+  \item Sección A: $4\times 5=20$ estudiantes.
+  \item Sección C: $2\times 5=10$ estudiantes.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ojiva}
+\textbf{Definición formal:} gráfico de frecuencias acumuladas, absolutas o relativas, usualmente construido sobre límites superiores de intervalos.
+\begin{itemize}
+  \item \textbf{Intuición:} muestra cuánto se ha acumulado hasta cierto umbral.
+  \item \pregunta{¿Qué porcentaje o cuántos datos están por debajo de un valor?}
+  \item \diferencia{el histograma muestra frecuencias por intervalo; la ojiva muestra acumulados.}
+  \item \errorcomun{interpretar un punto de la ojiva como frecuencia simple y no acumulada.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo gráfico: ojiva}
+\centering
+\begin{tikzpicture}[x=0.08cm,y=0.04cm]
+  \draw[->] (148,0) -- (194,0) node[right]{Límite superior};
+  \draw[->] (150,0) -- (150,105) node[above]{$H_i$};
+  \foreach \x in {150,158,166,174,182,190}{\draw (\x,0)--(\x,-2) node[below]{\x};}
+  \foreach \y in {25,50,75,100}{\draw (149.2,\y)--(150.8,\y) node[left=5pt]{\y\%};}
+  \draw[blue,thick] (150,0) -- (158,9) -- (166,29) -- (174,63) -- (182,86) -- (190,100);
+  \foreach \x/\y in {150/0,158/9,166/29,174/63,182/86,190/100}{\fill[blue] (\x,\y) circle (2pt);}
+  \draw[dashed] (174,0)--(174,63)--(150,63);
+\end{tikzpicture}
+\vspace{0.4em}
+\begin{itemize}
+  \item Interpretación: cerca del 63\% de las estaturas está bajo 174 cm.
+  \item Sirve para ubicar percentiles mediante interpolación visual o numérica.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Diagrama de tallo y hoja}
+\textbf{Definición formal:} representación que separa cada dato en tallo y hoja para ordenar observaciones conservando los datos originales.
+\begin{itemize}
+  \item \textbf{Intuición:} combina tabla ordenada e idea visual de distribución.
+  \item \pregunta{¿Cómo se distribuyen los datos sin perder los valores exactos?}
+  \item \diferencia{a diferencia del histograma, permite reconstruir los datos originales.}
+  \item \errorcomun{no indicar la clave de lectura, dejando ambiguo si $7\mid 2$ significa 72, 7,2 u otro valor.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo: tallo y hoja}
+\centering
+\begin{tabular}{c|l}
+\toprule
+Tallo & Hojas \\
+\midrule
+5 & 8\quad 9 \\
+6 & 0\quad 2\quad 4\quad 7 \\
+7 & 1\quad 2\quad 5\quad 8 \\
+8 & 0\quad 3 \\
+\bottomrule
+\end{tabular}
+\vspace{0.7em}
+\begin{itemize}
+  \item Clave: $7\mid 2$ representa 72.
+  \item Datos reconstruidos: 58, 59, 60, 62, 64, 67, 71, 72, 75, 78, 80, 83.
+  \item Se observa concentración entre 60 y 78.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Diagrama de dispersión}
+\textbf{Definición formal:} gráfico de pares ordenados $(x,y)$ para estudiar visualmente la relación entre dos variables cuantitativas.
+\begin{itemize}
+  \item \textbf{Intuición:} cada punto representa un individuo medido en dos variables.
+  \item \pregunta{¿Existe asociación positiva, negativa, nula o valores atípicos?}
+  \item \diferencia{muestra relación entre dos variables; no resume una sola distribución como un histograma.}
+  \item \errorcomun{confundir correlación visual con causalidad demostrada.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo gráfico: diagrama de dispersión}
+\centering
+\begin{tikzpicture}[x=0.55cm,y=0.45cm]
+  \draw[->] (0,0) -- (9.5,0) node[right]{Horas de estudio};
+  \draw[->] (0,0) -- (0,9.5) node[above]{Nota};
+  \foreach \x in {2,4,6,8}{\draw (\x,0)--(\x,-0.1) node[below]{\x};}
+  \foreach \y in {2,4,6,8}{\draw (0,\y)--(-0.1,\y) node[left]{\y};}
+  \foreach \x/\y in {1/2,2/3,3/3.8,4/5,5/5.4,6/6.5,7/7.2,8/8.1,2/7.8}{\fill[blue!70] (\x,\y) circle (2.5pt);}
+  \draw[red,dashed] (1,2.2)--(8,8);
+  \node[red,right] at (2,8.1) {posible atípico};
+\end{tikzpicture}
+\vspace{0.4em}
+\begin{itemize}
+  \item La nube sugiere asociación positiva: más horas, mayor nota.
+  \item El punto alto con pocas horas podría ser un valor atípico o un caso especial.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Resumen visual: gráficos}
+\small
+\begin{tabular}{p{0.22\textwidth}p{0.33\textwidth}p{0.33\textwidth}}
+\toprule
+Gráfico & Úsalo cuando & Evita confundirlo con \\
+\midrule
+Barras & categorías o discretas & histograma \\
+Torta & composición porcentual & comparación precisa entre muchas categorías \\
+Histograma & variable continua agrupada & barras separadas \\
+Ojiva & acumulados y percentiles & frecuencia simple \\
+Tallo y hoja & pocos datos y valores exactos & tabla de intervalos \\
+Dispersión & relación entre dos variables & prueba de causalidad \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\subsection{Medidas de resumen y posición}
+
+\begin{frame}{Medidas de resumen}
+\textbf{Definición formal:} valores numéricos que sintetizan una distribución en aspectos como centro, posición, dispersión o forma.
+\begin{itemize}
+  \item \textbf{Intuición:} reducen muchos datos a pocos indicadores interpretables.
+  \item \pregunta{¿Cómo describo la distribución sin listar todos los datos?}
+  \item \diferencia{un gráfico muestra forma visual; una medida entrega un número preciso.}
+  \item \errorcomun{usar una sola medida, como la media, para describir todo un conjunto de datos.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Parámetros y estadísticos}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textbf{Parámetro}
+\begin{itemize}
+  \item Resume una población.
+  \item Suele representarse con letras griegas.
+  \item Ejemplo: media poblacional $\mu$.
+\end{itemize}
+\column{0.48\textwidth}
+\textbf{Estadístico}
+\begin{itemize}
+  \item Resume una muestra.
+  \item Se calcula con datos observados.
+  \item Ejemplo: media muestral $\bar{x}$.
+\end{itemize}
+\end{columns}
+\vspace{0.4em}
+\diferencia{el parámetro describe el total poblacional; el estadístico describe la muestra y puede estimar al parámetro.}
+\end{frame}
+
+\begin{frame}{Concepto de posición estadística}
+\textbf{Definición formal:} ubicación de un valor dentro de la distribución, ya sea en el centro o en una posición relativa específica.
+\begin{itemize}
+  \item \textbf{Tendencia central:} media, mediana y moda buscan representar el centro o valor típico.
+  \item \textbf{Posición no central:} cuartiles, deciles y percentiles ubican cortes de la distribución.
+  \item \pregunta{¿Dónde se ubica un dato o un resumen dentro del conjunto?}
+  \item \errorcomun{creer que todas las medidas de posición describen solo el centro.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Media aritmética: datos no agrupados}
+\textbf{Definición formal:} suma de todos los datos dividida por la cantidad de observaciones.
+\[
+\bar{x}=\frac{x_1+x_2+\cdots+x_n}{n}
+\]
+\begin{itemize}
+  \item \textbf{Intuición:} reparto equitativo del total entre todos los datos.
+  \item \pregunta{¿Cuál sería el valor si todos tuvieran la misma cantidad?}
+  \item \diferencia{usa todos los valores; por eso es sensible a valores atípicos.}
+  \item \textbf{Ejemplo:} datos 4, 5, 6, 7: $\bar{x}=22/4=5{,}5$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Mediana: datos no agrupados}
+\textbf{Definición formal:} valor central de los datos ordenados; divide la distribución en dos mitades.
+\begin{itemize}
+  \item \textbf{Caso impar:} 3, 4, \textbf{6}, 8, 9 $\Rightarrow Me=6$.
+  \item \textbf{Caso par:} 3, 4, 6, 8 $\Rightarrow Me=(4+6)/2=5$.
+  \item \pregunta{¿Qué valor deja 50\% de datos a cada lado?}
+  \item \diferencia{la mediana depende del orden; la media depende de magnitudes y es más sensible a extremos.}
+  \item \errorcomun{calcular la mediana sin ordenar primero los datos.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Moda: datos no agrupados}
+\textbf{Definición formal:} valor o categoría que aparece con mayor frecuencia.
+\begin{itemize}
+  \item \textbf{Intuición:} lo más común.
+  \item \pregunta{¿Qué valor se repite más?}
+  \item \textbf{Ejemplo:} 2, 3, 3, 4, 5, 5 tiene dos modas: 3 y 5.
+  \item \diferencia{puede aplicarse a variables cualitativas; media y mediana requieren más estructura numérica u ordinal.}
+  \item \errorcomun{forzar una única moda cuando la distribución puede ser bimodal o multimodal.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Media aritmética ponderada}
+\textbf{Definición formal:} promedio donde cada valor tiene un peso asociado.
+\[
+\bar{x}_p=\frac{\sum w_i x_i}{\sum w_i}
+\]
+\begin{itemize}
+  \item \textbf{Intuición:} algunos valores cuentan más que otros.
+  \item \pregunta{¿Cuál es el promedio considerando importancia relativa?}
+  \item \textbf{Ejemplo créditos:} notas 6,0; 5,0; 4,0 con créditos 4, 3, 2: $\bar{x}_p=(24+15+8)/9=5{,}22$.
+  \item \errorcomun{promediar notas con créditos distintos como si todas pesaran igual.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Media para datos agrupados}
+\textbf{Definición formal:} promedio aproximado usando frecuencias y, si hay intervalos, marcas de clase.
+\[
+\bar{x}=\frac{\sum f_i x_i}{n}\quad\text{o}\quad \bar{x}\approx\frac{\sum f_i m_i}{n}
+\]
+\begin{itemize}
+  \item \textbf{Ejemplo discreto:} notas 4, 5, 6 con frecuencias 2, 5, 3: $\bar{x}=(8+25+18)/10=5{,}1$.
+  \item \textbf{Ejemplo intervalos:} usar $m_i$ como representante de cada clase.
+  \item \diferencia{en intervalos la media es aproximada porque no se conocen todos los datos originales.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Mediana para datos agrupados}
+\textbf{Definición formal:} valor aproximado que ubica el 50\% acumulado dentro del intervalo mediano.
+\[
+Me=L+\left(\frac{\frac{n}{2}-F_{ant}}{f_m}\right)A
+\]
+\begin{itemize}
+  \item $L$: límite inferior del intervalo mediano; $F_{ant}$: acumulada anterior.
+  \item $f_m$: frecuencia del intervalo mediano; $A$: amplitud.
+  \item \textbf{Ejemplo:} $n=40$, $L=50$, $F_{ant}=14$, $f_m=16$, $A=10$.
+  \item $Me=50+((20-14)/16)10=53{,}75$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Moda para datos agrupados}
+\textbf{Definición formal:} aproximación de la moda dentro del intervalo con mayor frecuencia.
+\[
+Mo=L+\left(\frac{d_1}{d_1+d_2}\right)A
+\]
+\begin{itemize}
+  \item $d_1=f_m-f_{ant}$ y $d_2=f_m-f_{sig}$.
+  \item \textbf{Ejemplo:} $L=50$, $A=10$, $f_m=16$, $f_{ant}=10$, $f_{sig}=8$.
+  \item $d_1=6$, $d_2=8$, entonces $Mo=50+(6/14)10=54{,}29$.
+  \item \errorcomun{aplicar la fórmula si no hay un intervalo modal claro.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Relación entre media, mediana y moda}
+\begin{columns}[T]
+\column{0.5\textwidth}
+\begin{itemize}
+  \item \textbf{Simétrica:} media $\approx$ mediana $\approx$ moda.
+  \item \textbf{Asimetría positiva:} media $>$ mediana $>$ moda.
+  \item \textbf{Asimetría negativa:} media $<$ mediana $<$ moda.
+\end{itemize}
+\column{0.45\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.75]
+  \draw[->] (0,0)--(5,0);
+  \draw[thick,blue] plot[smooth] coordinates {(0.3,0.1) (1.2,1.9) (2.1,0.8) (4.6,0.2)};
+  \draw[dashed] (1.2,0)--(1.2,1.8) node[above]{Mo};
+  \draw[dashed] (1.8,0)--(1.8,1.0) node[above]{Me};
+  \draw[dashed] (2.5,0)--(2.5,0.55) node[above]{$\bar{x}$};
+\end{tikzpicture}
+\end{columns}
+\vspace{0.4em}
+\errorcomun{interpretar la media como centro representativo cuando existe fuerte asimetría o valores atípicos.}
+\end{frame}
+
+\begin{frame}{Resumen visual: medidas de posición}
+\small
+\begin{tabular}{p{0.2\textwidth}p{0.36\textwidth}p{0.32\textwidth}}
+\toprule
+Medida & Responde & Cuidado principal \\
+\midrule
+Media & ¿valor promedio de equilibrio? & sensible a extremos \\
+Mediana & ¿centro por posición? & ordenar antes de calcular \\
+Moda & ¿valor más frecuente? & puede no existir o haber varias \\
+Media ponderada & ¿promedio con pesos? & pesos deben aplicarse correctamente \\
+Cuantiles & ¿ubicación relativa? & convención de cálculo usada \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\subsection{Percentiles y cuantiles}
+
+\begin{frame}{Percentiles}
+\textbf{Definición formal:} valores que dividen la distribución en 100 partes porcentuales; el percentil $q$ deja aproximadamente $q\%$ de datos por debajo.
+\begin{itemize}
+  \item \textbf{Intuición:} posición relativa expresada como porcentaje.
+  \item \pregunta{¿Qué valor marca cierto porcentaje acumulado?}
+  \item \textbf{Ejemplo:} estar en el percentil 80 significa estar igual o por encima de cerca del 80\% de los datos, según convención.
+  \item \errorcomun{confundir percentil 80 con obtener 80 puntos.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo de percentil con interpolación}
+\textbf{Datos agrupados:} $n=50$. Se busca $P_{70}$, posición $0{,}70n=35$.
+\begin{itemize}
+  \item Intervalo que contiene la posición 35: [60,70).
+  \item Datos del intervalo: $L=60$, $F_{ant}=30$, $f_i=10$, $A=10$.
+\end{itemize}
+\[
+P_{70}=60+\left(\frac{35-30}{10}\right)10=65
+\]
+\begin{block}{Interpretación}
+Aproximadamente el 70\% de los datos está por debajo de 65.
+\end{block}
+\end{frame}
+
+\begin{frame}{Cuartiles}
+\textbf{Definición formal:} cuantiles que dividen los datos ordenados en cuatro partes.
+\begin{itemize}
+  \item $Q_1$: primer cuartil, deja cerca del 25\% de los datos por debajo.
+  \item $Q_2$: segundo cuartil, coincide con la mediana.
+  \item $Q_3$: tercer cuartil, deja cerca del 75\% de los datos por debajo.
+  \item \pregunta{¿Dónde están los cortes del 25\%, 50\% y 75\%?}
+  \item \errorcomun{creer que $Q_3$ contiene el 75\% de los datos; en realidad es un valor de corte.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Deciles}
+\textbf{Definición formal:} cuantiles que dividen los datos ordenados en diez partes de 10\% cada una.
+\begin{itemize}
+  \item $D_1$ deja cerca del 10\% de los datos por debajo.
+  \item $D_5$ coincide con la mediana, bajo convenciones usuales.
+  \item $D_9$ deja cerca del 90\% por debajo.
+  \item \textbf{Ejemplo práctico:} si un ingreso está en $D_8$, pertenece aproximadamente al 20\% superior.
+  \item \diferencia{deciles dividen en 10 partes; cuartiles en 4; percentiles en 100.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Resumen visual: cuantiles}
+\centering
+\begin{tikzpicture}[x=0.095cm,y=0.9cm]
+  \draw[->] (0,0)--(105,0) node[right]{porcentaje acumulado};
+  \foreach \x/\lab in {25/$Q_1$,50/$Q_2=Me$,75/$Q_3$}{
+    \draw[thick] (\x,-0.12)--(\x,0.12) node[above]{\lab} node[below=5pt]{\x\%};
+  }
+  \foreach \x in {10,20,30,40,60,70,80,90}{\draw (\x,-0.07)--(\x,0.07);}
+  \node[below] at (10,-0.2) {$D_1$};
+  \node[below] at (90,-0.2) {$D_9$};
+\end{tikzpicture}
+\vspace{0.7em}
+\begin{itemize}
+  \item Percentiles, deciles y cuartiles son familias de cuantiles.
+  \item Todos requieren datos ordenados o frecuencias acumuladas.
+\end{itemize}
+\end{frame}
+
+\subsection{Medidas de dispersión}
+
+\begin{frame}{Introducción a la dispersión}
+\textbf{Definición formal:} grado en que los datos se alejan, varían o se extienden respecto de una referencia, usualmente el centro.
+\begin{itemize}
+  \item \textbf{Intuición:} dos grupos pueden tener el mismo promedio y comportarse de forma muy distinta.
+  \item \pregunta{¿Qué tan homogéneos o heterogéneos son los datos?}
+  \item \diferencia{posición indica dónde están los datos; dispersión indica qué tan separados están.}
+  \item \errorcomun{comparar solo medias sin revisar variabilidad.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Rango como medida de dispersión}
+\textbf{Definición formal:} diferencia entre el valor máximo y el mínimo: $R=x_{\max}-x_{\min}$.
+\begin{itemize}
+  \item \textbf{Intuición:} distancia entre extremos.
+  \item \pregunta{¿Cuál es la extensión total de los datos?}
+  \item \textbf{Ejemplo:} 12, 15, 18, 25 $\Rightarrow R=25-12=13$.
+  \item \diferencia{es simple, pero solo usa dos valores; varianza y desviación usan todos los datos.}
+  \item \errorcomun{concluir estabilidad solo porque el rango es pequeño sin mirar el contexto o tamaño de escala.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Varianza: concepto}
+\textbf{Definición formal:} promedio de las desviaciones cuadráticas respecto de la media.
+\[
+\sigma^2=\frac{\sum (x_i-\mu)^2}{N}\qquad s^2=\frac{\sum (x_i-\bar{x})^2}{n-1}
+\]
+\begin{itemize}
+  \item \textbf{Intuición:} mide qué tan lejos están los datos del promedio, penalizando más las distancias grandes.
+  \item \pregunta{¿Cuánta variabilidad cuadrática hay alrededor de la media?}
+  \item \diferencia{varianza poblacional divide por $N$; varianza muestral divide por $n-1$.}
+  \item \errorcomun{olvidar que sus unidades están al cuadrado.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo: varianza no agrupada}
+Datos: 2, 4, 4, 6. Media: $\bar{x}=4$.
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+$x_i$ & $x_i-\bar{x}$ & $(x_i-\bar{x})^2$ \\
+\midrule
+2 & -2 & 4 \\
+4 & 0 & 0 \\
+4 & 0 & 0 \\
+6 & 2 & 4 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{itemize}
+  \item Suma de cuadrados: 8.
+  \item Varianza poblacional: $\sigma^2=8/4=2$.
+  \item Varianza muestral: $s^2=8/(4-1)=2{,}67$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Varianza para datos agrupados}
+\textbf{Variable discreta agrupada:}
+\[
+s^2=\frac{\sum f_i(x_i-\bar{x})^2}{n-1}
+\]
+\textbf{Datos por intervalos:}
+\[
+s^2\approx\frac{\sum f_i(m_i-\bar{x})^2}{n-1}
+\]
+\begin{itemize}
+  \item Para intervalos se reemplaza cada clase por su marca de clase $m_i$.
+  \item \diferencia{la fórmula agrupada pondera por frecuencias; la no agrupada trabaja observación por observación.}
+  \item \errorcomun{usar límites de intervalos en lugar de marcas de clase para aproximar.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Desviación estándar}
+\textbf{Definición formal:} raíz cuadrada positiva de la varianza.
+\[
+\sigma=\sqrt{\sigma^2}\qquad s=\sqrt{s^2}
+\]
+\begin{itemize}
+  \item \textbf{Intuición:} distancia típica de los datos respecto de la media.
+  \item \pregunta{¿Cuánto se alejan normalmente los datos del promedio?}
+  \item \textbf{Ejemplo:} si $s^2=2{,}67$, entonces $s=\sqrt{2{,}67}=1{,}63$.
+  \item \diferencia{vuelve a las unidades originales; la varianza queda en unidades al cuadrado.}
+  \item \errorcomun{interpretar una desviación estándar sin mencionar unidades o contexto.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Coeficiente de variación}
+\textbf{Definición formal:} medida de dispersión relativa respecto de la media.
+\[
+CV=\frac{s}{\bar{x}}\quad\text{o}\quad CV\%=\frac{s}{\bar{x}}\times 100
+\]
+\begin{itemize}
+  \item \textbf{Intuición:} variabilidad por unidad promedio.
+  \item \pregunta{¿Qué tan grande es la dispersión comparada con el nivel medio?}
+  \item \textbf{Ejemplo:} si $\bar{x}=50$ y $s=5$, entonces $CV=0{,}10=10\%$.
+  \item \diferencia{permite comparar variables con escalas o unidades distintas.}
+  \item \errorcomun{usarlo cuando la media es cero o cercana a cero.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo comparativo: coeficiente de variación}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Grupo & Media & Desv. estándar & $CV\%$ \\
+\midrule
+A & 50 & 5 & 10\% \\
+B & 200 & 20 & 10\% \\
+C & 40 & 12 & 30\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{itemize}
+  \item A y B tienen distinta escala, pero igual dispersión relativa.
+  \item C es más heterogéneo porque su desviación representa mayor proporción de la media.
+  \item \textbf{Interpretación:} CV bajo sugiere mayor homogeneidad relativa.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Resumen visual: dispersión}
+\small
+\begin{tabular}{p{0.24\textwidth}p{0.33\textwidth}p{0.31\textwidth}}
+\toprule
+Medida & Qué resume & Limitación o cuidado \\
+\midrule
+Rango & extremos & sensible a máximo y mínimo \\
+Varianza & distancia cuadrática media & unidades al cuadrado \\
+Desv. estándar & distancia típica en unidades originales & sensible a extremos \\
+Coef. variación & dispersión relativa & no usar con media cercana a cero \\
+\bottomrule
+\end{tabular}
+\vspace{0.7em}
+\begin{block}{Idea central}
+La dispersión complementa a la tendencia central: el centro sin variabilidad puede ser engañoso.
+\end{block}
+\end{frame}
+
+\begin{frame}{Checklist de la Unidad 2}
+\begin{enumerate}
+  \item ¿Elijo el gráfico según tipo de variable y objetivo comunicativo?
+  \item ¿Distingo barras, histograma, torta, ojiva, tallo-hoja y dispersión?
+  \item ¿Sé cuándo usar media, mediana, moda y media ponderada?
+  \item ¿Calculo medidas agrupadas usando frecuencias y marcas de clase?
+  \item ¿Interpreto percentiles, cuartiles y deciles como posiciones de corte?
+  \item ¿Comparo dispersión con rango, varianza, desviación estándar y CV?
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Cierre integrado de la guía}
+\centering
+\Large
+Primero se organizan los datos en tablas; luego se visualizan con gráficos y se resumen con medidas de posición y dispersión.
+\vspace{0.8em}
+
+\normalsize
+Una buena interpretación combina contexto, tipo de variable, forma de la distribución y variabilidad.
 \end{frame}
 
 \end{document}
