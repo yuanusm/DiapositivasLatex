@@ -1,0 +1,256 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry,amsmath,amssymb,array,booktabs,multirow,enumitem,hyperref}
+\usepackage[table]{xcolor}
+\usepackage{tikz,circuitikz,tcolorbox}
+\usetikzlibrary{circuits.logic.US,positioning,arrows.meta,calc}
+\geometry{margin=1.75cm}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4pt}\renewcommand{\arraystretch}{1.18}
+\newtcolorbox{procedimiento}{colback=blue!3,colframe=blue!55!black,title=Procedimiento sistemático}
+\newtcolorbox{ejemplo}{colback=green!3,colframe=green!45!black,title=Ejemplo resuelto}
+\newtcolorbox{alerta}{colback=red!3,colframe=red!55!black,title=Error frecuente de certamen}
+\newtcolorbox{resumen}{colback=yellow!7,colframe=yellow!45!black,title=Cuadro resumen}
+\newcommand{\NOT}[1]{\overline{#1}}\newcommand{\VDD}{V_{DD}}\newcommand{\VCC}{V_{CC}}\newcommand{\VOH}{V_{OH}}\newcommand{\VOL}{V_{OL}}\newcommand{\VIH}{V_{IH}}\newcommand{\VIL}{V_{IL}}
+\title{Ayudantía de Preparación Certamen 3 -- ELO106\\\large Electrónica Digital: compuertas reales, TTL/CMOS, adaptación de niveles y MOSFET}
+\author{Material orientado a resolución de ejercicios tipo certamen}\date{}
+\begin{document}\maketitle\tableofcontents\newpage
+\section*{Cómo estudiar este documento}
+Este apunte reconstruye patrones de evaluación: identificar tecnología, convertir transistores a lógica, completar tablas internas, propagar voltajes reales, verificar compatibilidad y diseñar resistencias. En cada circuito pregunte: ¿TTL/BJT o CMOS/MOSFET?, ¿qué transistores conducen?, ¿la salida queda a alimentación, tierra o flotante?, ¿qué función booleana aparece?, ¿la etapa siguiente es compatible?
+
+\section{Identificación de compuertas lógicas}
+\subsection{Tablas lógicas mínimas}
+\begin{center}\begin{tabular}{cc|ccccc}\toprule
+$A$&$B$&AND $AB$&OR $A+B$&NAND $\NOT{AB}$&NOR $\NOT{A+B}$&XOR $A\oplus B$\\\midrule
+0&0&0&0&1&1&0\\0&1&0&1&1&0&1\\1&0&0&1&1&0&1\\1&1&1&1&0&0&0\\\bottomrule
+\end{tabular}\end{center}
+Para una entrada, NOT entrega $Y=\NOT{A}$.
+\subsection{TTL versus CMOS}
+\begin{resumen}\begin{tabular}{p{0.23\linewidth}p{0.34\linewidth}p{0.34\linewidth}}\toprule
+Criterio&TTL&CMOS\\\midrule
+Dispositivo&BJT: base, colector, emisor&MOSFET: gate, drain, source\\
+Entrada típica&Transistor multiemisor o red diodo/BJT&Gates MOS de alta impedancia\\
+Pista de análisis&$V_{BE}\approx0.7$ V, saturación, corte&NMOS/PMOS, PUN y PDN\\
+Salida usual&Totem pole u open collector&Push-pull u open drain\\
+Alimentación típica&5 V&3.3 V, 5 V, 9 V u otras\\\bottomrule
+\end{tabular}\end{resumen}
+\subsection{Tipos de salida}
+\begin{center}\begin{tabular}{p{0.18\linewidth}p{0.32\linewidth}p{0.27\linewidth}p{0.15\linewidth}}\toprule
+Salida&Estructura&Estados&Resistencia externa\\\midrule
+Totem pole TTL&BJT superior e inferior activos&fuerza H y L&no\\
+Open collector&colector BJT sin pull-up interno&fuerza L o $Z$&sí, pull-up\\
+Push-pull CMOS&PMOS arriba + NMOS abajo&fuerza H y L&no\\
+Open drain&drain NMOS sin PMOS pull-up&fuerza L o $Z$&sí, pull-up\\\bottomrule
+\end{tabular}\end{center}
+\begin{figure}[h]\centering\begin{circuitikz}[scale=0.78]
+\draw (0,3) node[vcc]{$V_{CC}$} to[R] (0,2) -- (1,2) node[npn,anchor=C](q1){};\draw (q1.E)--(1,0.9) node[npn,anchor=C](q2){};\draw (q2.E)--(1,0) node[ground]{};\draw (q1.E)--(2,1.45) node[right]{$Y$};\node at (1,-.45){Totem pole};
+\draw (4,2) node[npn,anchor=C](q3){};\draw (q3.E)--(4,0) node[ground]{};\draw (q3.C)--(5.1,2) node[right]{$Y$};\node at (4,-.45){Open collector};
+\draw (7,3) node[vcc]{$V_{DD}$} node[pmos,anchor=S,rotate=180](p){};\draw (p.D)--(7,1.5) node[right]{$Y$}--(7,1) node[nmos,anchor=D](n){};\draw (n.S)--(7,0) node[ground]{};\node at (7,-.45){Push-pull};
+\draw (10,1.7) node[nmos,anchor=D](od){};\draw (od.D)--(11.1,1.7) node[right]{$Y$};\draw (od.S)--(10,0) node[ground]{};\node at (10,-.45){Open drain};
+\end{circuitikz}\caption{Estructuras de salida típicas que aparecen en análisis de circuitos.}\end{figure}
+\begin{procedimiento}\begin{enumerate}
+\item Identifique tecnología: BJT $\Rightarrow$ TTL/discreta; MOSFET complementarios $\Rightarrow$ CMOS.
+\item Ubique la red que baja la salida a 0: BJT/NMOS hacia tierra. La condición de conducción suele ser la condición de $Y=0$.
+\item Ubique la red que sube la salida: BJT activo, PMOS o resistencia. Si no existe elemento interno de subida, la salida es open collector/open drain.
+\item Evalúe ON/OFF con entradas 0 y 1; luego escriba la función y compare con tablas AND, OR, NAND, NOR, NOT.
+\end{enumerate}\end{procedimiento}
+
+\section{Simplificación de circuitos lógicos}
+\begin{procedimiento}\begin{enumerate}
+\item Encierre cada etapa transistorizada con entrada y salida reconocibles.
+\item Reemplace inversores NPN/CMOS, NAND/NOR CMOS, buffers open drain y salidas con pull-up por símbolos lógicos.
+\item Etiquete nodos internos $v_A,v_B,v_C,\ldots$.
+\item Escriba una ecuación por nodo y simplifique con De Morgan, absorción y doble negación.
+\item Dibuje el esquema lógico final completo antes de responder la función global.
+\end{enumerate}\end{procedimiento}
+\begin{ejemplo}
+Etapa 1: un NPN con emisor a tierra y resistencia de colector entrega $v_1=\NOT{A}$. Etapa 2: dos NPN en serie controlados por $v_1$ y $B$ descargan una salida con pull-up, por lo que baja sólo si $v_1B=1$:
+\[Y=\NOT{v_1B}=\NOT{\NOT{A}B}=A+\NOT{B}.\]
+El circuito simplificado es una OR con entrada $B$ negada.
+\end{ejemplo}
+\begin{ejemplo}
+Si una red NMOS tiene dos transistores en paralelo controlados por $A$ y $B$, la PDN conduce con $A+B$. En CMOS estático la salida es $Y=\NOT{A+B}$: compuerta NOR. Si después hay un inversor, el resultado global es $A+B$.
+\end{ejemplo}
+
+\section{Obtención de la función lógica global}
+Reglas clave:
+\[\NOT{AB}=\NOT{A}+\NOT{B},\quad \NOT{A+B}=\NOT{A}\NOT{B},\quad A+AB=A,\quad A\oplus B=\NOT{A}B+A\NOT{B}.\]
+\begin{ejemplo}
+Funciones típicas de certamen:
+\begin{itemize}
+\item $v_{out}=A\cdot B$: H sólo cuando $A=B=1$. En CMOS se obtiene como NAND seguida de NOT.
+\item $v_{out}=\NOT{(A+B)}$: H sólo con $A=B=0$; es NOR.
+\item $v_{out}=A\oplus B$: use $v_1=\NOT{A}B$, $v_2=A\NOT{B}$, $Y=v_1+v_2$.
+\item $v_{out}=AB+CD$: dos AND de primer nivel y una OR final. Si se ve en una PDN NMOS con ramas serie $AB$ y $CD$ en paralelo, primero aparece $\NOT{AB+CD}$ y se necesita un inversor para obtener la forma positiva.
+\end{itemize}\end{ejemplo}
+
+\section{Tablas lógicas completas}
+\begin{procedimiento}No limite la tabla a la salida. En ejercicios con nodos internos use columnas del tipo:
+\[A\quad B\quad |\quad v_A\quad v_B\quad v_C\quad v_D\quad |\quad v_{OUT}.
+\]
+Liste entradas en orden binario, evalúe inversores, luego compuertas intermedias y finalmente la salida. Si hay open collector/open drain, escriba $Z$ cuando el transistor esté apagado y luego convierta $Z\to H$ sólo si existe pull-up.\end{procedimiento}
+\begin{ejemplo}
+Sea $v_A=\NOT{A}$, $v_B=\NOT{B}$, $v_C=v_AB$, $v_D=Av_B$, $Y=v_C+v_D$.
+\begin{center}\begin{tabular}{cc|cccc|c}\toprule
+$A$&$B$&$v_A$&$v_B$&$v_C$&$v_D$&$Y$\\\midrule
+0&0&1&1&0&0&0\\0&1&1&0&1&0&1\\1&0&0&1&0&1&1\\1&1&0&0&0&0&0\\\bottomrule
+\end{tabular}\end{center}
+Luego $Y=A\oplus B$.
+\end{ejemplo}
+
+\section{Análisis de voltajes reales}
+Use interruptores: camino cerrado a GND $\Rightarrow$ 0 V; camino cerrado a alimentación $\Rightarrow$ $V_{CC}$ o $V_{DD}$; nodo flotante con pull-up $\Rightarrow$ voltaje del pull-up; nodo flotante con pull-down $\Rightarrow$ 0 V. No mezcle ``H'' con voltaje seguro: 9 V puede ser H lógico y a la vez destruir una entrada de 3.3 V.
+\begin{center}\begin{tabular}{c|c|c|p{0.38\linewidth}}\toprule
+Sistema&LOW ideal&HIGH ideal&Precaución\\\midrule
+TTL 5 V&0 V&5 V aprox.&$\VOH_{min}$ puede ser 2.4 V en TTL clásico\\
+CMOS 3.3 V&0 V&3.3 V&no asumir tolerancia a 5 V\\
+CMOS 5 V&0 V&5 V&verificar umbral de entrada de familia HC/HCT\\
+CMOS 9 V&0 V&9 V&requiere adaptación hacia 3.3/5 V\\\bottomrule
+\end{tabular}\end{center}
+\begin{ejemplo}
+Open drain con $R_{PU}$ a 9 V: NMOS ON $\Rightarrow Y\approx0$ V; NMOS OFF $\Rightarrow Y\approx9$ V. Si alimenta una entrada CMOS 3.3 V, el nivel HIGH no es compatible por alimentación aunque cumpla la idea booleana de 1.
+\end{ejemplo}
+
+\section{Compatibilidad lógica TTL--CMOS}
+\subsection{Criterios}
+\begin{resumen}
+Niveles: \[\boxed{\VOH_{min,driver}>\VIH_{min,receptor}},\qquad \boxed{\VOL_{max,driver}<\VIL_{max,receptor}}.\]
+Corrientes para $N$ entradas: \[\boxed{|I_{OH,max}|\ge N|I_{IH,max}|},\qquad \boxed{|I_{OL,max}|\ge N|I_{IL,max}|}.\]
+También revise alimentación y máximos absolutos de entrada.\end{resumen}
+\begin{ejemplo}
+TTL 5 V clásico: $\VOH_{min}=2.4$ V, $\VOL_{max}=0.4$ V. CMOS HC a 5 V: $\VIH_{min}\approx3.5$ V, $\VIL_{max}\approx1.5$ V. LOW: $0.4<1.5$ compatible. HIGH: $2.4\not>3.5$ incompatible. Soluciones: familia HCT, buffer adaptador, pull-up si la salida lo permite o level shifter.
+\end{ejemplo}
+\begin{ejemplo}
+CMOS 3.3 V hacia TTL 5 V: si $\VOH_{min}=3.0$ V y TTL pide $\VIH_{min}=2.0$ V, HIGH compatible; si $\VOL_{max}=0.3$ V y TTL acepta $\VIL_{max}=0.8$ V, LOW compatible. Falta verificar corrientes: una salida con $I_{OL}=4$ mA no puede manejar diez entradas que exigen $I_{IL}=0.8$ mA cada una.
+\end{ejemplo}
+\begin{ejemplo}
+CMOS 5 V hacia CMOS 9 V: si el receptor 9 V usa umbral $\VIH_{min}=0.7V_{DD}=6.3$ V, una salida de 5 V no alcanza HIGH. Se requiere level shifter o pull-up/open drain tolerante a 9 V.
+\end{ejemplo}
+
+\section{Adaptación de niveles lógicos}
+\begin{center}\begin{tabular}{p{0.20\linewidth}p{0.38\linewidth}p{0.32\linewidth}}\toprule
+Método&Cuándo usarlo&Criterio\\\midrule
+Pull-up&Open collector/open drain, cable-AND, subir H a tensión permitida&calcular rango por $I_{OL}$ y $\VIH$\\
+Pull-down&Asegurar LOW cuando un nodo queda flotante&vencer fugas sin sobrecargar HIGH\\
+Open collector&TTL que sólo hunde corriente&permite pull-up externo y unión cableada\\
+Open drain&MOS, buses, adaptación simple&el transistor sólo fuerza LOW\\
+Level shifter&cambios 3.3/5/9 V robustos o rápidos&ver rango, dirección, frecuencia y corrientes\\
+Transistor discreto&adaptación económica con inversión&calcular saturación, base/gate y resistencias\\\bottomrule
+\end{tabular}\end{center}
+
+\section{Diseño de resistencias}
+\subsection{$R_{PU}$ y $R_{OC}$}
+En LOW, el transistor debe hundir la corriente del pull-up más entradas LOW:
+\[I_{sink}=\frac{V_{PU}-\VOL}{R_{PU}}+\sum |I_{IL}|\le I_{OL,max}.\]
+Por tanto:
+\[\boxed{R_{PU}\ge\frac{V_{PU}-\VOL_{max}}{I_{OL,max}-\sum |I_{IL}|}}.\]
+En HIGH, la resistencia debe mantener $Y\ge\VIH_{min}$:
+\[\boxed{R_{PU}\le\frac{V_{PU}-\VIH_{min}}{\sum I_{IH}+I_{fugas}}}.\]
+Además, por velocidad, $R_{PU}$ no debe ser tan grande que $\tau=R_{PU}C_L$ haga lento el flanco de subida.
+\begin{ejemplo}
+Open drain con $V_{PU}=5$ V, $\VOL_{max}=0.4$ V, $I_{OL,max}=8$ mA, cuatro entradas con $I_{IL}=0.1$ mA, $\VIH_{min}=2$ V e $I_{IH}=20\,\mu$A:
+\[R_{min}=\frac{5-0.4}{8\text{ mA}-0.4\text{ mA}}=605\,\Omega,\qquad R_{max}=\frac{5-2}{80\,\mu\text{A}}=37.5\,k\Omega.\]
+Elija un valor comercial intermedio, por ejemplo $4.7\,k\Omega$, dejando margen de corriente y velocidad.
+\end{ejemplo}
+\subsection{$R_{PD}$}
+Para mantener LOW frente a fugas:
+\[\boxed{R_{PD}\le\frac{\VIL_{max}}{I_{fuga}+\sum I_{IL}}}.\]
+Si una salida debe forzar HIGH contra el pull-down:
+\[\frac{\VOH_{min}}{R_{PD}}+\sum I_{IH}\le |I_{OH,max}|.\]
+
+\section{Circuitos TTL discretos}
+\subsection{BJT como interruptor}
+\begin{center}\begin{tabular}{c|c|c|c}\toprule
+Región&Condición&Modelo&Salida con $R_C$\\\midrule
+Corte&$V_{BE}<0.6$ V&abierto&HIGH\\
+Activa&$V_{BE}\approx0.7$ V, $I_C=\beta I_B$&amplificador&intermedia\\
+Saturación&base muy excitada&$V_{CE(sat)}\approx0.2$ V&LOW\\\bottomrule
+\end{tabular}\end{center}
+\begin{ejemplo}
+Inversor NPN: $V_{CC}=5$ V, $R_C=1k\Omega$, $R_B=10k\Omega$, entrada 5 V, $V_{BE}=0.7$ V, $V_{CE(sat)}=0.2$ V, $\beta=100$.
+\[I_B=\frac{5-0.7}{10k}=0.43\text{ mA},\qquad I_{C,sat}=\frac{5-0.2}{1k}=4.8\text{ mA}.\]
+Como $\beta I_B=43$ mA $>4.8$ mA, satura y $V_O\approx0.2$ V. Con entrada 0 V, corte y $V_O\approx5$ V. Tabla: 0$\to$1, 1$\to$0; función NOT.
+\end{ejemplo}
+
+\section{CMOS a nivel transistor}
+\begin{resumen}
+NMOS ON con gate=1 y conduce bien LOW. PMOS ON con gate=0 y conduce bien HIGH. La PUN PMOS conecta a $\VDD$; la PDN NMOS conecta a GND. En CMOS estático la PUN es dual de la PDN: serie $\leftrightarrow$ paralelo.
+\end{resumen}
+\begin{procedimiento}\begin{enumerate}
+\item Para cada fila, marque MOSFET ON/OFF.
+\item Busque camino cerrado $Y\to$GND por PDN; si existe, $Y=0$.
+\item Busque camino cerrado $Y\to\VDD$ por PUN; si existe, $Y=1$.
+\item La condición de conducción de la PDN es $F$; por tanto la salida estática es $Y=\NOT{F}$.
+\end{enumerate}\end{procedimiento}
+
+\section{Compuertas CMOS desde transistores}
+\begin{center}\begin{tabular}{p{0.15\linewidth}p{0.33\linewidth}p{0.33\linewidth}p{0.11\linewidth}}\toprule
+Compuerta&PDN NMOS&PUN PMOS&Salida\\\midrule
+NOT&un NMOS por $A$&un PMOS por $A$&$\NOT{A}$\\
+NAND&serie $A,B$&paralelo $A,B$&$\NOT{AB}$\\
+NOR&paralelo $A,B$&serie $A,B$&$\NOT{A+B}$\\
+AND&NAND + inversor&dual correspondiente&$AB$\\
+OR&NOR + inversor&dual correspondiente&$A+B$\\\bottomrule
+\end{tabular}\end{center}
+La dualidad existe porque para que la salida sea válida, cuando la PDN descarga, la PUN debe estar abierta, y viceversa.
+
+\section{Inversor TTL}
+Un inversor TTL típico posee etapa de entrada BJT, separador de fase y salida totem pole. Entrada LOW: se inhibe la descarga final y la salida sube. Entrada HIGH: se activa la descarga y la salida baja. Una entrada modificada cambia umbral y corrientes de entrada; una salida modificada cambia $\VOH$, $\VOL$, fan-out, capacidad de corriente y puede convertir la salida en open collector.
+
+\section{Familia CMOS compatible con TTL}
+Familias HCT usan transistores CMOS pero umbrales de entrada compatibles con TTL a 5 V: aceptan HIGH cercano a 2 V, a diferencia de HC a 5 V que suele exigir un nivel más alto. Conservan bajo consumo estático CMOS y salidas de gran excursión, pero se diseñan para interoperar con TTL clásico.
+
+\section{Amplificador MOSFET clase A}
+Con divisor $R_1$--$R_2$ en gate:
+\[V_G=V_{DD}\frac{R_2}{R_1+R_2},\qquad V_{GS}=V_G-V_S,\qquad I_D=k(V_{GS}-V_{TH})^2.\]
+\[V_D=V_{DD}-I_DR_D,\qquad V_{DS}=V_D-V_S.\]
+Si hay $R_S$, use $V_S=I_DR_S$ y resuelva $I_D=k(V_G-I_DR_S-V_{TH})^2$.
+\begin{ejemplo}
+$V_{DD}=12$ V, $R_1=100k\Omega$, $R_2=50k\Omega$, $R_D=2k\Omega$, $R_S=0$, $V_{TH}=2$ V, $k=1\text{ mA/V}^2$:
+\[V_G=12\frac{50}{150}=4\text{ V},\quad V_{GS}=4\text{ V},\quad I_D=1(4-2)^2=4\text{ mA}.\]
+\[V_D=12-4\text{ mA}\cdot2k=4\text{ V},\qquad V_{DS}=4\text{ V}.\]
+Como $V_{DS}>V_{GS}-V_{TH}=2$ V, está en saturación y puede operar como clase A.
+\end{ejemplo}
+\begin{ejemplo}
+Para obtener $k$ y $V_{TH}$ con $I_{D1}=1$ mA a $V_{GS1}=3$ V e $I_{D2}=4$ mA a $V_{GS2}=4$ V:
+\[\sqrt{I_D}=\sqrt{k}(V_{GS}-V_{TH}),\quad 2=\frac{4-V_{TH}}{3-V_{TH}}.\]
+Entonces $V_{TH}=2$ V y $k=1\text{ mA/V}^2$.
+\end{ejemplo}
+
+\section{Preguntas teóricas cortas tipo certamen}
+\begin{description}[leftmargin=2.9cm,style=nextline]
+\item[CMRR] Razón de rechazo de modo común; compara ganancia diferencial con ganancia de modo común. Idealmente infinita.
+\item[Amplificador diferencial] Amplifica $v_+-v_-$ y rechaza señales iguales en ambas entradas; base de etapas de entrada analógicas.
+\item[Threshold voltage] Voltaje de umbral para formar canal MOS; en NMOS conduce significativamente si $V_{GS}>V_{TH}$.
+\item[Compatibilidad TTL--CMOS] Exige niveles HIGH/LOW compatibles, corrientes suficientes y tensiones de alimentación/entrada permitidas.
+\item[Inversor TTL] Inversor BJT con entrada, separador de fase y salida totem pole u open collector; entrada alta produce salida baja.
+\item[Compuertas CMOS] Redes PMOS pull-up y NMOS pull-down duales; bajo consumo estático ideal y salida rail-to-rail aproximada.
+\end{description}
+
+\section{Checklist de Certamen}
+\begin{enumerate}[label=$\square$ \textbf{\arabic*.}]
+\item Identificar si un circuito interno es TTL/BJT o CMOS/MOSFET.
+\item Reconocer AND, OR, NAND, NOR y NOT desde transistores.
+\item Identificar salida totem pole, open collector, push-pull y open drain.
+\item Reemplazar etapas transistorizadas por compuertas equivalentes.
+\item Dibujar un esquema lógico simplificado completo.
+\item Escribir expresiones booleanas de nodos internos y salida final.
+\item Simplificar expresiones con De Morgan, absorción y doble negación.
+\item Construir tablas con entradas, estados internos, salidas intermedias y salida final.
+\item Propagar voltajes reales de 0 V, 3.3 V, 5 V y 9 V.
+\item Verificar $\VOH_{min}>\VIH_{min}$ y $\VOL_{max}<\VIL_{max}$.
+\item Verificar corrientes $I_{OH}$, $I_{OL}$, $I_{IH}$ e $I_{IL}$ para fan-out.
+\item Detectar incompatibilidades de alimentación, por ejemplo 9 V hacia entrada 3.3 V.
+\item Diseñar $R_{PU}$, $R_{PD}$ y $R_{OC}$ con márgenes.
+\item Resolver circuitos open collector/open drain y decidir cuándo requieren resistencia externa.
+\item Analizar BJT en corte, activa y saturación; calcular corrientes y voltajes de salida.
+\item Analizar redes CMOS marcando MOSFET ON/OFF para cada combinación de entradas.
+\item Construir NOT, NAND, NOR, AND y OR en CMOS y explicar dualidad PUN/PDN.
+\item Explicar modificaciones de entrada/salida en un inversor TTL.
+\item Reconocer por qué HCT/CMOS compatible con TTL acepta niveles TTL.
+\item Resolver polarización clase A MOSFET: $V_G$, $V_{GS}$, $I_D$, $V_D$, $V_{DS}$, $k$ y $V_{TH}$.
+\item Responder brevemente CMRR, amplificador diferencial, threshold voltage, compatibilidad TTL--CMOS, inversor TTL y compuertas CMOS.
+\end{enumerate}
+\end{document}
