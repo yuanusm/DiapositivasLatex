@@ -11,17 +11,19 @@
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,shapes.geometric}
 
-\title{Guía de estudio: Estadística Descriptiva}
-\subtitle{Conceptos que suelen confundirse y relaciones jerárquicas}
+\title{Guía de estudio: Estadística Descriptiva y Números Índices}
+\subtitle{Conceptos, comparaciones temporales e interpretación estadística}
 \author{Material de apoyo para estudio}
 \date{\today}
 
 \newcommand{\pregunta}[1]{\textbf{Pregunta que responde:} \emph{#1}}
 \newcommand{\errorcomun}[1]{\textbf{Error común:} #1}
 \newcommand{\diferencia}[1]{\textbf{Diferencia clave:} #1}
+\newcommand{\intuicion}[1]{\textbf{Intuición:} #1}
 
 \begin{document}
 
@@ -34,6 +36,7 @@
   \item Cada diapositiva aclara un concepto central de estadística descriptiva.
   \item La estructura se repite: definición formal, intuición, pregunta, ejemplo, diferencias y errores comunes.
   \item El foco está en conceptos parecidos que suelen confundirse en evaluaciones y ejercicios.
+  \item La guía integra estadística descriptiva y una unidad completa de números índices económicos.
 \end{itemize}
 \end{frame}
 
@@ -54,6 +57,8 @@
   \item Tablas de frecuencia
   \item Variables continuas e intervalos
   \item Tablas de contingencia
+  \item Medidas de posición y dispersión
+  \item Números índices económicos
 \end{enumerate}
 \end{columns}
 \end{frame}
@@ -1319,6 +1324,514 @@ Primero se organizan los datos en tablas; luego se visualizan con gráficos y se
 
 \normalsize
 Una buena interpretación combina contexto, tipo de variable, forma de la distribución y variabilidad.
+\end{frame}
+
+
+% -----------------------------------------------------------------------------
+% Unidad 3 integrada: Números Índices
+% -----------------------------------------------------------------------------
+\part{ME\_3: Números Índices}
+
+\begin{frame}{Transición a la Unidad 3}
+\centering
+\Large
+Luego de organizar, graficar y resumir datos, el siguiente paso es comparar magnitudes en el tiempo.
+\vspace{0.8em}
+
+\normalsize
+Los números índices permiten estudiar cambios relativos en precios, cantidades y valores.
+\end{frame}
+
+\begin{frame}{Cómo usar esta unidad}
+\begin{itemize}
+  \item Esta unidad continúa el bloque de estadística descriptiva: ahora el foco está en comparar magnitudes entre períodos.
+  \item La estructura se mantiene: definición, intuición, pregunta, diferencia, error común y ejemplo.
+  \item Los ejercicios típicos combinan precios, cantidades, valores, ponderaciones y elección de año base.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Mapa de la Unidad 3}
+\small
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{enumerate}
+  \item Introducción a números índices
+  \item Índices simples: precio, cantidad y valor
+  \item Índices complejos no ponderados
+  \item Índices económicos clásicos
+  \item Índices ponderados
+\end{enumerate}
+\column{0.48\textwidth}
+\begin{enumerate}\setcounter{enumi}{5}
+  \item Laspeyres
+  \item Paasche
+  \item Relación precio--cantidad--valor
+  \item Fisher
+  \item Errores comunes
+\end{enumerate}
+\end{columns}
+\end{frame}
+
+\section{Introducción a los números índices}
+
+\begin{frame}{¿Qué es un número índice?}
+\textbf{Definición formal:} razón que compara el nivel de una variable en un período con su nivel en un período base.
+\[
+I_t=\frac{x_t}{x_0}
+\]
+\begin{itemize}
+  \item \intuicion{mide cuánto representa el valor actual respecto del valor de referencia.}
+  \item \pregunta{¿Cuánto cambió una magnitud en relación con el período base?}
+  \item Es una razón adimensional: las unidades se cancelan.
+  \item \textbf{Ejemplo:} si un precio sube de \$500 a \$650, entonces $I=650/500=1{,}30$.
+  \item \errorcomun{confundir el índice $1{,}30$ con un aumento de $1{,}30\%$; el aumento es $30\%$.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Interpretación básica de un índice}
+\begin{center}
+\begin{tabular}{c p{0.58\textwidth} c}
+\toprule
+Índice & Interpretación & Variación \\
+\midrule
+$I=1$ & el nivel actual coincide con el período base & $0\%$ \\
+$I>1$ & el nivel actual es mayor que el período base & positiva \\
+$I<1$ & el nivel actual es menor que el período base & negativa \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{block}{Conversión práctica}
+Un índice puede expresarse como base 1 o base 100: $1{,}25=125$ si se usa base 100.
+\end{block}
+\diferencia{el índice compara niveles; la variación porcentual expresa el cambio neto respecto de la base.}
+\end{frame}
+
+\begin{frame}{Año base o período base}
+\textbf{Definición formal:} período usado como referencia para comparar todos los demás períodos.
+\begin{itemize}
+  \item \intuicion{es el ``punto cero'' de la comparación temporal.}
+  \item \pregunta{¿Respecto de qué momento estoy midiendo el cambio?}
+  \item Conviene elegir un período normal, representativo y con datos confiables.
+  \item Mantener una referencia fija permite comparar varios años entre sí mediante el mismo patrón.
+  \item \errorcomun{cambiar el año base sin avisar y comparar índices que ya no tienen la misma referencia.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Variación porcentual a partir de un índice}
+\[
+\%\Delta=(I-1)\cdot 100
+\]
+\begin{itemize}
+  \item Si $I=1{,}18$, entonces $\%\Delta=(1{,}18-1)100=18\%$.
+  \item Si $I=0{,}92$, entonces $\%\Delta=(0{,}92-1)100=-8\%$.
+  \item En base 100, la variación se obtiene como $I_{100}-100$.
+  \item \pregunta{¿El nivel actual aumentó o disminuyó, y en qué porcentaje?}
+  \item \errorcomun{decir que $I=92$ significa aumento de $92\%$; en base 100 significa caída de $8\%$.}
+\end{itemize}
+\end{frame}
+
+\section{Números índices simples}
+
+\begin{frame}{Concepto de índice simple}
+\textbf{Definición formal:} índice que estudia la evolución de una sola variable o magnitud entre dos períodos.
+\[
+I(x)=\frac{x_t}{x_0}
+\]
+\begin{itemize}
+  \item \intuicion{compara una cosa contra sí misma en otro momento.}
+  \item \textbf{Magnitudes típicas:} precio, cantidad vendida, producción, ingreso o valor monetario.
+  \item \diferencia{simple significa una variable o producto; complejo significa conjunto de productos o magnitudes.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índice simple de precios}
+\[
+I(P)=\frac{P_t}{P_0}
+\]
+\begin{itemize}
+  \item Mide la evolución temporal del precio de un bien.
+  \item \pregunta{¿Cuánto cambió el precio respecto del período base?}
+  \item \textbf{Ejemplo:} pan de \$1.000 a \$1.250: $I(P)=1{,}25$, aumento de $25\%$.
+  \item \textbf{Interpretación económica:} aproxima inflación de ese producto específico.
+  \item \errorcomun{generalizar la inflación de un producto a toda la economía.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índice simple de cantidades}
+\[
+I(Q)=\frac{Q_t}{Q_0}
+\]
+\begin{itemize}
+  \item Mide cambios en unidades físicas, producción, consumo o ventas.
+  \item \pregunta{¿Se vendió o produjo más o menos que en la base?}
+  \item \textbf{Ejemplo:} ventas de 80 a 100 unidades: $I(Q)=1{,}25$, aumento de $25\%$.
+  \item \diferencia{un precio puede subir aunque la cantidad vendida baje; son dimensiones distintas.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índice simple de valor}
+\textbf{Valor:} monto monetario que combina precio y cantidad.
+\[
+V=P\cdot Q \qquad I(V)=\frac{V_t}{V_0}=\frac{P_tQ_t}{P_0Q_0}
+\]
+\begin{itemize}
+  \item \intuicion{resume ingresos, ventas monetarias o gasto total.}
+  \item Relación fundamental en índices simples:
+  \[
+  I(V)=I(P)\cdot I(Q)
+  \]
+  \item \textbf{Ejemplo:} si el precio sube $20\%$ y la cantidad baja $10\%$, entonces $I(V)=1{,}20\cdot0{,}90=1{,}08$.
+  \item \errorcomun{interpretar un mayor valor como mayor cantidad vendida; puede deberse solo a precios.}
+\end{itemize}
+\end{frame}
+
+\section{Números índices complejos}
+
+\begin{frame}{Concepto de índice complejo}
+\textbf{Definición formal:} índice que resume la evolución conjunta de varias magnitudes o productos.
+\begin{itemize}
+  \item \intuicion{pasa de mirar un producto a mirar una canasta.}
+  \item \pregunta{¿Cómo cambió el conjunto completo de bienes o variables?}
+  \item Se usa cuando interesa una visión global: canasta familiar, producción industrial, ventas de una empresa.
+  \item \diferencia{el índice simple no requiere agregar productos; el complejo necesita un método de agregación.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índices complejos no ponderados}
+\textbf{Concepto:} todos los elementos reciben la misma importancia estadística.
+\begin{itemize}
+  \item \textbf{Ventaja:} cálculo rápido y fácil de explicar.
+  \item \textbf{Limitación:} trata igual bienes muy distintos en relevancia económica.
+  \item \textbf{Ejemplo:} dar el mismo peso a pan, arriendo y lápices puede distorsionar una canasta de consumo.
+  \item \errorcomun{creer que no ponderar significa ser neutral; en realidad asigna igual peso a todo.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Media agregativa simple}
+\[
+I_A(P)=\frac{\sum P_t}{\sum P_0}
+\]
+\begin{itemize}
+  \item Suma precios actuales y los compara con la suma de precios base.
+  \item \pregunta{¿La suma total de magnitudes aumentó o disminuyó?}
+  \item \textbf{Aplicación:} útil si las magnitudes son comparables y tienen escala similar.
+  \item \errorcomun{sumar precios de bienes con unidades muy distintas sin justificar la agregación.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Método de los promedios}
+\[
+I_M(P)=\frac{1}{n}\sum_{i=1}^{n}\frac{P_{it}}{P_{i0}}
+\]
+\begin{itemize}
+  \item Calcula primero índices individuales y luego los promedia.
+  \item \pregunta{¿Cuál es el cambio relativo promedio de los productos?}
+  \item \diferencia{la agregativa compara sumas; el método de promedios compara razones individuales.}
+  \item Puede diferir mucho de la media agregativa cuando los precios base tienen escalas distintas.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Comparación: agregativa simple vs promedio simple}
+\small
+\begin{center}
+\begin{tabular}{lccccc}
+\toprule
+Producto & $P_0$ & $P_t$ & $P_t/P_0$ & Aporte a sumas & Aporte al promedio \\
+\midrule
+A & 100 & 120 & 1,20 & alto & igual \\
+B & 10 & 20 & 2,00 & bajo & igual \\
+\bottomrule
+\end{tabular}
+\end{center}
+\[
+I_A=\frac{120+20}{100+10}=1{,}27 \qquad
+I_M=\frac{1{,}20+2{,}00}{2}=1{,}60
+\]
+\begin{block}{Idea clave}
+Los métodos divergen cuando un producto pequeño cambia mucho o cuando las escalas iniciales son muy diferentes.
+\end{block}
+\end{frame}
+
+\section{Índices económicos clásicos}
+
+\begin{frame}{Índices económicos clásicos}
+\begin{columns}[T]
+\column{0.32\textwidth}
+\textbf{Precios}
+\begin{itemize}
+  \item Inflación
+  \item Poder adquisitivo
+  \item Comparación temporal
+\end{itemize}
+\column{0.32\textwidth}
+\textbf{Cantidades}
+\begin{itemize}
+  \item Producción
+  \item Consumo
+  \item Ventas físicas
+\end{itemize}
+\column{0.32\textwidth}
+\textbf{Valor}
+\begin{itemize}
+  \item Ingresos
+  \item Gasto total
+  \item Efecto precio y cantidad
+\end{itemize}
+\end{columns}
+\vspace{0.5em}
+\errorcomun{concluir causalidad económica solo porque un índice aumentó o disminuyó.}
+\end{frame}
+
+\section{Índices compuestos ponderados}
+
+\begin{frame}{Motivación de las ponderaciones}
+\textbf{Idea central:} no todos los productos tienen la misma importancia en una canasta o en una economía.
+\begin{itemize}
+  \item Las ponderaciones representan participación, relevancia o peso económico.
+  \item Evitan que un bien irrelevante tenga el mismo impacto que uno fundamental.
+  \item \textbf{Ejemplo:} en el presupuesto familiar, el arriendo pesa más que un paquete de lápices.
+  \item \pregunta{¿Qué productos deberían influir más en el índice global?}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Concepto de ponderación}
+\begin{itemize}
+  \item \textbf{Peso estadístico:} coeficiente usado para dar importancia relativa a cada elemento.
+  \item \textbf{Peso económico:} importancia medida por gasto, ingreso, producción o participación.
+  \item En índices de precios, las cantidades suelen actuar como ponderaciones.
+  \item En índices de cantidades, los precios suelen actuar como ponderaciones.
+\end{itemize}
+\begin{block}{Regla de lectura}
+Precio se pondera con cantidad; cantidad se pondera con precio.
+\end{block}
+\end{frame}
+
+\section{Índices de Laspeyres}
+
+\begin{frame}{Índice de precios de Laspeyres}
+\[
+P_L=\frac{\sum P_tQ_0}{\sum P_0Q_0}
+\]
+\begin{itemize}
+  \item Usa cantidades del período base como ponderaciones.
+  \item \pregunta{¿Cuánto costaría hoy comprar la canasta base?}
+  \item \textbf{Ventaja:} mantiene fija la canasta y facilita comparaciones.
+  \item \textbf{Sesgo típico:} puede sobreestimar aumentos si los consumidores sustituyen bienes encarecidos. 
+  \item \errorcomun{usar cantidades actuales en Laspeyres de precios.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índice de cantidades de Laspeyres}
+\[
+Q_L=\frac{\sum Q_tP_0}{\sum Q_0P_0}
+\]
+\begin{itemize}
+  \item Usa precios del período base como ponderaciones.
+  \item \pregunta{¿Cómo cambió el volumen producido o vendido valorado a precios base?}
+  \item \textbf{Aplicación:} comparar producción física evitando que los precios actuales distorsionen el cambio.
+\end{itemize}
+\end{frame}
+
+\section{Índices de Paasche}
+
+\begin{frame}{Índice de precios de Paasche}
+\[
+P_P=\frac{\sum P_tQ_t}{\sum P_0Q_t}
+\]
+\begin{itemize}
+  \item Usa cantidades actuales como ponderaciones.
+  \item \pregunta{¿Cuánto cuesta la canasta actual comparada a precios base?}
+  \item Refleja patrones actuales de consumo o producción.
+  \item \errorcomun{confundirlo con Laspeyres porque ambos comparan precios; la diferencia está en las cantidades usadas.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índice de cantidades de Paasche}
+\[
+Q_P=\frac{\sum Q_tP_t}{\sum Q_0P_t}
+\]
+\begin{itemize}
+  \item Usa precios actuales como ponderaciones.
+  \item \pregunta{¿Cómo cambió el volumen usando la estructura de precios actual?}
+  \item Puede incorporar cambios de importancia económica ocurridos en el período actual.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Laspeyres vs Paasche}
+\small
+\begin{center}
+\begin{tabular}{p{0.22\textwidth}p{0.33\textwidth}p{0.33\textwidth}}
+\toprule
+Criterio & Laspeyres & Paasche \\
+\midrule
+Ponderación & base & actual \\
+Canasta & fija en período base & actual o móvil \\
+Lectura & costo de la canasta base hoy & costo de la canasta actual vs base \\
+Riesgo & puede ignorar sustitución & puede cambiar la referencia implícita \\
+\bottomrule
+\end{tabular}
+\end{center}
+\diferencia{Laspeyres responde con la estructura base; Paasche responde con la estructura actual.}
+\end{frame}
+
+\section{Relación entre índices}
+
+\begin{frame}{Relación precio, cantidad y valor}
+\[
+V=\sum PQ
+\]
+\begin{itemize}
+  \item El valor monetario cambia por dos fuerzas: precios y cantidades.
+  \item En el caso simple se cumple exactamente $I(V)=I(P)I(Q)$.
+  \item En índices agregados, la relación depende de que las fórmulas de precio y cantidad sean compatibles.
+  \item \pregunta{¿El cambio en ventas monetarias se explica por precios, cantidades o ambos?}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Identidad fundamental de valor}
+\[
+I_V=\frac{\sum P_tQ_t}{\sum P_0Q_0}
+\]
+\begin{block}{Significado económico}
+Compara el valor total actual con el valor total del período base.
+\end{block}
+\begin{itemize}
+  \item Si $I_V=1{,}40$, el valor total aumentó $40\%$.
+  \item No permite separar por sí solo cuánto se debe a precio y cuánto a cantidad.
+  \item \errorcomun{atribuir todo el aumento de valor a inflación sin revisar cantidades.}
+\end{itemize}
+\end{frame}
+
+\section{Índices de Fisher}
+
+\begin{frame}{Motivación del índice de Fisher}
+\begin{itemize}
+  \item Laspeyres usa ponderaciones base y Paasche usa ponderaciones actuales.
+  \item Cada uno puede entregar resultados distintos cuando cambian los patrones de consumo o producción.
+  \item Fisher busca un índice equilibrado combinando ambos.
+  \item \pregunta{¿Existe una medida intermedia entre Laspeyres y Paasche?}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índice de precios de Fisher}
+\[
+P_F=\sqrt{P_L\cdot P_P}
+\]
+\begin{itemize}
+  \item Es la media geométrica entre el índice de precios de Laspeyres y el de Paasche.
+  \item \intuicion{equilibra la mirada de canasta base y canasta actual.}
+  \item \textbf{Ventaja:} reduce la dependencia de una única estructura de ponderaciones.
+  \item \errorcomun{calcular Fisher con media aritmética en vez de media geométrica.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índice de cantidades de Fisher}
+\[
+Q_F=\sqrt{Q_L\cdot Q_P}
+\]
+\begin{itemize}
+  \item Combina el índice de cantidades de Laspeyres y el de Paasche.
+  \item \pregunta{¿Cuál es el cambio físico equilibrando precios base y actuales?}
+  \item Es útil cuando ninguna estructura de precios parece suficiente por sí sola.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Comparación final: Laspeyres, Paasche y Fisher}
+\small
+\begin{center}
+\begin{tabular}{p{0.20\textwidth}p{0.27\textwidth}p{0.27\textwidth}p{0.16\textwidth}}
+\toprule
+Índice & Pondera con & Fortalezas & Cuidado \\
+\midrule
+Laspeyres & período base & simple, comparable, canasta fija & sustitución \\
+Paasche & período actual & refleja estructura actual & base implícita móvil \\
+Fisher & media geométrica & equilibrio entre ambos & requiere calcular dos índices \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{block}{Regla práctica}
+Use Laspeyres para seguimiento con canasta fija, Paasche para estructura actual y Fisher como síntesis equilibrada.
+\end{block}
+\end{frame}
+
+\section{Ejemplo integrador}
+
+\begin{frame}{Ejemplo integrador: datos}
+\small
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Producto & $P_0$ & $Q_0$ & $P_t$ & $Q_t$ \\
+\midrule
+A & 10 & 100 & 12 & 90 \\
+B & 20 & 50 & 26 & 60 \\
+C & 5 & 200 & 6 & 240 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{itemize}
+  \item $\sum P_0Q_0=3000$.
+  \item $\sum P_tQ_0=3700$.
+  \item $\sum P_0Q_t=3300$.
+  \item $\sum P_tQ_t=4080$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo integrador: cálculo e interpretación}
+\small
+\[
+P_L=\frac{3700}{3000}=1{,}233 \qquad
+P_P=\frac{4080}{3300}=1{,}236 \qquad
+P_F=\sqrt{1{,}233\cdot1{,}236}=1{,}235
+\]
+\[
+I_V=\frac{4080}{3000}=1{,}36
+\]
+\begin{itemize}
+  \item Los precios aumentaron aproximadamente $23{,}5\%$ según Fisher.
+  \item El valor total aumentó $36\%$.
+  \item Como el valor crece más que los precios, también hubo efecto de cantidades.
+  \item \errorcomun{decir que el valor subió $36\%$ solo por inflación.}
+\end{itemize}
+\end{frame}
+
+\section{Errores comunes}
+
+\begin{frame}{Errores comunes en números índices}
+\small
+\begin{enumerate}
+  \item Confundir índice con porcentaje.
+  \item Interpretar $1{,}20$ como aumento de $1{,}20\%$ en vez de $20\%$.
+  \item Cambiar inadvertidamente el período base.
+  \item Confundir precio con valor.
+  \item Confundir cantidad con valor.
+  \item Aplicar Laspeyres usando ponderaciones actuales.
+  \item Aplicar Paasche usando ponderaciones base.
+  \item Olvidar que Fisher es una media geométrica.
+  \item Interpretar causalidad económica a partir de un índice descriptivo.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Checklist de la Unidad 3}
+\begin{enumerate}
+  \item ¿Identifico claramente período base y período actual?
+  \item ¿Distingo índice, variación porcentual e índice base 100?
+  \item ¿Separo precio, cantidad y valor?
+  \item ¿Reconozco si el índice es simple, complejo, ponderado o no ponderado?
+  \item ¿Uso ponderaciones base para Laspeyres y actuales para Paasche?
+  \item ¿Calculo Fisher como media geométrica?
+  \item ¿Interpreto el resultado sin inventar causalidad?
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Cierre de la unidad}
+\centering
+\Large
+Los números índices convierten datos temporales en comparaciones relativas claras.
+\vspace{0.8em}
+
+\normalsize
+La interpretación correcta depende de tres decisiones: base, ponderación y magnitud analizada.
 \end{frame}
 
 \end{document}
