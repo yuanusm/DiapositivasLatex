@@ -1,11 +1,10 @@
 # Diapositivas LaTeX: Guía de Estadística Descriptiva
 
-Este repositorio contiene una presentación en LaTeX Beamer para estudiar conceptos de Estadística Descriptiva que suelen confundirse entre sí.
+Este repositorio contiene una presentación larga en LaTeX Beamer para estudiar Estadística Descriptiva y Números Índices en un solo documento integrado.
 
 ## Archivo principal
 
-- `guia_estadistica_descriptiva.tex`: presentación completa con diapositivas sobre universo, población, muestra, censo, variables, escalas de medición, frecuencias, intervalos de clase, tablas de contingencia, representaciones gráficas, medidas de posición, cuantiles y medidas de dispersión.
-- `me_3_numeros_indices.tex`: presentación ME_3 sobre números índices económicos, con índices simples, complejos, ponderados, Laspeyres, Paasche, Fisher, ejemplos y errores comunes.
+- `guia_estadistica_descriptiva.tex`: presentación completa e integrada con diapositivas sobre universo, población, muestra, censo, variables, escalas de medición, frecuencias, intervalos de clase, tablas de contingencia, representaciones gráficas, medidas de posición, cuantiles, medidas de dispersión y la Unidad 3 de números índices económicos.
 
 ## Compilación
 
