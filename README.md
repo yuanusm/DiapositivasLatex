@@ -12,6 +12,7 @@ Para generar el PDF, ejecuta:
 
 ```bash
 pdflatex guia_estadistica_descriptiva.tex
+pdflatex me_3_numeros_indices.tex
 ```
 
 Si tu distribución de LaTeX lo requiere, ejecuta el comando dos veces para estabilizar referencias y numeración.
