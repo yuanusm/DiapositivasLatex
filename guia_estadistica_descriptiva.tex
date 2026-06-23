@@ -15,8 +15,8 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,shapes.geometric}
 
-\title{Guía de estudio: Estadística Descriptiva y Números Índices}
-\subtitle{Conceptos, comparaciones temporales e interpretación estadística}
+\title{Guía de estudio: Estadística, Números Índices y Probabilidades}
+\subtitle{Estadística descriptiva, índices, conteo y probabilidad clásica}
 \author{Material de apoyo para estudio}
 \date{\today}
 
@@ -24,6 +24,7 @@
 \newcommand{\errorcomun}[1]{\textbf{Error común:} #1}
 \newcommand{\diferencia}[1]{\textbf{Diferencia clave:} #1}
 \newcommand{\intuicion}[1]{\textbf{Intuición:} #1}
+\newcommand{\observacion}[1]{\begin{block}{Observación}#1\end{block}}
 
 \begin{document}
 
@@ -36,7 +37,7 @@
   \item Cada diapositiva aclara un concepto central de estadística descriptiva.
   \item La estructura se repite: definición formal, intuición, pregunta, ejemplo, diferencias y errores comunes.
   \item El foco está en conceptos parecidos que suelen confundirse en evaluaciones y ejercicios.
-  \item La guía integra estadística descriptiva y una unidad completa de números índices económicos.
+  \item La guía integra estadística descriptiva, números índices económicos y teoría de probabilidades.
 \end{itemize}
 \end{frame}
 
@@ -59,6 +60,7 @@
   \item Tablas de contingencia
   \item Medidas de posición y dispersión
   \item Números índices económicos
+  \item Probabilidades y análisis combinatorio
 \end{enumerate}
 \end{columns}
 \end{frame}
@@ -1832,6 +1834,1000 @@ Los números índices convierten datos temporales en comparaciones relativas cla
 
 \normalsize
 La interpretación correcta depende de tres decisiones: base, ponderación y magnitud analizada.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% Unidad 4 integrada: Teoría de Probabilidades y Análisis Combinatorio
+% -----------------------------------------------------------------------------
+\part{ME\_4: Teoría de Probabilidades y Análisis Combinatorio}
+
+\begin{frame}{Transición a la Unidad 4}
+\centering
+\Large
+Después de describir datos y comparar cambios, ahora modelamos la incertidumbre.
+\vspace{0.8em}
+
+\normalsize
+La probabilidad conecta experimentos aleatorios, conteo y toma de decisiones bajo riesgo.
+\end{frame}
+
+\begin{frame}{Objetivos de aprendizaje de ME\_4}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\begin{block}{Al finalizar podrás}
+\begin{itemize}
+  \item Identificar experimentos aleatorios.
+  \item Construir espacios muestrales.
+  \item Operar con eventos.
+  \item Contar resultados sin enumerarlos todos.
+\end{itemize}
+\end{block}
+\column{0.45\textwidth}
+\begin{exampleblock}{Preparación para}
+\begin{itemize}
+  \item probabilidad condicionada;
+  \item variables aleatorias;
+  \item inferencia estadística;
+  \item modelos de confiabilidad.
+\end{itemize}
+\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Mapa visual de la unidad}
+\centering
+\begin{tikzpicture}[node distance=0.85cm, box/.style={rectangle, rounded corners, draw=blue!65, fill=blue!8, align=center, minimum width=2.7cm, minimum height=0.72cm}, arrow/.style={-{Latex}, thick}]
+\node[box] (exp) {Experimento\\aleatorio};
+\node[box, right=of exp] (omega) {Espacio\\muestral $\Omega$};
+\node[box, right=of omega] (eventos) {Eventos};
+\node[box, below=of omega] (alg) {Álgebra\\de eventos};
+\node[box, below=of exp] (conteo) {Conteo};
+\node[box, below=of eventos] (prob) {Probabilidad};
+\draw[arrow] (exp) -- (omega);
+\draw[arrow] (omega) -- (eventos);
+\draw[arrow] (eventos) -- (alg);
+\draw[arrow] (conteo) -- (prob);
+\draw[arrow] (eventos) -- (prob);
+\draw[arrow] (alg) -- (prob);
+\end{tikzpicture}
+\vspace{0.4em}
+\begin{alertblock}{Idea central}
+Para calcular probabilidades primero hay que saber \textbf{qué puede ocurrir} y \textbf{cuántas formas favorables existen}.
+\end{alertblock}
+\end{frame}
+
+\section{Experimentos aleatorios}
+
+\begin{frame}{¿Qué es un experimento aleatorio?}
+\begin{block}{Definición formal}
+Procedimiento u observación cuyo resultado exacto no puede predecirse con certeza antes de realizarlo, aunque sí se conoce el conjunto de resultados posibles.
+\end{block}
+\pause
+\begin{itemize}
+  \item \intuicion{repetir el mismo procedimiento puede producir resultados distintos.}
+  \item \textbf{Interpretación práctica:} describe incertidumbre controlada.
+  \item \textbf{Aplicación:} fallas de componentes, llegada de paquetes, respuesta de un modelo de IA.
+  \item \errorcomun{creer que aleatorio significa ``sin reglas''; sí hay reglas, pero no certeza del resultado individual.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Determinístico vs aleatorio}
+\small
+\begin{center}
+\begin{tabular}{p{0.30\textwidth}p{0.30\textwidth}p{0.30\textwidth}}
+\toprule
+Criterio & Determinístico & Aleatorio \\
+\midrule
+Resultado & único y predecible & incierto antes de observar \\
+Ejemplo & $2+3=5$ & lanzar un dado \\
+Pregunta & ¿cuál es el resultado? & ¿qué resultados pueden ocurrir? \\
+Modelo & ecuación exacta & espacio muestral y probabilidades \\
+\bottomrule
+\end{tabular}
+\end{center}
+\pause
+\begin{exampleblock}{Ejercicio guiado}
+Clasifica: medir la vida útil de un componente electrónico. \pause Es \textbf{aleatorio}: no conocemos su duración exacta antes de observarla.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Ejemplos de experimentos aleatorios}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item Moneda: cara o sello.
+  \item Dado: valores de 1 a 6.
+  \item Vida útil: tiempo hasta falla.
+  \item Llegada de clientes: número por minuto.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}[scale=0.82]
+\node[circle, draw=blue!70, fill=blue!10, minimum size=1.2cm] at (0,1.4) {Moneda};
+\node[regular polygon, regular polygon sides=4, draw=green!60!black, fill=green!10, minimum size=1.1cm] at (2.4,1.4) {Dado};
+\node[rectangle, rounded corners, draw=orange!80!black, fill=orange!10, minimum width=2.2cm] at (0,0) {Componente};
+\node[rectangle, rounded corners, draw=purple!70, fill=purple!10, minimum width=2.2cm] at (2.4,0) {Clientes};
+\end{tikzpicture}
+\end{columns}
+\begin{alertblock}{Resumen visual}
+Experimento $\rightarrow$ resultado incierto $\rightarrow$ conjunto de posibilidades $\rightarrow$ probabilidad.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Aplicaciones reales de la aleatoriedad}
+\small
+\begin{tabular}{p{0.22\textwidth}p{0.33\textwidth}p{0.35\textwidth}}
+\toprule
+Área & Experimento aleatorio & Decisión apoyada \\
+\midrule
+Telecomunicaciones & pérdida de paquetes & dimensionar redes \\
+Electrónica & tiempo hasta falla & diseñar mantenimiento \\
+Confiabilidad & número de fallas & estimar riesgo \\
+IA & predicción correcta/incorrecta & medir desempeño \\
+Finanzas & retorno diario & gestionar portafolios \\
+\bottomrule
+\end{tabular}
+\vspace{0.5em}
+\observacion{La probabilidad no elimina la incertidumbre: la cuantifica.}
+\end{frame}
+
+\section{Espacio muestral}
+
+\begin{frame}{Espacio muestral $\Omega$}
+\begin{block}{Definición formal}
+El espacio muestral $\Omega$ es el conjunto de todos los resultados posibles de un experimento aleatorio.
+\end{block}
+\pause
+\begin{columns}[T]
+\column{0.50\textwidth}
+\begin{itemize}
+  \item Moneda: $\Omega=\{C,S\}$.
+  \item Dado: $\Omega=\{1,2,3,4,5,6\}$.
+  \item Dos monedas: pares ordenados.
+\end{itemize}
+\column{0.45\textwidth}
+\begin{exampleblock}{Interpretación}
+Antes de hablar de probabilidad, debemos listar qué resultados son posibles.
+\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Tipos de espacios muestrales}
+\small
+\begin{tabular}{p{0.24\textwidth}p{0.30\textwidth}p{0.34\textwidth}}
+\toprule
+Tipo & Ejemplo & Comentario \\
+\midrule
+Finito & dado & se puede listar completo \\
+Infinito numerable & lanzar hasta obtener 1 & lista $w_1,w_2,w_3,\ldots$ \\
+Infinito no numerable & vida útil continua & requiere herramientas continuas \\
+\bottomrule
+\end{tabular}
+\vspace{0.7em}
+\begin{alertblock}{Error común}
+Confundir ``muchos resultados'' con infinito. Un PIN de 4 dígitos tiene muchos resultados, pero sigue siendo finito.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Construcción paso a paso: dos monedas}
+\begin{columns}[T]
+\column{0.45\textwidth}
+\begin{enumerate}
+  \item Primera moneda: $\{C,S\}$.
+  \pause
+  \item Segunda moneda: $\{C,S\}$.
+  \pause
+  \item Resultado: par ordenado.
+\end{enumerate}
+\[
+\Omega=\{(C,C),(C,S),(S,C),(S,S)\}
+\]
+\column{0.50\textwidth}
+\begin{center}
+\begin{tabular}{c|cc}
+ & C & S \\
+\hline
+C & $(C,C)$ & $(C,S)$ \\
+S & $(S,C)$ & $(S,S)$ \\
+\end{tabular}
+\end{center}
+\end{columns}
+\begin{exampleblock}{Ejercicio 1 guiado}
+¿Cuántos resultados hay al lanzar dos monedas? \pause $2\times2=4$.
+\end{exampleblock}
+\end{frame}
+
+\section{Eventos}
+
+\begin{frame}{Evento}
+\begin{block}{Definición formal}
+Un evento es un subconjunto del espacio muestral: $A\subseteq\Omega$.
+\end{block}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item \textbf{Simple:} contiene un resultado.
+  \item \textbf{Compuesto:} contiene varios resultados.
+  \item \textbf{Imposible:} $\varnothing$.
+  \item \textbf{Seguro:} $\Omega$.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}[scale=0.82]
+\draw[rounded corners, fill=blue!5] (0,0) rectangle (4,2.5);
+\node at (3.7,2.2) {$\Omega$};
+\draw[fill=orange!30] (1.7,1.25) circle (0.8);
+\node at (1.7,1.25) {$A$};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Eventos con un dado}
+\small
+Sea $\Omega=\{1,2,3,4,5,6\}$.
+\begin{center}
+\begin{tabular}{p{0.28\textwidth}p{0.28\textwidth}p{0.32\textwidth}}
+\toprule
+Evento & Conjunto & Tipo \\
+\midrule
+Sale 4 & $\{4\}$ & simple \\
+Sale par & $\{2,4,6\}$ & compuesto \\
+Sale 7 & $\varnothing$ & imposible \\
+Sale número de 1 a 6 & $\Omega$ & seguro \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{exampleblock}{Ejercicio guiado}
+Evento ``sale mayor que 3'': \pause $B=\{4,5,6\}$.
+\end{exampleblock}
+\end{frame}
+
+\section{Álgebra de eventos}
+
+\begin{frame}{Álgebra de eventos: operadores básicos}
+\small
+\begin{tabular}{p{0.20\textwidth}p{0.28\textwidth}p{0.40\textwidth}}
+\toprule
+Operación & Símbolo & Interpretación \\
+\midrule
+Unión & $A\cup B$ & ocurre $A$ o $B$ o ambos \\
+Intersección & $A\cap B$ & ocurren $A$ y $B$ a la vez \\
+Complemento & $A^c$ & no ocurre $A$ \\
+Diferencia & $A-B$ & ocurre $A$ pero no $B$ \\
+\bottomrule
+\end{tabular}
+\vspace{0.6em}
+\observacion{Estas operaciones permiten traducir frases del lenguaje cotidiano a conjuntos.}
+\end{frame}
+
+\begin{frame}{Unión $A\cup B$}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Definición}
+$A\cup B=\{x:x\in A \text{ o } x\in B\}$.
+\end{block}
+\begin{itemize}
+  \item Incluye lo que está en $A$, en $B$ o en ambos.
+  \item \errorcomun{leer ``o'' como excluyente cuando en conjuntos suele ser inclusivo.}
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}[scale=0.9]
+\draw[rounded corners] (-.2,-.2) rectangle (3.8,2.2);
+\begin{scope}
+\clip (1.3,1) circle (0.8);
+\fill[blue!35] (-.2,-.2) rectangle (3.8,2.2);
+\end{scope}
+\begin{scope}
+\clip (2.2,1) circle (0.8);
+\fill[blue!35] (-.2,-.2) rectangle (3.8,2.2);
+\end{scope}
+\draw (1.3,1) circle (0.8) node[left] {$A$};
+\draw (2.2,1) circle (0.8) node[right] {$B$};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Intersección $A\cap B$}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Definición}
+$A\cap B=\{x:x\in A \text{ y } x\in B\}$.
+\end{block}
+\begin{itemize}
+  \item Solo contiene resultados comunes.
+  \item Si $A\cap B=\varnothing$, son mutuamente excluyentes.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}[scale=0.9]
+\draw[rounded corners] (-.2,-.2) rectangle (3.8,2.2);
+\begin{scope}
+\clip (1.3,1) circle (0.8);
+\clip (2.2,1) circle (0.8);
+\fill[orange!45] (-.2,-.2) rectangle (3.8,2.2);
+\end{scope}
+\draw (1.3,1) circle (0.8) node[left] {$A$};
+\draw (2.2,1) circle (0.8) node[right] {$B$};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Complemento y diferencia}
+\small
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Complemento}
+$A^c=\{x\in\Omega:x\notin A\}$.
+\end{block}
+\begin{tikzpicture}[scale=0.75]
+\fill[blue!18] (0,0) rectangle (4,2.4);
+\fill[white] (2,1.2) circle (0.75);
+\draw (0,0) rectangle (4,2.4);
+\draw (2,1.2) circle (0.75) node {$A$};
+\node at (3.5,2.05) {$A^c$};
+\end{tikzpicture}
+\column{0.48\textwidth}
+\begin{block}{Diferencia}
+$A-B=A\cap B^c$.
+\end{block}
+\begin{tikzpicture}[scale=0.75]
+\draw (0,0) rectangle (4,2.4);
+\begin{scope}
+\clip (1.6,1.2) circle (0.8);
+\fill[green!35] (0,0) rectangle (4,2.4);
+\end{scope}
+\begin{scope}
+\clip (2.4,1.2) circle (0.8);
+\fill[white] (0,0) rectangle (4,2.4);
+\end{scope}
+\draw (1.6,1.2) circle (0.8) node[left] {$A$};
+\draw (2.4,1.2) circle (0.8) node[right] {$B$};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Ejemplo resuelto: dados y eventos}
+Sea $\Omega=\{1,2,3,4,5,6\}$, $A=$ pares y $B=$ mayores que 3.
+\[
+A=\{2,4,6\},\qquad B=\{4,5,6\}
+\]
+\pause
+\begin{columns}[T]
+\column{0.50\textwidth}
+\begin{align*}
+A\cup B&=\{2,4,5,6\}\\
+A\cap B&=\{4,6\}
+\end{align*}
+\column{0.45\textwidth}
+\begin{align*}
+A^c&=\{1,3,5\}\\
+A-B&=\{2\}
+\end{align*}
+\end{columns}
+\begin{exampleblock}{Ejercicio guiado}
+Calcula $B-A$. \pause $B-A=\{5\}$.
+\end{exampleblock}
+\end{frame}
+
+\section{Producto cartesiano}
+
+\begin{frame}{Producto cartesiano}
+\begin{block}{Definición formal}
+$A\times B=\{(a,b):a\in A,\ b\in B\}$.
+\end{block}
+\begin{itemize}
+  \item Forma pares ordenados.
+  \item Permite construir espacios muestrales compuestos.
+  \item \textbf{Interpretación:} primero ocurre un resultado de $A$ y luego uno de $B$.
+\end{itemize}
+\begin{alertblock}{Error común}
+$(C,1)$ y $(1,C)$ no significan lo mismo si las etapas tienen roles distintos.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Moneda + dado como producto cartesiano}
+\small
+\[
+\Omega=\{C,S\}\times\{1,2,3,4,5,6\}
+\]
+\begin{center}
+\begin{tabular}{c|cccccc}
+ & 1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+C & $(C,1)$ & $(C,2)$ & $(C,3)$ & $(C,4)$ & $(C,5)$ & $(C,6)$ \\
+S & $(S,1)$ & $(S,2)$ & $(S,3)$ & $(S,4)$ & $(S,5)$ & $(S,6)$ \\
+\end{tabular}
+\end{center}
+\begin{exampleblock}{Ejercicio 2 guiado}
+¿Cuántos resultados hay? \pause $2\times6=12$.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Dos ruletas: tabla visual}
+\small
+Cada ruleta tiene 8 resultados: $R_1=\{1,\dots,8\}$ y $R_2=\{1,\dots,8\}$.
+\begin{columns}[T]
+\column{0.42\textwidth}
+\begin{block}{Espacio compuesto}
+\[
+\Omega=R_1\times R_2
+\]
+Cada resultado es un par $(i,j)$.
+\end{block}
+\column{0.52\textwidth}
+\begin{center}
+\begin{tikzpicture}[scale=0.38]
+\foreach \i in {1,...,8}{\foreach \j in {1,...,8}{\draw[fill=blue!8] (\i,\j) rectangle +(1,1);}}
+\node at (5,9.7) {Ruleta 2};
+\node[rotate=90] at (-.4,5) {Ruleta 1};
+\end{tikzpicture}
+\end{center}
+\end{columns}
+\end{frame}
+
+\section{Reglas de enumeración}
+
+\begin{frame}{¿Por qué contar sin enumerar?}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\begin{itemize}
+  \item Contraseñas.
+  \item Códigos de productos.
+  \item PIN bancarios.
+  \item Rutas en redes.
+\end{itemize}
+\column{0.45\textwidth}
+\begin{alertblock}{Problema}
+Enumerar todo puede ser lento, incompleto o imposible en la práctica.
+\end{alertblock}
+\begin{exampleblock}{Idea}
+Usamos reglas de conteo para obtener el tamaño del espacio muestral.
+\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Regla de multiplicación}
+\begin{theorem}[Principio multiplicativo]
+Si una tarea tiene $k$ etapas con $n_1,n_2,\ldots,n_k$ opciones, entonces hay
+\[
+n_1\times n_2\times\cdots\times n_k
+\]
+formas de realizarla.
+\end{theorem}
+\pause
+\begin{tikzpicture}[node distance=1.1cm, box/.style={rectangle, rounded corners, draw=blue!70, fill=blue!8, align=center, minimum width=2cm}, arrow/.style={-{Latex}, thick}]
+\node[box] (a) {$n_1$};
+\node[box, right=of a] (b) {$n_2$};
+\node[box, right=of b] (c) {$\cdots$};
+\node[box, right=of c] (d) {$n_k$};
+\draw[arrow] (a)--(b); \draw[arrow] (b)--(c); \draw[arrow] (c)--(d);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Ejercicio 2 resuelto: dos ruletas}
+\begin{block}{Enunciado}
+Dos ruletas tienen 8 resultados posibles cada una. ¿Cuántos resultados compuestos existen?
+\end{block}
+\pause
+\begin{enumerate}
+  \item Primera ruleta: $8$ opciones.
+  \pause
+  \item Segunda ruleta: $8$ opciones.
+  \pause
+  \item Regla de multiplicación: $8\times8=64$.
+\end{enumerate}
+\begin{exampleblock}{Respuesta}
+El espacio muestral tiene $64$ pares ordenados.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Regla de adición}
+\begin{block}{Casos mutuamente excluyentes}
+Si $A\cap B=\varnothing$, entonces
+\[
+n(A\cup B)=n(A)+n(B).
+\]
+\end{block}
+\pause
+\begin{block}{Caso general}
+Si pueden superponerse,
+\[
+n(A\cup B)=n(A)+n(B)-n(A\cap B).
+\]
+\end{block}
+\begin{alertblock}{Error común}
+Sumar sin restar la intersección cuenta dos veces a quienes pertenecen a ambos conjuntos.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Inclusión--exclusión}
+\small
+\begin{theorem}[Dos conjuntos]
+\[
+n(A\cup B)=n(A)+n(B)-n(A\cap B)
+\]
+\end{theorem}
+\begin{theorem}[Tres conjuntos]
+\[
+\begin{aligned}
+n(A\cup B\cup C)&=n(A)+n(B)+n(C)\\
+&-n(A\cap B)-n(A\cap C)-n(B\cap C)\\
+&+n(A\cap B\cap C).
+\end{aligned}
+\]
+\end{theorem}
+\observacion{Aplicaciones: encuestas, bases de datos, minería de datos y depuración de registros duplicados.}
+\end{frame}
+
+\section{Variaciones}
+
+\begin{frame}{Variaciones: el orden importa}
+\begin{block}{Idea}
+Una variación selecciona $k$ elementos desde $n$ disponibles y el orden de selección cambia el resultado.
+\end{block}
+\begin{center}
+\begin{tabular}{ccc}
+$AB$ & $\neq$ & $BA$ \\
+\end{tabular}
+\end{center}
+\begin{exampleblock}{Aplicación}
+Códigos, rankings, turnos de atención, secuencias de comandos.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Comparación inicial de técnicas}
+\small
+\begin{center}
+\begin{tabular}{p{0.25\textwidth}ccc}
+\toprule
+Técnica & ¿elige todos? & ¿importa orden? & ¿puede repetir? \\
+\midrule
+Variación simple & no necesariamente & sí & no \\
+Variación con repetición & no necesariamente & sí & sí \\
+Permutación simple & sí & sí & no \\
+Combinación simple & no necesariamente & no & no \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}{Variaciones simples}
+\begin{block}{Fórmula}
+\[
+V(n,k)=\frac{n!}{(n-k)!}
+\]
+\end{block}
+\begin{itemize}
+  \item Primera posición: $n$ opciones.
+  \item Segunda: $n-1$ opciones.
+  \item Continúa hasta completar $k$ posiciones.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejercicio 3 resuelto: urna con 5 fichas}
+\begin{block}{Enunciado}
+Una urna tiene 5 fichas distintas. Se extraen 2 sin reemplazo y el orden importa. ¿Cuántos resultados hay?
+\end{block}
+\pause
+\begin{align*}
+V(5,2)&=\frac{5!}{(5-2)!}\\
+&=\frac{5!}{3!}=5\cdot4=20.
+\end{align*}
+\begin{exampleblock}{Respuesta}
+Hay $20$ extracciones ordenadas posibles.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Variaciones con repetición}
+\begin{block}{Fórmula}
+\[
+VR(n,k)=n^k
+\]
+\end{block}
+\begin{itemize}
+  \item Hay $k$ posiciones.
+  \item En cada posición se mantienen las $n$ opciones.
+  \item Se usa cuando repetir está permitido.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejercicio 4 resuelto: números que terminan en 7}
+\begin{block}{Enunciado}
+Formar números de 4 cifras usando $\{5,6,7,8,9\}$, con repetición permitida, que terminen en 7.
+\end{block}
+\pause
+\begin{center}
+\begin{tikzpicture}[node distance=.5cm, box/.style={rectangle, draw=blue!70, fill=blue!8, minimum width=1.2cm, minimum height=.9cm}]
+\node[box] (a) {5};
+\node[box, right=of a] (b) {5};
+\node[box, right=of b] (c) {5};
+\node[box, right=of c, fill=orange!25] (d) {1};
+\node[below=.1cm of a] {mil};
+\node[below=.1cm of b] {centena};
+\node[below=.1cm of c] {decena};
+\node[below=.1cm of d] {unidad=7};
+\end{tikzpicture}
+\end{center}
+\[
+5\times5\times5\times1=125
+\]
+\begin{alertblock}{Cuidado}
+La restricción fija la última posición; no se multiplica por 5 allí.
+\end{alertblock}
+\end{frame}
+
+\section{Permutaciones}
+
+\begin{frame}{Permutaciones: ordenar todos los elementos}
+\begin{block}{Definición}
+Una permutación ordena todos los elementos disponibles.
+\end{block}
+\begin{columns}[T]
+\column{0.45\textwidth}
+\[
+P(n)=n!
+\]
+\column{0.50\textwidth}
+\begin{exampleblock}{Intuición}
+Si todos participan, el problema no es seleccionar, sino ordenar.
+\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Ejercicio 5 resuelto: letras A,V,E}
+\begin{block}{Enunciado}
+¿Cuántas formas hay de ordenar las letras A, V y E?
+\end{block}
+\[
+P(3)=3!=6
+\]
+\begin{center}
+\begin{tabular}{cccccc}
+AVE & AEV & VAE & VEA & EAV & EVA
+\end{tabular}
+\end{center}
+\begin{exampleblock}{Ejercicio guiado}
+¿Por qué AVE y EVA son distintos? \pause Porque el orden cambia la palabra formada.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Ejercicio 6 resuelto: ordenar 5,6,7,8,9}
+\begin{block}{Enunciado}
+Ordenar los cinco símbolos $5,6,7,8,9$ sin repetir.
+\end{block}
+\pause
+\[
+P(5)=5!=5\cdot4\cdot3\cdot2\cdot1=120
+\]
+\begin{exampleblock}{Interpretación}
+Existen $120$ números distintos de 5 cifras usando todos los símbolos una vez.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Ejercicio 7: permutación con restricción}
+\begin{block}{Enunciado}
+Ordenar $5,6,7,8,9$ con el número 9 fijo al inicio.
+\end{block}
+\pause
+\begin{center}
+\begin{tikzpicture}[node distance=.5cm, box/.style={rectangle, draw=blue!70, fill=blue!8, minimum width=1.15cm, minimum height=.85cm}]
+\node[box, fill=orange!25] (a) {9};
+\node[box, right=of a] (b) {4};
+\node[box, right=of b] (c) {3};
+\node[box, right=of c] (d) {2};
+\node[box, right=of d] (e) {1};
+\end{tikzpicture}
+\end{center}
+\[
+1\times4\times3\times2\times1=4!=24
+\]
+\observacion{Fijar un elemento reduce el problema a ordenar los elementos restantes.}
+\end{frame}
+
+\begin{frame}{Permutaciones circulares}
+\begin{block}{Fórmula}
+\[
+PC(n)=(n-1)!
+\]
+\end{block}
+\begin{columns}[T]
+\column{0.45\textwidth}
+\begin{itemize}
+  \item Mesa redonda.
+  \item Sensores alrededor de una estructura.
+  \item Nodos en un anillo de red.
+\end{itemize}
+\column{0.50\textwidth}
+\begin{tikzpicture}[scale=.75]
+\foreach \a/\n in {90/A,18/B,306/C,234/D,162/E}{\node[circle, draw=blue!70, fill=blue!10] at (\a:1.4) {\n};}
+\draw[dashed] (0,0) circle (1.4);
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Permutaciones con repetición}
+\begin{block}{Fórmula}
+Si hay $n$ elementos con repeticiones $n_1,n_2,\ldots,n_k$:
+\[
+P=\frac{n!}{n_1!n_2!\cdots n_k!}
+\]
+\end{block}
+\begin{alertblock}{Error común}
+Usar $n!$ cuando hay símbolos repetidos sobrecuenta ordenamientos indistinguibles.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Ejercicio 8 resuelto: x,x,x,y,y}
+\begin{block}{Enunciado}
+¿Cuántos ordenamientos distintos tiene la secuencia con tres $x$ y dos $y$?
+\end{block}
+\pause
+\begin{align*}
+n&=5,\qquad n_x=3,\qquad n_y=2\\
+P&=\frac{5!}{3!2!}=\frac{120}{6\cdot2}=10.
+\end{align*}
+\begin{exampleblock}{Respuesta}
+Hay $10$ secuencias distintas.
+\end{exampleblock}
+\end{frame}
+
+\section{Combinaciones}
+
+\begin{frame}{Combinaciones: el orden no importa}
+\begin{block}{Definición}
+Una combinación selecciona elementos sin considerar el orden.
+\end{block}
+\begin{center}
+$\{A,B\}=\{B,A\}$
+\end{center}
+\begin{exampleblock}{Aplicaciones}
+Equipos de trabajo, comités, selección de estudiantes, muestras sin orden.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Combinaciones simples}
+\begin{block}{Fórmula}
+\[
+C(n,k)=\binom{n}{k}=\frac{n!}{k!(n-k)!}
+\]
+\end{block}
+\begin{itemize}
+  \item Primero se cuentan selecciones ordenadas.
+  \item Luego se divide por las $k!$ formas de ordenar cada grupo.
+\end{itemize}
+\begin{exampleblock}{Ejercicio guiado}
+Elegir 2 estudiantes entre 5: \pause $\binom{5}{2}=10$.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Combinaciones con repetición}
+\begin{block}{Fórmula}
+\[
+CR(n,k)=\binom{n+k-1}{k}=\frac{(n+k-1)!}{k!(n-1)!}
+\]
+\end{block}
+\begin{itemize}
+  \item Se permite escoger el mismo tipo varias veces.
+  \item El orden no importa.
+  \item Ejemplos: productos repetidos, distribución de recursos, pedidos con sabores repetidos.
+\end{itemize}
+\end{frame}
+
+\section{Probabilidad}
+
+\begin{frame}{¿Qué es probabilidad?}
+\begin{block}{Definición conceptual}
+Medida numérica entre 0 y 1 que cuantifica qué tan plausible es un evento.
+\end{block}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item $0$: imposible.
+  \item $1$: seguro.
+  \item Valores intermedios: incertidumbre.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}
+\draw[very thick, -{Latex}] (0,0)--(4,0);
+\foreach \x/\l in {0/0,2/0.5,4/1}{\draw (\x,.1)--(\x,-.1) node[below]{\l};}
+\node[above] at (0,0) {imposible};
+\node[above] at (4,0) {seguro};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Interpretaciones de probabilidad}
+\small
+\begin{tabular}{p{0.28\textwidth}p{0.32\textwidth}p{0.30\textwidth}}
+\toprule
+Enfoque & Idea & Ejemplo \\
+\midrule
+Clásico & casos favorables / posibles & dado justo \\
+Frecuentista & proporción a largo plazo & tasa de fallas observada \\
+Subjetivo & grado de creencia informado & riesgo financiero \\
+\bottomrule
+\end{tabular}
+\vspace{0.6em}
+\observacion{En esta unidad usamos principalmente probabilidad clásica en espacios finitos equiprobables.}
+\end{frame}
+
+\begin{frame}{Axiomas de Kolmogorov}
+\begin{theorem}[Axiomas]
+Para eventos en $\Omega$:
+\begin{enumerate}
+  \item $P(A)\ge 0$.
+  \item $P(\Omega)=1$.
+  \item Si $A\cap B=\varnothing$, entonces $P(A\cup B)=P(A)+P(B)$.
+\end{enumerate}
+\end{theorem}
+\pause
+\begin{exampleblock}{Interpretación física}
+La probabilidad total disponible es 1 y se reparte entre resultados o eventos sin asignar masa negativa.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Teoremas derivados útiles}
+\small
+\begin{center}
+\begin{tabular}{p{0.32\textwidth}p{0.46\textwidth}}
+\toprule
+Resultado & Fórmula \\
+\midrule
+Evento imposible & $P(\varnothing)=0$ \\
+Complemento & $P(A^c)=1-P(A)$ \\
+Inclusión & si $A\subseteq B$, entonces $P(A)\le P(B)$ \\
+Adición general & $P(A\cup B)=P(A)+P(B)-P(A\cap B)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{alertblock}{Error común}
+Aplicar $P(A\cup B)=P(A)+P(B)$ sin verificar si los eventos son excluyentes.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Probabilidad clásica}
+\begin{block}{Fórmula}
+Si todos los resultados son equiprobables,
+\[
+P(A)=\frac{\text{casos favorables}}{\text{casos posibles}}=\frac{n(A)}{n(\Omega)}.
+\]
+\end{block}
+\begin{enumerate}
+  \item Construir $\Omega$.
+  \item Construir el evento $A$.
+  \item Contar casos favorables y posibles.
+  \item Dividir e interpretar.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Ejercicio 9 resuelto: obtener un 2}
+\begin{block}{Enunciado}
+Lanzar un dado justo. ¿Cuál es la probabilidad de obtener un 2?
+\end{block}
+\pause
+\[
+\Omega=\{1,2,3,4,5,6\},\qquad A=\{2\}
+\]
+\[
+P(A)=\frac{n(A)}{n(\Omega)}=\frac{1}{6}
+\]
+\begin{exampleblock}{Respuesta}
+La probabilidad es $1/6\approx0{,}167$.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Ejercicio 10 resuelto: obtener a lo más 2}
+\begin{block}{Enunciado}
+Lanzar un dado justo. ¿Cuál es la probabilidad de obtener a lo más 2?
+\end{block}
+\pause
+\begin{enumerate}
+  \item ``A lo más 2'' significa $\le 2$.
+  \item Evento: $A=\{1,2\}$.
+  \item Casos favorables: $2$.
+  \item Casos posibles: $6$.
+\end{enumerate}
+\[
+P(A)=\frac{2}{6}=\frac{1}{3}
+\]
+\end{frame}
+
+\begin{frame}{Espacios infinitos numerables}
+\begin{block}{Ejemplo}
+Lanzar un dado hasta obtener un 1.
+\end{block}
+\begin{itemize}
+  \item $w_1$: sale 1 en el primer lanzamiento.
+  \item $w_2$: no sale 1 y luego sale 1.
+  \item $w_3$: no sale 1 dos veces y luego sale 1.
+\end{itemize}
+\[
+\Omega=\{w_1,w_2,w_3,\ldots\}
+\]
+\observacion{Es infinito porque no existe un número máximo garantizado de lanzamientos.}
+\end{frame}
+
+\begin{frame}{Sumas infinitas de probabilidades}
+\begin{block}{Idea}
+En espacios numerables, la probabilidad de un evento puede calcularse sumando probabilidades de resultados individuales.
+\end{block}
+\[
+P(A)=\sum_{w_i\in A}P(w_i)
+\]
+\begin{columns}[T]
+\column{0.32\textwidth}Distribución geométrica.
+\column{0.32\textwidth}Cadenas de Markov.
+\column{0.32\textwidth}Teoría de colas.
+\end{columns}
+\begin{alertblock}{Nivel de esta unidad}
+Solo se introduce la idea; el tratamiento formal se desarrolla más adelante.
+\end{alertblock}
+\end{frame}
+
+\section{Cierre de la unidad}
+
+\begin{frame}{Mapa conceptual completo}
+\centering
+\begin{tikzpicture}[node distance=.8cm, box/.style={rectangle, rounded corners, draw=blue!65, fill=blue!8, align=center, minimum width=2.4cm, minimum height=.65cm}, arrow/.style={-{Latex}, thick}]
+\node[box] (a) {Experimento};
+\node[box, right=of a] (b) {$\Omega$};
+\node[box, right=of b] (c) {Eventos};
+\node[box, below=of b] (d) {Conteo};
+\node[box, below=of c] (e) {Probabilidad};
+\node[box, below=of d] (f) {Inferencia};
+\draw[arrow] (a)--(b); \draw[arrow] (b)--(c); \draw[arrow] (c)--(e); \draw[arrow] (d)--(e); \draw[arrow] (e)--(f);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Resumen de fórmulas de conteo}
+\small
+\begin{center}
+\begin{tabular}{p{0.25\textwidth}p{0.20\textwidth}p{0.18\textwidth}p{0.25\textwidth}}
+\toprule
+Técnica & Orden & Repetición & Fórmula \\
+\midrule
+Regla multiplicación & por etapas & depende & $n_1\cdots n_k$ \\
+Variación simple & sí & no & $\frac{n!}{(n-k)!}$ \\
+Variación con repetición & sí & sí & $n^k$ \\
+Permutación simple & sí & no & $n!$ \\
+Permutación circular & sí & no & $(n-1)!$ \\
+Permutación con repetición & sí & sí & $\frac{n!}{n_1!\cdots n_k!}$ \\
+Combinación simple & no & no & $\binom{n}{k}$ \\
+Combinación con repetición & no & sí & $\binom{n+k-1}{k}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}{Checklist de decisión: ¿qué fórmula uso?}
+\begin{enumerate}
+  \item ¿El experimento ocurre por etapas? \pause Use multiplicación.
+  \item ¿Estoy ordenando todos los elementos? \pause Permutación.
+  \item ¿Estoy eligiendo solo algunos? \pause Variación o combinación.
+  \item ¿Importa el orden? \pause Sí: variación. No: combinación.
+  \item ¿Se permite repetición? \pause Use la versión con repetición.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Ejercicios integradores}
+\small
+\begin{enumerate}
+  \item Construya $\Omega$ para moneda + dado y calcule $P(\text{cara y número par})$.
+  \item Un PIN tiene 4 dígitos y permite repetición. ¿Cuántos PIN existen?
+  \item Con las letras A, B, C, D, ¿cuántas claves de 2 letras sin repetición existen?
+  \item De 6 estudiantes se elige un comité de 3. ¿Importa el orden?
+  \item En un dado, sea $A=$ par y $B=$ mayor que 3. Calcule $P(A\cup B)$.
+\end{enumerate}
+\begin{exampleblock}{Meta}
+Mezclar construcción de eventos, conteo y probabilidad clásica.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Cierre de ME\_4}
+\centering
+\Large
+La probabilidad comienza con una buena descripción del experimento y de sus eventos.
+\vspace{0.8em}
+
+\normalsize
+Contar bien es el puente entre el espacio muestral y el cálculo de probabilidades.
 \end{frame}
 
 \end{document}
