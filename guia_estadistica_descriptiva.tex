@@ -11,17 +11,22 @@
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \usetikzlibrary{arrows.meta,positioning,shapes.geometric}
 
-\title{Guía de estudio: Estadística Descriptiva}
-\subtitle{Conceptos que suelen confundirse y relaciones jerárquicas}
+\title{Guía de estudio: Estadística, Probabilidades y Modelos Estocásticos}
+\subtitle{Descriptiva, índices, probabilidad, variables aleatorias y dispersión probabilística}
 \author{Material de apoyo para estudio}
 \date{\today}
 
 \newcommand{\pregunta}[1]{\textbf{Pregunta que responde:} \emph{#1}}
 \newcommand{\errorcomun}[1]{\textbf{Error común:} #1}
 \newcommand{\diferencia}[1]{\textbf{Diferencia clave:} #1}
+\newcommand{\intuicion}[1]{\textbf{Intuición:} #1}
+\newcommand{\observacion}[1]{\begin{block}{Observación}#1\end{block}}
 
 \begin{document}
 
@@ -34,6 +39,7 @@
   \item Cada diapositiva aclara un concepto central de estadística descriptiva.
   \item La estructura se repite: definición formal, intuición, pregunta, ejemplo, diferencias y errores comunes.
   \item El foco está en conceptos parecidos que suelen confundirse en evaluaciones y ejercicios.
+  \item La guía integra estadística descriptiva, números índices, teoría de probabilidades y variables aleatorias.
 \end{itemize}
 \end{frame}
 
@@ -54,6 +60,10 @@
   \item Tablas de frecuencia
   \item Variables continuas e intervalos
   \item Tablas de contingencia
+  \item Medidas de posición y dispersión
+  \item Números índices económicos
+  \item Probabilidades y análisis combinatorio
+  \item Variables aleatorias y modelos estocásticos
 \end{enumerate}
 \end{columns}
 \end{frame}
@@ -1319,6 +1329,2305 @@ Primero se organizan los datos en tablas; luego se visualizan con gráficos y se
 
 \normalsize
 Una buena interpretación combina contexto, tipo de variable, forma de la distribución y variabilidad.
+\end{frame}
+
+
+% -----------------------------------------------------------------------------
+% Unidad 3 integrada: Números Índices
+% -----------------------------------------------------------------------------
+\part{ME\_3: Números Índices}
+
+\begin{frame}{Transición a la Unidad 3}
+\centering
+\Large
+Luego de organizar, graficar y resumir datos, el siguiente paso es comparar magnitudes en el tiempo.
+\vspace{0.8em}
+
+\normalsize
+Los números índices permiten estudiar cambios relativos en precios, cantidades y valores.
+\end{frame}
+
+\begin{frame}{Cómo usar esta unidad}
+\begin{itemize}
+  \item Esta unidad continúa el bloque de estadística descriptiva: ahora el foco está en comparar magnitudes entre períodos.
+  \item La estructura se mantiene: definición, intuición, pregunta, diferencia, error común y ejemplo.
+  \item Los ejercicios típicos combinan precios, cantidades, valores, ponderaciones y elección de año base.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Mapa de la Unidad 3}
+\small
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{enumerate}
+  \item Introducción a números índices
+  \item Índices simples: precio, cantidad y valor
+  \item Índices complejos no ponderados
+  \item Índices económicos clásicos
+  \item Índices ponderados
+\end{enumerate}
+\column{0.48\textwidth}
+\begin{enumerate}\setcounter{enumi}{5}
+  \item Laspeyres
+  \item Paasche
+  \item Relación precio--cantidad--valor
+  \item Fisher
+  \item Errores comunes
+\end{enumerate}
+\end{columns}
+\end{frame}
+
+\section{Introducción a los números índices}
+
+\begin{frame}{¿Qué es un número índice?}
+\textbf{Definición formal:} razón que compara el nivel de una variable en un período con su nivel en un período base.
+\[
+I_t=\frac{x_t}{x_0}
+\]
+\begin{itemize}
+  \item \intuicion{mide cuánto representa el valor actual respecto del valor de referencia.}
+  \item \pregunta{¿Cuánto cambió una magnitud en relación con el período base?}
+  \item Es una razón adimensional: las unidades se cancelan.
+  \item \textbf{Ejemplo:} si un precio sube de \$500 a \$650, entonces $I=650/500=1{,}30$.
+  \item \errorcomun{confundir el índice $1{,}30$ con un aumento de $1{,}30\%$; el aumento es $30\%$.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Interpretación básica de un índice}
+\begin{center}
+\begin{tabular}{c p{0.58\textwidth} c}
+\toprule
+Índice & Interpretación & Variación \\
+\midrule
+$I=1$ & el nivel actual coincide con el período base & $0\%$ \\
+$I>1$ & el nivel actual es mayor que el período base & positiva \\
+$I<1$ & el nivel actual es menor que el período base & negativa \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{block}{Conversión práctica}
+Un índice puede expresarse como base 1 o base 100: $1{,}25=125$ si se usa base 100.
+\end{block}
+\diferencia{el índice compara niveles; la variación porcentual expresa el cambio neto respecto de la base.}
+\end{frame}
+
+\begin{frame}{Año base o período base}
+\textbf{Definición formal:} período usado como referencia para comparar todos los demás períodos.
+\begin{itemize}
+  \item \intuicion{es el ``punto cero'' de la comparación temporal.}
+  \item \pregunta{¿Respecto de qué momento estoy midiendo el cambio?}
+  \item Conviene elegir un período normal, representativo y con datos confiables.
+  \item Mantener una referencia fija permite comparar varios años entre sí mediante el mismo patrón.
+  \item \errorcomun{cambiar el año base sin avisar y comparar índices que ya no tienen la misma referencia.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Variación porcentual a partir de un índice}
+\[
+\%\Delta=(I-1)\cdot 100
+\]
+\begin{itemize}
+  \item Si $I=1{,}18$, entonces $\%\Delta=(1{,}18-1)100=18\%$.
+  \item Si $I=0{,}92$, entonces $\%\Delta=(0{,}92-1)100=-8\%$.
+  \item En base 100, la variación se obtiene como $I_{100}-100$.
+  \item \pregunta{¿El nivel actual aumentó o disminuyó, y en qué porcentaje?}
+  \item \errorcomun{decir que $I=92$ significa aumento de $92\%$; en base 100 significa caída de $8\%$.}
+\end{itemize}
+\end{frame}
+
+\section{Números índices simples}
+
+\begin{frame}{Concepto de índice simple}
+\textbf{Definición formal:} índice que estudia la evolución de una sola variable o magnitud entre dos períodos.
+\[
+I(x)=\frac{x_t}{x_0}
+\]
+\begin{itemize}
+  \item \intuicion{compara una cosa contra sí misma en otro momento.}
+  \item \textbf{Magnitudes típicas:} precio, cantidad vendida, producción, ingreso o valor monetario.
+  \item \diferencia{simple significa una variable o producto; complejo significa conjunto de productos o magnitudes.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índice simple de precios}
+\[
+I(P)=\frac{P_t}{P_0}
+\]
+\begin{itemize}
+  \item Mide la evolución temporal del precio de un bien.
+  \item \pregunta{¿Cuánto cambió el precio respecto del período base?}
+  \item \textbf{Ejemplo:} pan de \$1.000 a \$1.250: $I(P)=1{,}25$, aumento de $25\%$.
+  \item \textbf{Interpretación económica:} aproxima inflación de ese producto específico.
+  \item \errorcomun{generalizar la inflación de un producto a toda la economía.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índice simple de cantidades}
+\[
+I(Q)=\frac{Q_t}{Q_0}
+\]
+\begin{itemize}
+  \item Mide cambios en unidades físicas, producción, consumo o ventas.
+  \item \pregunta{¿Se vendió o produjo más o menos que en la base?}
+  \item \textbf{Ejemplo:} ventas de 80 a 100 unidades: $I(Q)=1{,}25$, aumento de $25\%$.
+  \item \diferencia{un precio puede subir aunque la cantidad vendida baje; son dimensiones distintas.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índice simple de valor}
+\textbf{Valor:} monto monetario que combina precio y cantidad.
+\[
+V=P\cdot Q \qquad I(V)=\frac{V_t}{V_0}=\frac{P_tQ_t}{P_0Q_0}
+\]
+\begin{itemize}
+  \item \intuicion{resume ingresos, ventas monetarias o gasto total.}
+  \item Relación fundamental en índices simples:
+  \[
+  I(V)=I(P)\cdot I(Q)
+  \]
+  \item \textbf{Ejemplo:} si el precio sube $20\%$ y la cantidad baja $10\%$, entonces $I(V)=1{,}20\cdot0{,}90=1{,}08$.
+  \item \errorcomun{interpretar un mayor valor como mayor cantidad vendida; puede deberse solo a precios.}
+\end{itemize}
+\end{frame}
+
+\section{Números índices complejos}
+
+\begin{frame}{Concepto de índice complejo}
+\textbf{Definición formal:} índice que resume la evolución conjunta de varias magnitudes o productos.
+\begin{itemize}
+  \item \intuicion{pasa de mirar un producto a mirar una canasta.}
+  \item \pregunta{¿Cómo cambió el conjunto completo de bienes o variables?}
+  \item Se usa cuando interesa una visión global: canasta familiar, producción industrial, ventas de una empresa.
+  \item \diferencia{el índice simple no requiere agregar productos; el complejo necesita un método de agregación.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índices complejos no ponderados}
+\textbf{Concepto:} todos los elementos reciben la misma importancia estadística.
+\begin{itemize}
+  \item \textbf{Ventaja:} cálculo rápido y fácil de explicar.
+  \item \textbf{Limitación:} trata igual bienes muy distintos en relevancia económica.
+  \item \textbf{Ejemplo:} dar el mismo peso a pan, arriendo y lápices puede distorsionar una canasta de consumo.
+  \item \errorcomun{creer que no ponderar significa ser neutral; en realidad asigna igual peso a todo.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Media agregativa simple}
+\[
+I_A(P)=\frac{\sum P_t}{\sum P_0}
+\]
+\begin{itemize}
+  \item Suma precios actuales y los compara con la suma de precios base.
+  \item \pregunta{¿La suma total de magnitudes aumentó o disminuyó?}
+  \item \textbf{Aplicación:} útil si las magnitudes son comparables y tienen escala similar.
+  \item \errorcomun{sumar precios de bienes con unidades muy distintas sin justificar la agregación.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Método de los promedios}
+\[
+I_M(P)=\frac{1}{n}\sum_{i=1}^{n}\frac{P_{it}}{P_{i0}}
+\]
+\begin{itemize}
+  \item Calcula primero índices individuales y luego los promedia.
+  \item \pregunta{¿Cuál es el cambio relativo promedio de los productos?}
+  \item \diferencia{la agregativa compara sumas; el método de promedios compara razones individuales.}
+  \item Puede diferir mucho de la media agregativa cuando los precios base tienen escalas distintas.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Comparación: agregativa simple vs promedio simple}
+\small
+\begin{center}
+\begin{tabular}{lccccc}
+\toprule
+Producto & $P_0$ & $P_t$ & $P_t/P_0$ & Aporte a sumas & Aporte al promedio \\
+\midrule
+A & 100 & 120 & 1,20 & alto & igual \\
+B & 10 & 20 & 2,00 & bajo & igual \\
+\bottomrule
+\end{tabular}
+\end{center}
+\[
+I_A=\frac{120+20}{100+10}=1{,}27 \qquad
+I_M=\frac{1{,}20+2{,}00}{2}=1{,}60
+\]
+\begin{block}{Idea clave}
+Los métodos divergen cuando un producto pequeño cambia mucho o cuando las escalas iniciales son muy diferentes.
+\end{block}
+\end{frame}
+
+\section{Índices económicos clásicos}
+
+\begin{frame}{Índices económicos clásicos}
+\begin{columns}[T]
+\column{0.32\textwidth}
+\textbf{Precios}
+\begin{itemize}
+  \item Inflación
+  \item Poder adquisitivo
+  \item Comparación temporal
+\end{itemize}
+\column{0.32\textwidth}
+\textbf{Cantidades}
+\begin{itemize}
+  \item Producción
+  \item Consumo
+  \item Ventas físicas
+\end{itemize}
+\column{0.32\textwidth}
+\textbf{Valor}
+\begin{itemize}
+  \item Ingresos
+  \item Gasto total
+  \item Efecto precio y cantidad
+\end{itemize}
+\end{columns}
+\vspace{0.5em}
+\errorcomun{concluir causalidad económica solo porque un índice aumentó o disminuyó.}
+\end{frame}
+
+\section{Índices compuestos ponderados}
+
+\begin{frame}{Motivación de las ponderaciones}
+\textbf{Idea central:} no todos los productos tienen la misma importancia en una canasta o en una economía.
+\begin{itemize}
+  \item Las ponderaciones representan participación, relevancia o peso económico.
+  \item Evitan que un bien irrelevante tenga el mismo impacto que uno fundamental.
+  \item \textbf{Ejemplo:} en el presupuesto familiar, el arriendo pesa más que un paquete de lápices.
+  \item \pregunta{¿Qué productos deberían influir más en el índice global?}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Concepto de ponderación}
+\begin{itemize}
+  \item \textbf{Peso estadístico:} coeficiente usado para dar importancia relativa a cada elemento.
+  \item \textbf{Peso económico:} importancia medida por gasto, ingreso, producción o participación.
+  \item En índices de precios, las cantidades suelen actuar como ponderaciones.
+  \item En índices de cantidades, los precios suelen actuar como ponderaciones.
+\end{itemize}
+\begin{block}{Regla de lectura}
+Precio se pondera con cantidad; cantidad se pondera con precio.
+\end{block}
+\end{frame}
+
+\section{Índices de Laspeyres}
+
+\begin{frame}{Índice de precios de Laspeyres}
+\[
+P_L=\frac{\sum P_tQ_0}{\sum P_0Q_0}
+\]
+\begin{itemize}
+  \item Usa cantidades del período base como ponderaciones.
+  \item \pregunta{¿Cuánto costaría hoy comprar la canasta base?}
+  \item \textbf{Ventaja:} mantiene fija la canasta y facilita comparaciones.
+  \item \textbf{Sesgo típico:} puede sobreestimar aumentos si los consumidores sustituyen bienes encarecidos. 
+  \item \errorcomun{usar cantidades actuales en Laspeyres de precios.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índice de cantidades de Laspeyres}
+\[
+Q_L=\frac{\sum Q_tP_0}{\sum Q_0P_0}
+\]
+\begin{itemize}
+  \item Usa precios del período base como ponderaciones.
+  \item \pregunta{¿Cómo cambió el volumen producido o vendido valorado a precios base?}
+  \item \textbf{Aplicación:} comparar producción física evitando que los precios actuales distorsionen el cambio.
+\end{itemize}
+\end{frame}
+
+\section{Índices de Paasche}
+
+\begin{frame}{Índice de precios de Paasche}
+\[
+P_P=\frac{\sum P_tQ_t}{\sum P_0Q_t}
+\]
+\begin{itemize}
+  \item Usa cantidades actuales como ponderaciones.
+  \item \pregunta{¿Cuánto cuesta la canasta actual comparada a precios base?}
+  \item Refleja patrones actuales de consumo o producción.
+  \item \errorcomun{confundirlo con Laspeyres porque ambos comparan precios; la diferencia está en las cantidades usadas.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índice de cantidades de Paasche}
+\[
+Q_P=\frac{\sum Q_tP_t}{\sum Q_0P_t}
+\]
+\begin{itemize}
+  \item Usa precios actuales como ponderaciones.
+  \item \pregunta{¿Cómo cambió el volumen usando la estructura de precios actual?}
+  \item Puede incorporar cambios de importancia económica ocurridos en el período actual.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Laspeyres vs Paasche}
+\small
+\begin{center}
+\begin{tabular}{p{0.22\textwidth}p{0.33\textwidth}p{0.33\textwidth}}
+\toprule
+Criterio & Laspeyres & Paasche \\
+\midrule
+Ponderación & base & actual \\
+Canasta & fija en período base & actual o móvil \\
+Lectura & costo de la canasta base hoy & costo de la canasta actual vs base \\
+Riesgo & puede ignorar sustitución & puede cambiar la referencia implícita \\
+\bottomrule
+\end{tabular}
+\end{center}
+\diferencia{Laspeyres responde con la estructura base; Paasche responde con la estructura actual.}
+\end{frame}
+
+\section{Relación entre índices}
+
+\begin{frame}{Relación precio, cantidad y valor}
+\[
+V=\sum PQ
+\]
+\begin{itemize}
+  \item El valor monetario cambia por dos fuerzas: precios y cantidades.
+  \item En el caso simple se cumple exactamente $I(V)=I(P)I(Q)$.
+  \item En índices agregados, la relación depende de que las fórmulas de precio y cantidad sean compatibles.
+  \item \pregunta{¿El cambio en ventas monetarias se explica por precios, cantidades o ambos?}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Identidad fundamental de valor}
+\[
+I_V=\frac{\sum P_tQ_t}{\sum P_0Q_0}
+\]
+\begin{block}{Significado económico}
+Compara el valor total actual con el valor total del período base.
+\end{block}
+\begin{itemize}
+  \item Si $I_V=1{,}40$, el valor total aumentó $40\%$.
+  \item No permite separar por sí solo cuánto se debe a precio y cuánto a cantidad.
+  \item \errorcomun{atribuir todo el aumento de valor a inflación sin revisar cantidades.}
+\end{itemize}
+\end{frame}
+
+\section{Índices de Fisher}
+
+\begin{frame}{Motivación del índice de Fisher}
+\begin{itemize}
+  \item Laspeyres usa ponderaciones base y Paasche usa ponderaciones actuales.
+  \item Cada uno puede entregar resultados distintos cuando cambian los patrones de consumo o producción.
+  \item Fisher busca un índice equilibrado combinando ambos.
+  \item \pregunta{¿Existe una medida intermedia entre Laspeyres y Paasche?}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índice de precios de Fisher}
+\[
+P_F=\sqrt{P_L\cdot P_P}
+\]
+\begin{itemize}
+  \item Es la media geométrica entre el índice de precios de Laspeyres y el de Paasche.
+  \item \intuicion{equilibra la mirada de canasta base y canasta actual.}
+  \item \textbf{Ventaja:} reduce la dependencia de una única estructura de ponderaciones.
+  \item \errorcomun{calcular Fisher con media aritmética en vez de media geométrica.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Índice de cantidades de Fisher}
+\[
+Q_F=\sqrt{Q_L\cdot Q_P}
+\]
+\begin{itemize}
+  \item Combina el índice de cantidades de Laspeyres y el de Paasche.
+  \item \pregunta{¿Cuál es el cambio físico equilibrando precios base y actuales?}
+  \item Es útil cuando ninguna estructura de precios parece suficiente por sí sola.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Comparación final: Laspeyres, Paasche y Fisher}
+\small
+\begin{center}
+\begin{tabular}{p{0.20\textwidth}p{0.27\textwidth}p{0.27\textwidth}p{0.16\textwidth}}
+\toprule
+Índice & Pondera con & Fortalezas & Cuidado \\
+\midrule
+Laspeyres & período base & simple, comparable, canasta fija & sustitución \\
+Paasche & período actual & refleja estructura actual & base implícita móvil \\
+Fisher & media geométrica & equilibrio entre ambos & requiere calcular dos índices \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{block}{Regla práctica}
+Use Laspeyres para seguimiento con canasta fija, Paasche para estructura actual y Fisher como síntesis equilibrada.
+\end{block}
+\end{frame}
+
+\section{Ejemplo integrador}
+
+\begin{frame}{Ejemplo integrador: datos}
+\small
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Producto & $P_0$ & $Q_0$ & $P_t$ & $Q_t$ \\
+\midrule
+A & 10 & 100 & 12 & 90 \\
+B & 20 & 50 & 26 & 60 \\
+C & 5 & 200 & 6 & 240 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{itemize}
+  \item $\sum P_0Q_0=3000$.
+  \item $\sum P_tQ_0=3700$.
+  \item $\sum P_0Q_t=3300$.
+  \item $\sum P_tQ_t=4080$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo integrador: cálculo e interpretación}
+\small
+\[
+P_L=\frac{3700}{3000}=1{,}233 \qquad
+P_P=\frac{4080}{3300}=1{,}236 \qquad
+P_F=\sqrt{1{,}233\cdot1{,}236}=1{,}235
+\]
+\[
+I_V=\frac{4080}{3000}=1{,}36
+\]
+\begin{itemize}
+  \item Los precios aumentaron aproximadamente $23{,}5\%$ según Fisher.
+  \item El valor total aumentó $36\%$.
+  \item Como el valor crece más que los precios, también hubo efecto de cantidades.
+  \item \errorcomun{decir que el valor subió $36\%$ solo por inflación.}
+\end{itemize}
+\end{frame}
+
+\section{Errores comunes}
+
+\begin{frame}{Errores comunes en números índices}
+\small
+\begin{enumerate}
+  \item Confundir índice con porcentaje.
+  \item Interpretar $1{,}20$ como aumento de $1{,}20\%$ en vez de $20\%$.
+  \item Cambiar inadvertidamente el período base.
+  \item Confundir precio con valor.
+  \item Confundir cantidad con valor.
+  \item Aplicar Laspeyres usando ponderaciones actuales.
+  \item Aplicar Paasche usando ponderaciones base.
+  \item Olvidar que Fisher es una media geométrica.
+  \item Interpretar causalidad económica a partir de un índice descriptivo.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Checklist de la Unidad 3}
+\begin{enumerate}
+  \item ¿Identifico claramente período base y período actual?
+  \item ¿Distingo índice, variación porcentual e índice base 100?
+  \item ¿Separo precio, cantidad y valor?
+  \item ¿Reconozco si el índice es simple, complejo, ponderado o no ponderado?
+  \item ¿Uso ponderaciones base para Laspeyres y actuales para Paasche?
+  \item ¿Calculo Fisher como media geométrica?
+  \item ¿Interpreto el resultado sin inventar causalidad?
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Cierre de la unidad}
+\centering
+\Large
+Los números índices convierten datos temporales en comparaciones relativas claras.
+\vspace{0.8em}
+
+\normalsize
+La interpretación correcta depende de tres decisiones: base, ponderación y magnitud analizada.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% Unidad 4 integrada: Teoría de Probabilidades y Análisis Combinatorio
+% -----------------------------------------------------------------------------
+\part{ME\_4: Teoría de Probabilidades y Análisis Combinatorio}
+
+\begin{frame}{Transición a la Unidad 4}
+\centering
+\Large
+Después de describir datos y comparar cambios, ahora modelamos la incertidumbre.
+\vspace{0.8em}
+
+\normalsize
+La probabilidad conecta experimentos aleatorios, conteo y toma de decisiones bajo riesgo.
+\end{frame}
+
+\begin{frame}{Objetivos de aprendizaje de ME\_4}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\begin{block}{Al finalizar podrás}
+\begin{itemize}
+  \item Identificar experimentos aleatorios.
+  \item Construir espacios muestrales.
+  \item Operar con eventos.
+  \item Contar resultados sin enumerarlos todos.
+\end{itemize}
+\end{block}
+\column{0.45\textwidth}
+\begin{exampleblock}{Preparación para}
+\begin{itemize}
+  \item probabilidad condicionada;
+  \item variables aleatorias;
+  \item inferencia estadística;
+  \item modelos de confiabilidad.
+\end{itemize}
+\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Mapa visual de la unidad}
+\centering
+\begin{tikzpicture}[node distance=0.85cm, box/.style={rectangle, rounded corners, draw=blue!65, fill=blue!8, align=center, minimum width=2.7cm, minimum height=0.72cm}, arrow/.style={-{Latex}, thick}]
+\node[box] (exp) {Experimento\\aleatorio};
+\node[box, right=of exp] (omega) {Espacio\\muestral $\Omega$};
+\node[box, right=of omega] (eventos) {Eventos};
+\node[box, below=of omega] (alg) {Álgebra\\de eventos};
+\node[box, below=of exp] (conteo) {Conteo};
+\node[box, below=of eventos] (prob) {Probabilidad};
+\draw[arrow] (exp) -- (omega);
+\draw[arrow] (omega) -- (eventos);
+\draw[arrow] (eventos) -- (alg);
+\draw[arrow] (conteo) -- (prob);
+\draw[arrow] (eventos) -- (prob);
+\draw[arrow] (alg) -- (prob);
+\end{tikzpicture}
+\vspace{0.4em}
+\begin{alertblock}{Idea central}
+Para calcular probabilidades primero hay que saber \textbf{qué puede ocurrir} y \textbf{cuántas formas favorables existen}.
+\end{alertblock}
+\end{frame}
+
+\section{Experimentos aleatorios}
+
+\begin{frame}{¿Qué es un experimento aleatorio?}
+\begin{block}{Definición formal}
+Procedimiento u observación cuyo resultado exacto no puede predecirse con certeza antes de realizarlo, aunque sí se conoce el conjunto de resultados posibles.
+\end{block}
+\pause
+\begin{itemize}
+  \item \intuicion{repetir el mismo procedimiento puede producir resultados distintos.}
+  \item \textbf{Interpretación práctica:} describe incertidumbre controlada.
+  \item \textbf{Aplicación:} fallas de componentes, llegada de paquetes, respuesta de un modelo de IA.
+  \item \errorcomun{creer que aleatorio significa ``sin reglas''; sí hay reglas, pero no certeza del resultado individual.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Determinístico vs aleatorio}
+\small
+\begin{center}
+\begin{tabular}{p{0.30\textwidth}p{0.30\textwidth}p{0.30\textwidth}}
+\toprule
+Criterio & Determinístico & Aleatorio \\
+\midrule
+Resultado & único y predecible & incierto antes de observar \\
+Ejemplo & $2+3=5$ & lanzar un dado \\
+Pregunta & ¿cuál es el resultado? & ¿qué resultados pueden ocurrir? \\
+Modelo & ecuación exacta & espacio muestral y probabilidades \\
+\bottomrule
+\end{tabular}
+\end{center}
+\pause
+\begin{exampleblock}{Ejercicio guiado}
+Clasifica: medir la vida útil de un componente electrónico. \pause Es \textbf{aleatorio}: no conocemos su duración exacta antes de observarla.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Ejemplos de experimentos aleatorios}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item Moneda: cara o sello.
+  \item Dado: valores de 1 a 6.
+  \item Vida útil: tiempo hasta falla.
+  \item Llegada de clientes: número por minuto.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}[scale=0.82]
+\node[circle, draw=blue!70, fill=blue!10, minimum size=1.2cm] at (0,1.4) {Moneda};
+\node[regular polygon, regular polygon sides=4, draw=green!60!black, fill=green!10, minimum size=1.1cm] at (2.4,1.4) {Dado};
+\node[rectangle, rounded corners, draw=orange!80!black, fill=orange!10, minimum width=2.2cm] at (0,0) {Componente};
+\node[rectangle, rounded corners, draw=purple!70, fill=purple!10, minimum width=2.2cm] at (2.4,0) {Clientes};
+\end{tikzpicture}
+\end{columns}
+\begin{alertblock}{Resumen visual}
+Experimento $\rightarrow$ resultado incierto $\rightarrow$ conjunto de posibilidades $\rightarrow$ probabilidad.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Aplicaciones reales de la aleatoriedad}
+\small
+\begin{tabular}{p{0.22\textwidth}p{0.33\textwidth}p{0.35\textwidth}}
+\toprule
+Área & Experimento aleatorio & Decisión apoyada \\
+\midrule
+Telecomunicaciones & pérdida de paquetes & dimensionar redes \\
+Electrónica & tiempo hasta falla & diseñar mantenimiento \\
+Confiabilidad & número de fallas & estimar riesgo \\
+IA & predicción correcta/incorrecta & medir desempeño \\
+Finanzas & retorno diario & gestionar portafolios \\
+\bottomrule
+\end{tabular}
+\vspace{0.5em}
+\observacion{La probabilidad no elimina la incertidumbre: la cuantifica.}
+\end{frame}
+
+\section{Espacio muestral}
+
+\begin{frame}{Espacio muestral $\Omega$}
+\begin{block}{Definición formal}
+El espacio muestral $\Omega$ es el conjunto de todos los resultados posibles de un experimento aleatorio.
+\end{block}
+\pause
+\begin{columns}[T]
+\column{0.50\textwidth}
+\begin{itemize}
+  \item Moneda: $\Omega=\{C,S\}$.
+  \item Dado: $\Omega=\{1,2,3,4,5,6\}$.
+  \item Dos monedas: pares ordenados.
+\end{itemize}
+\column{0.45\textwidth}
+\begin{exampleblock}{Interpretación}
+Antes de hablar de probabilidad, debemos listar qué resultados son posibles.
+\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Tipos de espacios muestrales}
+\small
+\begin{tabular}{p{0.24\textwidth}p{0.30\textwidth}p{0.34\textwidth}}
+\toprule
+Tipo & Ejemplo & Comentario \\
+\midrule
+Finito & dado & se puede listar completo \\
+Infinito numerable & lanzar hasta obtener 1 & lista $w_1,w_2,w_3,\ldots$ \\
+Infinito no numerable & vida útil continua & requiere herramientas continuas \\
+\bottomrule
+\end{tabular}
+\vspace{0.7em}
+\begin{alertblock}{Error común}
+Confundir ``muchos resultados'' con infinito. Un PIN de 4 dígitos tiene muchos resultados, pero sigue siendo finito.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Construcción paso a paso: dos monedas}
+\begin{columns}[T]
+\column{0.45\textwidth}
+\begin{enumerate}
+  \item Primera moneda: $\{C,S\}$.
+  \pause
+  \item Segunda moneda: $\{C,S\}$.
+  \pause
+  \item Resultado: par ordenado.
+\end{enumerate}
+\[
+\Omega=\{(C,C),(C,S),(S,C),(S,S)\}
+\]
+\column{0.50\textwidth}
+\begin{center}
+\begin{tabular}{c|cc}
+ & C & S \\
+\hline
+C & $(C,C)$ & $(C,S)$ \\
+S & $(S,C)$ & $(S,S)$ \\
+\end{tabular}
+\end{center}
+\end{columns}
+\begin{exampleblock}{Ejercicio 1 guiado}
+¿Cuántos resultados hay al lanzar dos monedas? \pause $2\times2=4$.
+\end{exampleblock}
+\end{frame}
+
+\section{Eventos}
+
+\begin{frame}{Evento}
+\begin{block}{Definición formal}
+Un evento es un subconjunto del espacio muestral: $A\subseteq\Omega$.
+\end{block}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item \textbf{Simple:} contiene un resultado.
+  \item \textbf{Compuesto:} contiene varios resultados.
+  \item \textbf{Imposible:} $\varnothing$.
+  \item \textbf{Seguro:} $\Omega$.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}[scale=0.82]
+\draw[rounded corners, fill=blue!5] (0,0) rectangle (4,2.5);
+\node at (3.7,2.2) {$\Omega$};
+\draw[fill=orange!30] (1.7,1.25) circle (0.8);
+\node at (1.7,1.25) {$A$};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Eventos con un dado}
+\small
+Sea $\Omega=\{1,2,3,4,5,6\}$.
+\begin{center}
+\begin{tabular}{p{0.28\textwidth}p{0.28\textwidth}p{0.32\textwidth}}
+\toprule
+Evento & Conjunto & Tipo \\
+\midrule
+Sale 4 & $\{4\}$ & simple \\
+Sale par & $\{2,4,6\}$ & compuesto \\
+Sale 7 & $\varnothing$ & imposible \\
+Sale número de 1 a 6 & $\Omega$ & seguro \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{exampleblock}{Ejercicio guiado}
+Evento ``sale mayor que 3'': \pause $B=\{4,5,6\}$.
+\end{exampleblock}
+\end{frame}
+
+\section{Álgebra de eventos}
+
+\begin{frame}{Álgebra de eventos: operadores básicos}
+\small
+\begin{tabular}{p{0.20\textwidth}p{0.28\textwidth}p{0.40\textwidth}}
+\toprule
+Operación & Símbolo & Interpretación \\
+\midrule
+Unión & $A\cup B$ & ocurre $A$ o $B$ o ambos \\
+Intersección & $A\cap B$ & ocurren $A$ y $B$ a la vez \\
+Complemento & $A^c$ & no ocurre $A$ \\
+Diferencia & $A-B$ & ocurre $A$ pero no $B$ \\
+\bottomrule
+\end{tabular}
+\vspace{0.6em}
+\observacion{Estas operaciones permiten traducir frases del lenguaje cotidiano a conjuntos.}
+\end{frame}
+
+\begin{frame}{Unión $A\cup B$}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Definición}
+$A\cup B=\{x:x\in A \text{ o } x\in B\}$.
+\end{block}
+\begin{itemize}
+  \item Incluye lo que está en $A$, en $B$ o en ambos.
+  \item \errorcomun{leer ``o'' como excluyente cuando en conjuntos suele ser inclusivo.}
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}[scale=0.9]
+\draw[rounded corners] (-.2,-.2) rectangle (3.8,2.2);
+\begin{scope}
+\clip (1.3,1) circle (0.8);
+\fill[blue!35] (-.2,-.2) rectangle (3.8,2.2);
+\end{scope}
+\begin{scope}
+\clip (2.2,1) circle (0.8);
+\fill[blue!35] (-.2,-.2) rectangle (3.8,2.2);
+\end{scope}
+\draw (1.3,1) circle (0.8) node[left] {$A$};
+\draw (2.2,1) circle (0.8) node[right] {$B$};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Intersección $A\cap B$}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Definición}
+$A\cap B=\{x:x\in A \text{ y } x\in B\}$.
+\end{block}
+\begin{itemize}
+  \item Solo contiene resultados comunes.
+  \item Si $A\cap B=\varnothing$, son mutuamente excluyentes.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}[scale=0.9]
+\draw[rounded corners] (-.2,-.2) rectangle (3.8,2.2);
+\begin{scope}
+\clip (1.3,1) circle (0.8);
+\clip (2.2,1) circle (0.8);
+\fill[orange!45] (-.2,-.2) rectangle (3.8,2.2);
+\end{scope}
+\draw (1.3,1) circle (0.8) node[left] {$A$};
+\draw (2.2,1) circle (0.8) node[right] {$B$};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Complemento y diferencia}
+\small
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Complemento}
+$A^c=\{x\in\Omega:x\notin A\}$.
+\end{block}
+\begin{tikzpicture}[scale=0.75]
+\fill[blue!18] (0,0) rectangle (4,2.4);
+\fill[white] (2,1.2) circle (0.75);
+\draw (0,0) rectangle (4,2.4);
+\draw (2,1.2) circle (0.75) node {$A$};
+\node at (3.5,2.05) {$A^c$};
+\end{tikzpicture}
+\column{0.48\textwidth}
+\begin{block}{Diferencia}
+$A-B=A\cap B^c$.
+\end{block}
+\begin{tikzpicture}[scale=0.75]
+\draw (0,0) rectangle (4,2.4);
+\begin{scope}
+\clip (1.6,1.2) circle (0.8);
+\fill[green!35] (0,0) rectangle (4,2.4);
+\end{scope}
+\begin{scope}
+\clip (2.4,1.2) circle (0.8);
+\fill[white] (0,0) rectangle (4,2.4);
+\end{scope}
+\draw (1.6,1.2) circle (0.8) node[left] {$A$};
+\draw (2.4,1.2) circle (0.8) node[right] {$B$};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Ejemplo resuelto: dados y eventos}
+Sea $\Omega=\{1,2,3,4,5,6\}$, $A=$ pares y $B=$ mayores que 3.
+\[
+A=\{2,4,6\},\qquad B=\{4,5,6\}
+\]
+\pause
+\begin{columns}[T]
+\column{0.50\textwidth}
+\begin{align*}
+A\cup B&=\{2,4,5,6\}\\
+A\cap B&=\{4,6\}
+\end{align*}
+\column{0.45\textwidth}
+\begin{align*}
+A^c&=\{1,3,5\}\\
+A-B&=\{2\}
+\end{align*}
+\end{columns}
+\begin{exampleblock}{Ejercicio guiado}
+Calcula $B-A$. \pause $B-A=\{5\}$.
+\end{exampleblock}
+\end{frame}
+
+\section{Producto cartesiano}
+
+\begin{frame}{Producto cartesiano}
+\begin{block}{Definición formal}
+$A\times B=\{(a,b):a\in A,\ b\in B\}$.
+\end{block}
+\begin{itemize}
+  \item Forma pares ordenados.
+  \item Permite construir espacios muestrales compuestos.
+  \item \textbf{Interpretación:} primero ocurre un resultado de $A$ y luego uno de $B$.
+\end{itemize}
+\begin{alertblock}{Error común}
+$(C,1)$ y $(1,C)$ no significan lo mismo si las etapas tienen roles distintos.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Moneda + dado como producto cartesiano}
+\small
+\[
+\Omega=\{C,S\}\times\{1,2,3,4,5,6\}
+\]
+\begin{center}
+\begin{tabular}{c|cccccc}
+ & 1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+C & $(C,1)$ & $(C,2)$ & $(C,3)$ & $(C,4)$ & $(C,5)$ & $(C,6)$ \\
+S & $(S,1)$ & $(S,2)$ & $(S,3)$ & $(S,4)$ & $(S,5)$ & $(S,6)$ \\
+\end{tabular}
+\end{center}
+\begin{exampleblock}{Ejercicio 2 guiado}
+¿Cuántos resultados hay? \pause $2\times6=12$.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Dos ruletas: tabla visual}
+\small
+Cada ruleta tiene 8 resultados: $R_1=\{1,\dots,8\}$ y $R_2=\{1,\dots,8\}$.
+\begin{columns}[T]
+\column{0.42\textwidth}
+\begin{block}{Espacio compuesto}
+\[
+\Omega=R_1\times R_2
+\]
+Cada resultado es un par $(i,j)$.
+\end{block}
+\column{0.52\textwidth}
+\begin{center}
+\begin{tikzpicture}[scale=0.38]
+\foreach \i in {1,...,8}{\foreach \j in {1,...,8}{\draw[fill=blue!8] (\i,\j) rectangle +(1,1);}}
+\node at (5,9.7) {Ruleta 2};
+\node[rotate=90] at (-.4,5) {Ruleta 1};
+\end{tikzpicture}
+\end{center}
+\end{columns}
+\end{frame}
+
+\section{Reglas de enumeración}
+
+\begin{frame}{¿Por qué contar sin enumerar?}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\begin{itemize}
+  \item Contraseñas.
+  \item Códigos de productos.
+  \item PIN bancarios.
+  \item Rutas en redes.
+\end{itemize}
+\column{0.45\textwidth}
+\begin{alertblock}{Problema}
+Enumerar todo puede ser lento, incompleto o imposible en la práctica.
+\end{alertblock}
+\begin{exampleblock}{Idea}
+Usamos reglas de conteo para obtener el tamaño del espacio muestral.
+\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Regla de multiplicación}
+\begin{theorem}[Principio multiplicativo]
+Si una tarea tiene $k$ etapas con $n_1,n_2,\ldots,n_k$ opciones, entonces hay
+\[
+n_1\times n_2\times\cdots\times n_k
+\]
+formas de realizarla.
+\end{theorem}
+\pause
+\begin{tikzpicture}[node distance=1.1cm, box/.style={rectangle, rounded corners, draw=blue!70, fill=blue!8, align=center, minimum width=2cm}, arrow/.style={-{Latex}, thick}]
+\node[box] (a) {$n_1$};
+\node[box, right=of a] (b) {$n_2$};
+\node[box, right=of b] (c) {$\cdots$};
+\node[box, right=of c] (d) {$n_k$};
+\draw[arrow] (a)--(b); \draw[arrow] (b)--(c); \draw[arrow] (c)--(d);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Ejercicio 2 resuelto: dos ruletas}
+\begin{block}{Enunciado}
+Dos ruletas tienen 8 resultados posibles cada una. ¿Cuántos resultados compuestos existen?
+\end{block}
+\pause
+\begin{enumerate}
+  \item Primera ruleta: $8$ opciones.
+  \pause
+  \item Segunda ruleta: $8$ opciones.
+  \pause
+  \item Regla de multiplicación: $8\times8=64$.
+\end{enumerate}
+\begin{exampleblock}{Respuesta}
+El espacio muestral tiene $64$ pares ordenados.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Regla de adición}
+\begin{block}{Casos mutuamente excluyentes}
+Si $A\cap B=\varnothing$, entonces
+\[
+n(A\cup B)=n(A)+n(B).
+\]
+\end{block}
+\pause
+\begin{block}{Caso general}
+Si pueden superponerse,
+\[
+n(A\cup B)=n(A)+n(B)-n(A\cap B).
+\]
+\end{block}
+\begin{alertblock}{Error común}
+Sumar sin restar la intersección cuenta dos veces a quienes pertenecen a ambos conjuntos.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Inclusión--exclusión}
+\small
+\begin{theorem}[Dos conjuntos]
+\[
+n(A\cup B)=n(A)+n(B)-n(A\cap B)
+\]
+\end{theorem}
+\begin{theorem}[Tres conjuntos]
+\[
+\begin{aligned}
+n(A\cup B\cup C)&=n(A)+n(B)+n(C)\\
+&-n(A\cap B)-n(A\cap C)-n(B\cap C)\\
+&+n(A\cap B\cap C).
+\end{aligned}
+\]
+\end{theorem}
+\observacion{Aplicaciones: encuestas, bases de datos, minería de datos y depuración de registros duplicados.}
+\end{frame}
+
+\section{Variaciones}
+
+\begin{frame}{Variaciones: el orden importa}
+\begin{block}{Idea}
+Una variación selecciona $k$ elementos desde $n$ disponibles y el orden de selección cambia el resultado.
+\end{block}
+\begin{center}
+\begin{tabular}{ccc}
+$AB$ & $\neq$ & $BA$ \\
+\end{tabular}
+\end{center}
+\begin{exampleblock}{Aplicación}
+Códigos, rankings, turnos de atención, secuencias de comandos.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Comparación inicial de técnicas}
+\small
+\begin{center}
+\begin{tabular}{p{0.25\textwidth}ccc}
+\toprule
+Técnica & ¿elige todos? & ¿importa orden? & ¿puede repetir? \\
+\midrule
+Variación simple & no necesariamente & sí & no \\
+Variación con repetición & no necesariamente & sí & sí \\
+Permutación simple & sí & sí & no \\
+Combinación simple & no necesariamente & no & no \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}{Variaciones simples}
+\begin{block}{Fórmula}
+\[
+V(n,k)=\frac{n!}{(n-k)!}
+\]
+\end{block}
+\begin{itemize}
+  \item Primera posición: $n$ opciones.
+  \item Segunda: $n-1$ opciones.
+  \item Continúa hasta completar $k$ posiciones.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejercicio 3 resuelto: urna con 5 fichas}
+\begin{block}{Enunciado}
+Una urna tiene 5 fichas distintas. Se extraen 2 sin reemplazo y el orden importa. ¿Cuántos resultados hay?
+\end{block}
+\pause
+\begin{align*}
+V(5,2)&=\frac{5!}{(5-2)!}\\
+&=\frac{5!}{3!}=5\cdot4=20.
+\end{align*}
+\begin{exampleblock}{Respuesta}
+Hay $20$ extracciones ordenadas posibles.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Variaciones con repetición}
+\begin{block}{Fórmula}
+\[
+VR(n,k)=n^k
+\]
+\end{block}
+\begin{itemize}
+  \item Hay $k$ posiciones.
+  \item En cada posición se mantienen las $n$ opciones.
+  \item Se usa cuando repetir está permitido.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejercicio 4 resuelto: números que terminan en 7}
+\begin{block}{Enunciado}
+Formar números de 4 cifras usando $\{5,6,7,8,9\}$, con repetición permitida, que terminen en 7.
+\end{block}
+\pause
+\begin{center}
+\begin{tikzpicture}[node distance=.5cm, box/.style={rectangle, draw=blue!70, fill=blue!8, minimum width=1.2cm, minimum height=.9cm}]
+\node[box] (a) {5};
+\node[box, right=of a] (b) {5};
+\node[box, right=of b] (c) {5};
+\node[box, right=of c, fill=orange!25] (d) {1};
+\node[below=.1cm of a] {mil};
+\node[below=.1cm of b] {centena};
+\node[below=.1cm of c] {decena};
+\node[below=.1cm of d] {unidad=7};
+\end{tikzpicture}
+\end{center}
+\[
+5\times5\times5\times1=125
+\]
+\begin{alertblock}{Cuidado}
+La restricción fija la última posición; no se multiplica por 5 allí.
+\end{alertblock}
+\end{frame}
+
+\section{Permutaciones}
+
+\begin{frame}{Permutaciones: ordenar todos los elementos}
+\begin{block}{Definición}
+Una permutación ordena todos los elementos disponibles.
+\end{block}
+\begin{columns}[T]
+\column{0.45\textwidth}
+\[
+P(n)=n!
+\]
+\column{0.50\textwidth}
+\begin{exampleblock}{Intuición}
+Si todos participan, el problema no es seleccionar, sino ordenar.
+\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Ejercicio 5 resuelto: letras A,V,E}
+\begin{block}{Enunciado}
+¿Cuántas formas hay de ordenar las letras A, V y E?
+\end{block}
+\[
+P(3)=3!=6
+\]
+\begin{center}
+\begin{tabular}{cccccc}
+AVE & AEV & VAE & VEA & EAV & EVA
+\end{tabular}
+\end{center}
+\begin{exampleblock}{Ejercicio guiado}
+¿Por qué AVE y EVA son distintos? \pause Porque el orden cambia la palabra formada.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Ejercicio 6 resuelto: ordenar 5,6,7,8,9}
+\begin{block}{Enunciado}
+Ordenar los cinco símbolos $5,6,7,8,9$ sin repetir.
+\end{block}
+\pause
+\[
+P(5)=5!=5\cdot4\cdot3\cdot2\cdot1=120
+\]
+\begin{exampleblock}{Interpretación}
+Existen $120$ números distintos de 5 cifras usando todos los símbolos una vez.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Ejercicio 7: permutación con restricción}
+\begin{block}{Enunciado}
+Ordenar $5,6,7,8,9$ con el número 9 fijo al inicio.
+\end{block}
+\pause
+\begin{center}
+\begin{tikzpicture}[node distance=.5cm, box/.style={rectangle, draw=blue!70, fill=blue!8, minimum width=1.15cm, minimum height=.85cm}]
+\node[box, fill=orange!25] (a) {9};
+\node[box, right=of a] (b) {4};
+\node[box, right=of b] (c) {3};
+\node[box, right=of c] (d) {2};
+\node[box, right=of d] (e) {1};
+\end{tikzpicture}
+\end{center}
+\[
+1\times4\times3\times2\times1=4!=24
+\]
+\observacion{Fijar un elemento reduce el problema a ordenar los elementos restantes.}
+\end{frame}
+
+\begin{frame}{Permutaciones circulares}
+\begin{block}{Fórmula}
+\[
+PC(n)=(n-1)!
+\]
+\end{block}
+\begin{columns}[T]
+\column{0.45\textwidth}
+\begin{itemize}
+  \item Mesa redonda.
+  \item Sensores alrededor de una estructura.
+  \item Nodos en un anillo de red.
+\end{itemize}
+\column{0.50\textwidth}
+\begin{tikzpicture}[scale=.75]
+\foreach \a/\n in {90/A,18/B,306/C,234/D,162/E}{\node[circle, draw=blue!70, fill=blue!10] at (\a:1.4) {\n};}
+\draw[dashed] (0,0) circle (1.4);
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Permutaciones con repetición}
+\begin{block}{Fórmula}
+Si hay $n$ elementos con repeticiones $n_1,n_2,\ldots,n_k$:
+\[
+P=\frac{n!}{n_1!n_2!\cdots n_k!}
+\]
+\end{block}
+\begin{alertblock}{Error común}
+Usar $n!$ cuando hay símbolos repetidos sobrecuenta ordenamientos indistinguibles.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Ejercicio 8 resuelto: x,x,x,y,y}
+\begin{block}{Enunciado}
+¿Cuántos ordenamientos distintos tiene la secuencia con tres $x$ y dos $y$?
+\end{block}
+\pause
+\begin{align*}
+n&=5,\qquad n_x=3,\qquad n_y=2\\
+P&=\frac{5!}{3!2!}=\frac{120}{6\cdot2}=10.
+\end{align*}
+\begin{exampleblock}{Respuesta}
+Hay $10$ secuencias distintas.
+\end{exampleblock}
+\end{frame}
+
+\section{Combinaciones}
+
+\begin{frame}{Combinaciones: el orden no importa}
+\begin{block}{Definición}
+Una combinación selecciona elementos sin considerar el orden.
+\end{block}
+\begin{center}
+$\{A,B\}=\{B,A\}$
+\end{center}
+\begin{exampleblock}{Aplicaciones}
+Equipos de trabajo, comités, selección de estudiantes, muestras sin orden.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Combinaciones simples}
+\begin{block}{Fórmula}
+\[
+C(n,k)=\binom{n}{k}=\frac{n!}{k!(n-k)!}
+\]
+\end{block}
+\begin{itemize}
+  \item Primero se cuentan selecciones ordenadas.
+  \item Luego se divide por las $k!$ formas de ordenar cada grupo.
+\end{itemize}
+\begin{exampleblock}{Ejercicio guiado}
+Elegir 2 estudiantes entre 5: \pause $\binom{5}{2}=10$.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Combinaciones con repetición}
+\begin{block}{Fórmula}
+\[
+CR(n,k)=\binom{n+k-1}{k}=\frac{(n+k-1)!}{k!(n-1)!}
+\]
+\end{block}
+\begin{itemize}
+  \item Se permite escoger el mismo tipo varias veces.
+  \item El orden no importa.
+  \item Ejemplos: productos repetidos, distribución de recursos, pedidos con sabores repetidos.
+\end{itemize}
+\end{frame}
+
+\section{Probabilidad}
+
+\begin{frame}{¿Qué es probabilidad?}
+\begin{block}{Definición conceptual}
+Medida numérica entre 0 y 1 que cuantifica qué tan plausible es un evento.
+\end{block}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item $0$: imposible.
+  \item $1$: seguro.
+  \item Valores intermedios: incertidumbre.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}
+\draw[very thick, -{Latex}] (0,0)--(4,0);
+\foreach \x/\l in {0/0,2/0.5,4/1}{\draw (\x,.1)--(\x,-.1) node[below]{\l};}
+\node[above] at (0,0) {imposible};
+\node[above] at (4,0) {seguro};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Interpretaciones de probabilidad}
+\small
+\begin{tabular}{p{0.28\textwidth}p{0.32\textwidth}p{0.30\textwidth}}
+\toprule
+Enfoque & Idea & Ejemplo \\
+\midrule
+Clásico & casos favorables / posibles & dado justo \\
+Frecuentista & proporción a largo plazo & tasa de fallas observada \\
+Subjetivo & grado de creencia informado & riesgo financiero \\
+\bottomrule
+\end{tabular}
+\vspace{0.6em}
+\observacion{En esta unidad usamos principalmente probabilidad clásica en espacios finitos equiprobables.}
+\end{frame}
+
+\begin{frame}{Axiomas de Kolmogorov}
+\begin{theorem}[Axiomas]
+Para eventos en $\Omega$:
+\begin{enumerate}
+  \item $P(A)\ge 0$.
+  \item $P(\Omega)=1$.
+  \item Si $A\cap B=\varnothing$, entonces $P(A\cup B)=P(A)+P(B)$.
+\end{enumerate}
+\end{theorem}
+\pause
+\begin{exampleblock}{Interpretación física}
+La probabilidad total disponible es 1 y se reparte entre resultados o eventos sin asignar masa negativa.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Teoremas derivados útiles}
+\small
+\begin{center}
+\begin{tabular}{p{0.32\textwidth}p{0.46\textwidth}}
+\toprule
+Resultado & Fórmula \\
+\midrule
+Evento imposible & $P(\varnothing)=0$ \\
+Complemento & $P(A^c)=1-P(A)$ \\
+Inclusión & si $A\subseteq B$, entonces $P(A)\le P(B)$ \\
+Adición general & $P(A\cup B)=P(A)+P(B)-P(A\cap B)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{alertblock}{Error común}
+Aplicar $P(A\cup B)=P(A)+P(B)$ sin verificar si los eventos son excluyentes.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Probabilidad clásica}
+\begin{block}{Fórmula}
+Si todos los resultados son equiprobables,
+\[
+P(A)=\frac{\text{casos favorables}}{\text{casos posibles}}=\frac{n(A)}{n(\Omega)}.
+\]
+\end{block}
+\begin{enumerate}
+  \item Construir $\Omega$.
+  \item Construir el evento $A$.
+  \item Contar casos favorables y posibles.
+  \item Dividir e interpretar.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Ejercicio 9 resuelto: obtener un 2}
+\begin{block}{Enunciado}
+Lanzar un dado justo. ¿Cuál es la probabilidad de obtener un 2?
+\end{block}
+\pause
+\[
+\Omega=\{1,2,3,4,5,6\},\qquad A=\{2\}
+\]
+\[
+P(A)=\frac{n(A)}{n(\Omega)}=\frac{1}{6}
+\]
+\begin{exampleblock}{Respuesta}
+La probabilidad es $1/6\approx0{,}167$.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Ejercicio 10 resuelto: obtener a lo más 2}
+\begin{block}{Enunciado}
+Lanzar un dado justo. ¿Cuál es la probabilidad de obtener a lo más 2?
+\end{block}
+\pause
+\begin{enumerate}
+  \item ``A lo más 2'' significa $\le 2$.
+  \item Evento: $A=\{1,2\}$.
+  \item Casos favorables: $2$.
+  \item Casos posibles: $6$.
+\end{enumerate}
+\[
+P(A)=\frac{2}{6}=\frac{1}{3}
+\]
+\end{frame}
+
+\begin{frame}{Espacios infinitos numerables}
+\begin{block}{Ejemplo}
+Lanzar un dado hasta obtener un 1.
+\end{block}
+\begin{itemize}
+  \item $w_1$: sale 1 en el primer lanzamiento.
+  \item $w_2$: no sale 1 y luego sale 1.
+  \item $w_3$: no sale 1 dos veces y luego sale 1.
+\end{itemize}
+\[
+\Omega=\{w_1,w_2,w_3,\ldots\}
+\]
+\observacion{Es infinito porque no existe un número máximo garantizado de lanzamientos.}
+\end{frame}
+
+\begin{frame}{Sumas infinitas de probabilidades}
+\begin{block}{Idea}
+En espacios numerables, la probabilidad de un evento puede calcularse sumando probabilidades de resultados individuales.
+\end{block}
+\[
+P(A)=\sum_{w_i\in A}P(w_i)
+\]
+\begin{columns}[T]
+\column{0.32\textwidth}Distribución geométrica.
+\column{0.32\textwidth}Cadenas de Markov.
+\column{0.32\textwidth}Teoría de colas.
+\end{columns}
+\begin{alertblock}{Nivel de esta unidad}
+Solo se introduce la idea; el tratamiento formal se desarrolla más adelante.
+\end{alertblock}
+\end{frame}
+
+\section{Cierre de la unidad}
+
+\begin{frame}{Mapa conceptual completo}
+\centering
+\begin{tikzpicture}[node distance=.8cm, box/.style={rectangle, rounded corners, draw=blue!65, fill=blue!8, align=center, minimum width=2.4cm, minimum height=.65cm}, arrow/.style={-{Latex}, thick}]
+\node[box] (a) {Experimento};
+\node[box, right=of a] (b) {$\Omega$};
+\node[box, right=of b] (c) {Eventos};
+\node[box, below=of b] (d) {Conteo};
+\node[box, below=of c] (e) {Probabilidad};
+\node[box, below=of d] (f) {Inferencia};
+\draw[arrow] (a)--(b); \draw[arrow] (b)--(c); \draw[arrow] (c)--(e); \draw[arrow] (d)--(e); \draw[arrow] (e)--(f);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Resumen de fórmulas de conteo}
+\small
+\begin{center}
+\begin{tabular}{p{0.25\textwidth}p{0.20\textwidth}p{0.18\textwidth}p{0.25\textwidth}}
+\toprule
+Técnica & Orden & Repetición & Fórmula \\
+\midrule
+Regla multiplicación & por etapas & depende & $n_1\cdots n_k$ \\
+Variación simple & sí & no & $\frac{n!}{(n-k)!}$ \\
+Variación con repetición & sí & sí & $n^k$ \\
+Permutación simple & sí & no & $n!$ \\
+Permutación circular & sí & no & $(n-1)!$ \\
+Permutación con repetición & sí & sí & $\frac{n!}{n_1!\cdots n_k!}$ \\
+Combinación simple & no & no & $\binom{n}{k}$ \\
+Combinación con repetición & no & sí & $\binom{n+k-1}{k}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}{Checklist de decisión: ¿qué fórmula uso?}
+\begin{enumerate}
+  \item ¿El experimento ocurre por etapas? \pause Use multiplicación.
+  \item ¿Estoy ordenando todos los elementos? \pause Permutación.
+  \item ¿Estoy eligiendo solo algunos? \pause Variación o combinación.
+  \item ¿Importa el orden? \pause Sí: variación. No: combinación.
+  \item ¿Se permite repetición? \pause Use la versión con repetición.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Ejercicios integradores}
+\small
+\begin{enumerate}
+  \item Construya $\Omega$ para moneda + dado y calcule $P(\text{cara y número par})$.
+  \item Un PIN tiene 4 dígitos y permite repetición. ¿Cuántos PIN existen?
+  \item Con las letras A, B, C, D, ¿cuántas claves de 2 letras sin repetición existen?
+  \item De 6 estudiantes se elige un comité de 3. ¿Importa el orden?
+  \item En un dado, sea $A=$ par y $B=$ mayor que 3. Calcule $P(A\cup B)$.
+\end{enumerate}
+\begin{exampleblock}{Meta}
+Mezclar construcción de eventos, conteo y probabilidad clásica.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Cierre de ME\_4}
+\centering
+\Large
+La probabilidad comienza con una buena descripción del experimento y de sus eventos.
+\vspace{0.8em}
+
+\normalsize
+Contar bien es el puente entre el espacio muestral y el cálculo de probabilidades.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% Unidad integrada: Variables Aleatorias y Modelos Estocásticos
+% -----------------------------------------------------------------------------
+\part{Unidad 3: Variables Aleatorias y Modelos Estocásticos}
+
+\begin{frame}{Transición: de eventos a variables aleatorias}
+\centering
+\Large
+La probabilidad describe eventos; las variables aleatorias convierten resultados en números.
+\vspace{0.7em}
+
+\normalsize
+Así podemos calcular distribuciones, promedios, dispersión y construir modelos estocásticos.
+\end{frame}
+
+\begin{frame}{Objetivo pedagógico de la unidad}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Idea central}
+Transformar resultados de un experimento aleatorio en valores numéricos.
+\end{block}
+\begin{itemize}
+  \item Definir variables aleatorias.
+  \item Distinguir discretas y continuas.
+  \item Estudiar distribuciones.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{exampleblock}{Herramientas}
+\begin{itemize}
+  \item función de probabilidad;
+  \item densidad;
+  \item distribución acumulada;
+  \item esperanza y varianza.
+\end{itemize}
+\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Mapa conceptual de la unidad}
+\centering
+\begin{tikzpicture}[node distance=.75cm, box/.style={rectangle, rounded corners, draw=blue!65, fill=blue!8, align=center, minimum width=2.55cm, minimum height=.62cm}, arrow/.style={-{Latex}, thick}]
+\node[box] (m) {Modelo\\estocástico};
+\node[box, below=of m] (omega) {Espacio\\muestral $\Omega$};
+\node[box, below=of omega] (x) {Variable\\aleatoria $X$};
+\node[box, below left=of x] (dist) {Distribución};
+\node[box, below right=of x] (f) {FDA $F(x)$};
+\node[box, below=of dist] (e) {Esperanza};
+\node[box, below=of f] (v) {Varianza};
+\draw[arrow] (m)--(omega); \draw[arrow] (omega)--(x); \draw[arrow] (x)--(dist); \draw[arrow] (x)--(f); \draw[arrow] (dist)--(e); \draw[arrow] (f)--(v);
+\end{tikzpicture}
+\end{frame}
+
+\section{Modelos estocásticos}
+
+\begin{frame}{¿Qué es un modelo estocástico?}
+\begin{block}{Definición formal}
+Representación matemática de un fenómeno cuyo comportamiento incluye incertidumbre y se describe mediante probabilidades.
+\end{block}
+\pause
+\begin{itemize}
+  \item \intuicion{no predice un único resultado; describe un conjunto de resultados posibles y sus probabilidades.}
+  \item \textbf{Interpretación práctica:} cuantifica riesgo, variabilidad y escenarios.
+  \item \errorcomun{pensar que un modelo estocástico es menos riguroso por no entregar una respuesta única.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Modelo determinístico vs probabilístico}
+\small
+\begin{center}
+\begin{tabular}{p{0.27\textwidth}p{0.30\textwidth}p{0.30\textwidth}}
+\toprule
+Criterio & Determinístico & Probabilístico \\
+\midrule
+Salida & valor único & distribución de resultados \\
+Incertidumbre & no explícita & parte del modelo \\
+Pregunta & ¿cuánto será? & ¿con qué probabilidad ocurre? \\
+Ejemplo & $V=IR$ ideal & falla de un componente \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{alertblock}{Diferencia clave}
+El determinístico transforma entradas en una salida; el estocástico transforma entradas en una distribución.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{¿Por qué aparecen las variables aleatorias?}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Problema}
+Los resultados pueden ser cualitativos o estructurados: cara, sello, pares, rutas, fallas.
+\end{block}
+\pause
+\begin{exampleblock}{Solución}
+Asignar un número a cada resultado para poder calcular.
+\end{exampleblock}
+\column{0.48\textwidth}
+\begin{tikzpicture}[node distance=.65cm, box/.style={rectangle, rounded corners, draw=blue!65, fill=blue!8, align=center, minimum width=2.4cm}, arrow/.style={-{Latex}, thick}]
+\node[box] (r) {Resultados};
+\node[box, below=of r] (x) {$X$};
+\node[box, below=of x] (n) {Números};
+\draw[arrow] (r)--(x); \draw[arrow] (x)--(n);
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Aplicaciones de modelos estocásticos}
+\small
+\begin{tabular}{p{0.23\textwidth}p{0.35\textwidth}p{0.30\textwidth}}
+\toprule
+Área & Variable aleatoria típica & Decisión \\
+\midrule
+Confiabilidad & tiempo hasta falla & mantenimiento \\
+Electrónica & ruido o voltaje & tolerancias \\
+Minería & ley del mineral & planificación \\
+Economía & demanda o retorno & riesgo \\
+Manufactura & piezas defectuosas & control de calidad \\
+IA & error de predicción & evaluación \\
+Telecomunicaciones & paquetes perdidos & capacidad \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\section{Variables aleatorias}
+
+\begin{frame}{Variable aleatoria: definición formal}
+\begin{block}{Definición}
+Una variable aleatoria es una función que asigna un número real a cada resultado del espacio muestral:
+\[
+X:\Omega\to\mathbb{R}.
+\]
+\end{block}
+\pause
+\begin{itemize}
+  \item \textbf{Dominio:} espacio muestral $\Omega$.
+  \item \textbf{Recorrido o rango:} valores numéricos que puede tomar $X$.
+  \item \textbf{Interpretación:} $X(\omega)$ es el número asociado al resultado $\omega$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Transformar resultados en números}
+\centering
+\begin{tikzpicture}[node distance=1cm, leftset/.style={ellipse, draw=blue!70, fill=blue!8, minimum width=2.2cm, minimum height=3cm}, rightset/.style={ellipse, draw=green!60!black, fill=green!8, minimum width=2.2cm, minimum height=3cm}, arrow/.style={-{Latex}, thick}]
+\node[leftset] (omega) at (0,0) {};
+\node at (0,1.75) {$\Omega$};
+\node at (0,.8) {$C$}; \node at (0,0) {$S$};
+\node[rightset] (r) at (4,0) {};
+\node at (4,1.75) {Rango};
+\node at (4,.8) {$1$}; \node at (4,0) {$0$};
+\draw[arrow] (.45,.8)--(3.55,.8) node[midway, above] {$X$};
+\draw[arrow] (.45,0)--(3.55,0);
+\end{tikzpicture}
+\vspace{0.4em}
+\begin{exampleblock}{Ejemplo}
+Si $X=$ número de caras en una moneda, entonces $X(C)=1$ y $X(S)=0$.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Dominio, variable aleatoria y rango}
+\begin{center}
+\begin{tikzpicture}[node distance=.9cm, box/.style={rectangle, rounded corners, draw=blue!65, fill=blue!8, align=center, minimum width=3.2cm, minimum height=.7cm}, arrow/.style={-{Latex}, thick}]
+\node[box] (omega) {Espacio muestral\\$\Omega$};
+\node[box, below=of omega] (x) {Variable aleatoria\\$X:\Omega\to\mathbb{R}$};
+\node[box, below=of x] (range) {Rango\\$R_X$};
+\draw[arrow] (omega)--(x); \draw[arrow] (x)--(range);
+\end{tikzpicture}
+\end{center}
+\begin{alertblock}{Error común}
+Confundir $\Omega$ con el rango: $\Omega$ contiene resultados; el rango contiene números asignados por $X$.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Ejemplo: dado}
+\begin{block}{Experimento}
+Lanzar un dado y definir $X=$ resultado obtenido.
+\end{block}
+\begin{columns}[T]
+\column{0.45\textwidth}
+\[
+\Omega=\{1,2,3,4,5,6\}
+\]
+\[
+R_X=\{1,2,3,4,5,6\}
+\]
+\column{0.48\textwidth}
+\begin{exampleblock}{Interpretación}
+Aquí el resultado ya es numérico, por eso $X(\omega)=\omega$.
+\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Ejemplo: varias monedas}
+\small
+Lanzar tres monedas y definir $X=$ número de caras.
+\begin{center}
+\begin{tabular}{c c}
+\toprule
+Resultado $\omega$ & $X(\omega)$ \\
+\midrule
+CCC & 3 \\
+CCS, CSC, SCC & 2 \\
+CSS, SCS, SSC & 1 \\
+SSS & 0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\[
+R_X=\{0,1,2,3\}
+\]
+\end{frame}
+
+\begin{frame}{Ejemplos de ingeniería e industria}
+\small
+\begin{tabular}{p{0.30\textwidth}p{0.32\textwidth}p{0.25\textwidth}}
+\toprule
+Experimento & Variable aleatoria & Tipo esperado \\
+\midrule
+Sensores en línea & número de alertas por hora & discreta \\
+Medición industrial & diámetro de una pieza & continua \\
+Componente electrónico & tiempo hasta falla & continua \\
+Control de calidad & piezas defectuosas en lote & discreta \\
+\bottomrule
+\end{tabular}
+\observacion{La elección de $X$ depende de la pregunta que se quiere responder.}
+\end{frame}
+
+\section{Tipos de variables aleatorias}
+
+\begin{frame}{Variables aleatorias discretas}
+\begin{block}{Definición}
+Una variable aleatoria es discreta si su rango es finito o infinito numerable.
+\end{block}
+\begin{itemize}
+  \item Se puede listar: $0,1,2,\ldots$.
+  \item Sus probabilidades se asignan a puntos.
+  \item Aparece al contar ocurrencias.
+\end{itemize}
+\begin{exampleblock}{Ejemplos}
+Número de caras, clientes, fallas o piezas defectuosas.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Variables aleatorias continuas}
+\begin{block}{Definición}
+Una variable aleatoria es continua si puede tomar valores en intervalos de la recta real.
+\end{block}
+\begin{itemize}
+  \item No se enumeran punto por punto.
+  \item Las probabilidades se calculan sobre intervalos.
+  \item Aparece al medir magnitudes físicas.
+\end{itemize}
+\begin{exampleblock}{Ejemplos}
+Temperatura, voltaje, corriente, tiempo, longitud, masa y resistencia eléctrica.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Discreta vs continua}
+\small
+\begin{center}
+\begin{tabular}{p{0.27\textwidth}p{0.30\textwidth}p{0.30\textwidth}}
+\toprule
+Criterio & Discreta & Continua \\
+\midrule
+Origen & conteo & medición \\
+Valores & puntos separados & intervalos \\
+Probabilidad puntual & puede ser positiva & es cero \\
+Herramienta & función de probabilidad & densidad \\
+Gráfico típico & barras & curva/área \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}{Gráfico comparativo}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=5cm,height=3.6cm,ybar,bar width=8pt, ymin=0,ymax=.45, xtick={0,1,2,3}, xlabel={$x$}, ylabel={$f(x)$}, title={Discreta}]
+\addplot coordinates {(0,.125) (1,.375) (2,.375) (3,.125)};
+\end{axis}
+\end{tikzpicture}
+\column{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=5cm,height=3.6cm, ymin=0,ymax=.45, xmin=-3,xmax=3, xlabel={$x$}, ylabel={$\rho(x)$}, title={Continua}]
+\addplot[domain=-3:3, samples=80, blue, thick] {1/sqrt(2*pi)*exp(-x^2/2)};
+\end{axis}
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\section{Función de probabilidad}
+
+\begin{frame}{Función de probabilidad}
+\begin{block}{Definición}
+Para una variable aleatoria discreta,
+\[
+f(x)=P(X=x).
+\]
+\end{block}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item $f(x)\ge0$.
+  \item $\sum_x f(x)=1$.
+  \item Entrega probabilidades puntuales.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{alertblock}{Error común}
+Olvidar verificar que la suma de probabilidades sea 1.
+\end{alertblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Ejemplo completo: tres monedas}
+\small
+$X=$ número de caras al lanzar tres monedas.
+\begin{center}
+\begin{tabular}{c c c}
+\toprule
+$x$ & casos & $f(x)=P(X=x)$ \\
+\midrule
+0 & SSS & $1/8$ \\
+1 & CSS,SCS,SSC & $3/8$ \\
+2 & CCS,CSC,SCC & $3/8$ \\
+3 & CCC & $1/8$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\[
+\sum_x f(x)=\frac18+\frac38+\frac38+\frac18=1
+\]
+\end{frame}
+
+\begin{frame}{Gráfico de función de probabilidad}
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=9cm,height=5cm,ybar,bar width=12pt, ymin=0,ymax=.45, xtick={0,1,2,3}, xlabel={$x$ número de caras}, ylabel={$f(x)$}, nodes near coords]
+\addplot coordinates {(0,.125) (1,.375) (2,.375) (3,.125)};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Calcular probabilidades con $f(x)$}
+\begin{block}{Pregunta}
+Para tres monedas, calcular $P(X\ge2)$.
+\end{block}
+\pause
+\begin{align*}
+P(X\ge2)&=P(X=2)+P(X=3)\\
+&=f(2)+f(3)\\
+&=\frac38+\frac18=\frac48=\frac12.
+\end{align*}
+\begin{exampleblock}{Interpretación}
+La probabilidad de obtener al menos dos caras es $0{,}5$.
+\end{exampleblock}
+\end{frame}
+
+\section{Función de densidad}
+
+\begin{frame}{Función de densidad}
+\begin{block}{Definición}
+Para una variable aleatoria continua, la densidad $\rho(x)$ permite calcular probabilidades mediante áreas.
+\end{block}
+\[
+P(a<X<b)=\int_a^b \rho(x)\,dx
+\]
+\begin{itemize}
+  \item $\rho(x)\ge0$.
+  \item $\int_{-\infty}^{\infty}\rho(x)\,dx=1$.
+  \item $P(X=x)=0$ para puntos individuales.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Una densidad no es una probabilidad}
+\begin{alertblock}{Cuidado central}
+El valor $\rho(x)$ mide concentración relativa, no probabilidad puntual.
+\end{alertblock}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item Probabilidad = área.
+  \item La densidad puede ser mayor que 1.
+  \item Un punto no tiene ancho, por eso su área es 0.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}
+\begin{axis}[width=5cm,height=3.6cm, ymin=0,xmin=0,xmax=1, xlabel={$x$}, ylabel={$\rho(x)$}]
+\addplot[domain=0:1, samples=2, blue, thick] {1};
+\addplot[domain=.2:.6, draw=none, fill=blue!25] {1} \closedcycle;
+\end{axis}
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Ejemplo continuo uniforme}
+\begin{block}{Modelo}
+$X\sim U(0,10)$ con densidad $\rho(x)=1/10$ para $0\le x\le10$.
+\end{block}
+\pause
+\[
+P(2<X<5)=\int_2^5 \frac{1}{10}\,dx=\frac{3}{10}=0{,}3.
+\]
+\begin{exampleblock}{Interpretación}
+La probabilidad corresponde al área de un rectángulo de base 3 y altura 0,1.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Área bajo la curva}
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=9cm,height=5cm, ymin=0,ymax=.45, xmin=-3,xmax=3, xlabel={$x$}, ylabel={$\rho(x)$}]
+\addplot[domain=-3:3, samples=100, blue, thick] {1/sqrt(2*pi)*exp(-x^2/2)};
+\addplot[domain=-1:1, samples=80, draw=none, fill=blue!25] {1/sqrt(2*pi)*exp(-x^2/2)} \closedcycle;
+\draw[dashed] (axis cs:-1,0)--(axis cs:-1,.25);
+\draw[dashed] (axis cs:1,0)--(axis cs:1,.25);
+\end{axis}
+\end{tikzpicture}
+\begin{block}{Lectura}
+El área sombreada representa $P(-1<X<1)$.
+\end{block}
+\end{frame}
+
+\section{Función de distribución acumulada}
+
+\begin{frame}{Función de distribución acumulada}
+\begin{block}{Definición}
+La función de distribución acumulada es
+\[
+F(x)=P(X\le x).
+\]
+\end{block}
+\begin{itemize}
+  \item Acumula probabilidad desde la izquierda.
+  \item Siempre toma valores entre 0 y 1.
+  \item Resume completamente la distribución de $X$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{FDA discreta: función escalonada}
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=9cm,height=5cm, ymin=0,ymax=1.1, xmin=-.5,xmax=3.5, xtick={0,1,2,3}, xlabel={$x$}, ylabel={$F(x)$}]
+\addplot[const plot mark right, thick, blue] coordinates {(-.5,0) (0,.125) (1,.5) (2,.875) (3,1) (3.5,1)};
+\end{axis}
+\end{tikzpicture}
+\begin{alertblock}{Interpretación}
+Los saltos ocurren en los valores posibles de la variable discreta.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{FDA continua: acumulación de área}
+\[
+F(x)=\int_{-\infty}^{x}\rho(t)\,dt
+\]
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item Crece suavemente si la densidad es continua.
+  \item No tiene saltos puntuales.
+  \item La pendiente se relaciona con la densidad.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}
+\begin{axis}[width=5cm,height=3.6cm, ymin=0,ymax=1, xmin=-3,xmax=3, xlabel={$x$}, ylabel={$F(x)$}]
+\addplot[domain=-3:3, samples=100, blue, thick] {1/(1+exp(-1.7*x))};
+\end{axis}
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Propiedades de la FDA}
+\small
+\begin{tabular}{p{0.35\textwidth}p{0.50\textwidth}}
+\toprule
+Propiedad & Interpretación \\
+\midrule
+Monotonía & si $a<b$, entonces $F(a)\le F(b)$ \\
+Límite inferior & $\lim_{x\to-\infty}F(x)=0$ \\
+Límite superior & $\lim_{x\to\infty}F(x)=1$ \\
+Intervalos & $P(a<X\le b)=F(b)-F(a)$ \\
+Discreta & los saltos recuperan $f(x)$ \\
+Continua & si es derivable, $F'(x)=\rho(x)$ \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Ejemplo con FDA}
+\begin{block}{Dato}
+Para una variable discreta, $F(1)=0{,}40$ y $F(3)=0{,}85$.
+\end{block}
+\pause
+\[
+P(1<X\le3)=F(3)-F(1)=0{,}85-0{,}40=0{,}45.
+\]
+\begin{exampleblock}{Interpretación}
+La probabilidad acumulada entre 1 y 3 es $45\%$.
+\end{exampleblock}
+\end{frame}
+
+\section{Esperanza matemática}
+
+\begin{frame}{Esperanza matemática}
+\begin{block}{Idea intuitiva}
+La esperanza es el promedio a largo plazo de una variable aleatoria.
+\end{block}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item Centro de gravedad de la distribución.
+  \item Valor medio esperado si el experimento se repite muchas veces.
+  \item No siempre es un valor observable.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}
+\draw[thick] (0,0)--(4,0);
+\fill[blue!20] (1.2,0) circle (.35);
+\fill[blue!20] (2.0,0) circle (.35);
+\fill[blue!20] (3.1,0) circle (.35);
+\draw[red, very thick] (2.15,-.5)--(2.15,.5) node[above] {$E(X)$};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Esperanza discreta}
+\begin{block}{Fórmula}
+\[
+E(X)=\sum_x x\,f(x)
+\]
+\end{block}
+\begin{itemize}
+  \item $x$: valor que puede tomar la variable.
+  \item $f(x)$: probabilidad de ese valor.
+  \item $x f(x)$: aporte ponderado al promedio.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo: esperanza en un dado}
+\small
+Para un dado justo, $X=$ resultado.
+\begin{align*}
+E(X)&=1\cdot\frac16+2\cdot\frac16+3\cdot\frac16+4\cdot\frac16+5\cdot\frac16+6\cdot\frac16\\
+&=\frac{21}{6}=3{,}5.
+\end{align*}
+\begin{alertblock}{Cuidado}
+Aunque $3{,}5$ no sale en un dado, sí es el promedio esperado a largo plazo.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Esperanza continua}
+\begin{block}{De suma a integral}
+\[
+E(X)=\int_{-\infty}^{\infty}x\rho(x)\,dx
+\]
+\end{block}
+\begin{itemize}
+  \item La integral suma infinitos aportes pequeños.
+  \item La densidad actúa como ponderación local.
+  \item Es el centro de gravedad de la curva.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo continuo: uniforme $U(0,10)$}
+\[
+E(X)=\int_0^{10}x\frac{1}{10}\,dx
+=\frac{1}{10}\left[\frac{x^2}{2}\right]_0^{10}=5.
+\]
+\begin{exampleblock}{Interpretación}
+Si la medición es uniforme entre 0 y 10, su centro esperado es 5.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Esperanza de funciones}
+\begin{block}{Definición}
+Si interesa una transformación $g(X)$, entonces:
+\[
+E[g(X)]=\sum_x g(x)f(x)\quad\text{(discreta)}
+\]
+\[
+E[g(X)]=\int g(x)\rho(x)\,dx\quad\text{(continua)}
+\]
+\end{block}
+\begin{exampleblock}{Motivación}
+Costos, pérdidas, energía, potencia o utilidad suelen ser funciones de una variable aleatoria.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Propiedades de la esperanza}
+\begin{theorem}[Linealidad]
+\[
+E(aX+b)=aE(X)+b
+\]
+\[
+E(aX+bY)=aE(X)+bE(Y)
+\]
+\end{theorem}
+\begin{block}{Interpretación}
+Cambiar escala multiplica el promedio; desplazar la variable desplaza el promedio.
+\end{block}
+\end{frame}
+
+\begin{frame}{Mediana, moda y esperanza}
+\small
+\begin{tabular}{p{0.25\textwidth}p{0.35\textwidth}p{0.28\textwidth}}
+\toprule
+Medida & Definición probabilística & Sensibilidad \\
+\midrule
+Esperanza & promedio ponderado & sensible a colas \\
+Mediana & deja 50\% a cada lado & robusta \\
+Moda & valor más probable & puede no ser única \\
+\bottomrule
+\end{tabular}
+\begin{alertblock}{Error común}
+Creer que esperanza, mediana y moda siempre coinciden. Coinciden en distribuciones muy simétricas, pero no en general.
+\end{alertblock}
+\end{frame}
+
+\section{Varianza}
+
+\begin{frame}{¿Por qué la esperanza no basta?}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Dos variables pueden tener igual esperanza}
+pero distinta dispersión alrededor de ese centro.
+\end{block}
+\column{0.48\textwidth}
+\begin{tikzpicture}
+\begin{axis}[width=5cm,height=3.6cm, ymin=0,ymax=.55, xmin=-4,xmax=4, xlabel={$x$}, ylabel={}]
+\addplot[domain=-4:4, samples=80, blue, thick] {1/sqrt(2*pi)*exp(-x^2/2)};
+\addplot[domain=-4:4, samples=80, red, thick, dashed] {1/sqrt(2*pi*4)*exp(-x^2/8)};
+\end{axis}
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Varianza: definición}
+\begin{block}{Definición formal}
+\[
+\operatorname{Var}(X)=E[(X-\mu)^2],\qquad \mu=E(X).
+\]
+\end{block}
+\begin{itemize}
+  \item Mide dispersión probabilística respecto de la esperanza.
+  \item Usa cuadrados para evitar cancelaciones.
+  \item Queda en unidades al cuadrado.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Forma equivalente de la varianza}
+\begin{theorem}[Fórmula práctica]
+\[
+\operatorname{Var}(X)=E(X^2)-\mu^2
+\]
+\end{theorem}
+\begin{block}{Demostración intuitiva}
+Expandir $(X-\mu)^2=X^2-2\mu X+\mu^2$ y aplicar linealidad de la esperanza.
+\end{block}
+\end{frame}
+
+\begin{frame}{Ejemplo: varianza de un dado}
+\small
+Para un dado justo, $\mu=3{,}5$.
+\[
+E(X^2)=\frac{1^2+2^2+3^2+4^2+5^2+6^2}{6}=\frac{91}{6}
+\]
+\[
+\operatorname{Var}(X)=\frac{91}{6}-(3{,}5)^2=2{,}9167.
+\]
+\begin{exampleblock}{Lectura}
+La dispersión típica se obtiene con la desviación estándar.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Desviación estándar}
+\begin{block}{Definición}
+\[
+\sigma=\sqrt{\operatorname{Var}(X)}
+\]
+\end{block}
+\begin{itemize}
+  \item Vuelve a las unidades originales.
+  \item Facilita interpretar la dispersión.
+  \item Para el dado: $\sigma\approx\sqrt{2{,}9167}=1{,}71$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Propiedades de la varianza}
+\begin{theorem}[Cambio de escala]
+\[
+\operatorname{Var}(aX+b)=a^2\operatorname{Var}(X)
+\]
+\end{theorem}
+\begin{itemize}
+  \item Sumar $b$ desplaza la variable, pero no cambia su dispersión.
+  \item Multiplicar por $a$ escala las distancias por $a$.
+  \item La varianza escala por $a^2$ porque mide cuadrados.
+\end{itemize}
+\end{frame}
+
+\section{Síntesis}
+
+\begin{frame}{Mapa conceptual completo}
+\centering
+\begin{tikzpicture}[node distance=.58cm, box/.style={rectangle, rounded corners, draw=blue!65, fill=blue!8, align=center, minimum width=3.1cm, minimum height=.52cm}, arrow/.style={-{Latex}, thick}]
+\node[box] (a) {Experimento aleatorio};
+\node[box, below=of a] (b) {Espacio muestral $\Omega$};
+\node[box, below=of b] (c) {Variable aleatoria $X$};
+\node[box, below=of c] (d) {Distribución};
+\node[box, below=of d] (e) {Probabilidad};
+\node[box, below=of e] (f) {Distribución acumulada $F$};
+\node[box, below=of f] (g) {Esperanza $E(X)$};
+\node[box, below=of g] (h) {Varianza $\operatorname{Var}(X)$};
+\draw[arrow] (a)--(b); \draw[arrow] (b)--(c); \draw[arrow] (c)--(d); \draw[arrow] (d)--(e); \draw[arrow] (e)--(f); \draw[arrow] (f)--(g); \draw[arrow] (g)--(h);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Tabla comparativa final}
+\tiny
+\begin{tabular}{p{0.27\textwidth}p{0.32\textwidth}p{0.32\textwidth}}
+\toprule
+Comparación & Primera idea & Segunda idea \\
+\midrule
+Discreta vs continua & conteos, puntos & mediciones, intervalos \\
+Probabilidad vs densidad & $f(x)=P(X=x)$ & $\rho(x)$ genera áreas \\
+Puntual vs acumulada & valor exacto & $F(x)=P(X\le x)$ \\
+Esperanza vs media descriptiva & promedio teórico & promedio observado \\
+Varianza probabilística vs descriptiva & dispersión del modelo & dispersión de datos \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Errores frecuentes}
+\small
+\begin{enumerate}
+  \item Confundir resultado $\omega$ con valor $X(\omega)$.
+  \item Confundir dominio $\Omega$ con rango $R_X$.
+  \item Tratar una densidad como probabilidad puntual.
+  \item Olvidar que en variables continuas $P(X=x)=0$.
+  \item Calcular $P(a<X\le b)$ sin usar $F(b)-F(a)$.
+  \item Interpretar esperanza como resultado garantizado.
+  \item Comparar varianzas sin revisar unidades.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Formulario completo de la unidad}
+\small
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{align*}
+X&:\Omega\to\mathbb{R}\\
+f(x)&=P(X=x)\\
+\sum_x f(x)&=1\\
+F(x)&=P(X\le x)\\
+P(a<X\le b)&=F(b)-F(a)
+\end{align*}
+\column{0.48\textwidth}
+\begin{align*}
+P(a<X<b)&=\int_a^b\rho(x)dx\\
+E(X)&=\sum_x xf(x)\\
+E(X)&=\int x\rho(x)dx\\
+\operatorname{Var}(X)&=E(X^2)-\mu^2\\
+\sigma&=\sqrt{\operatorname{Var}(X)}
+\end{align*}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Ejercicios integradores}
+\small
+\begin{enumerate}
+  \item Lanzar dos monedas. Defina $X=$ número de caras, construya $R_X$ y $f(x)$.
+  \item Para un dado justo, calcule $P(X\le4)$ usando la FDA.
+  \item Si $X\sim U(0,10)$, calcule $P(3<X<7)$ y explique el área.
+  \item Un sensor registra número de alarmas por hora. ¿La variable es discreta o continua?
+  \item Compare dos sistemas con igual esperanza de falla pero distinta varianza.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Preguntas conceptuales de cierre}
+\begin{enumerate}
+  \item ¿Por qué una variable aleatoria es una función?
+  \item ¿Qué se pierde si solo se informa la esperanza?
+  \item ¿Cuándo conviene usar una FDA en vez de una función puntual?
+  \item ¿Por qué la densidad puede superar 1 sin violar axiomas?
+  \item ¿Cómo conecta esta unidad con inferencia estadística?
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Cierre de variables aleatorias}
+\centering
+\Large
+Una variable aleatoria traduce incertidumbre en matemáticas operables.
+\vspace{0.8em}
+
+\normalsize
+Distribución, acumulada, esperanza y varianza son el puente hacia modelos probabilísticos e inferencia.
 \end{frame}
 
 \end{document}
