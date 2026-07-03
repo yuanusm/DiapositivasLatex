@@ -13,10 +13,12 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \usetikzlibrary{arrows.meta,positioning,shapes.geometric}
 
-\title{Guía de estudio: Estadística, Números Índices y Probabilidades}
-\subtitle{Estadística descriptiva, índices, conteo y probabilidad clásica}
+\title{Guía de estudio: Estadística, Probabilidades y Modelos Estocásticos}
+\subtitle{Descriptiva, índices, probabilidad, variables aleatorias y dispersión probabilística}
 \author{Material de apoyo para estudio}
 \date{\today}
 
@@ -37,7 +39,7 @@
   \item Cada diapositiva aclara un concepto central de estadística descriptiva.
   \item La estructura se repite: definición formal, intuición, pregunta, ejemplo, diferencias y errores comunes.
   \item El foco está en conceptos parecidos que suelen confundirse en evaluaciones y ejercicios.
-  \item La guía integra estadística descriptiva, números índices económicos y teoría de probabilidades.
+  \item La guía integra estadística descriptiva, números índices, teoría de probabilidades y variables aleatorias.
 \end{itemize}
 \end{frame}
 
@@ -61,6 +63,7 @@
   \item Medidas de posición y dispersión
   \item Números índices económicos
   \item Probabilidades y análisis combinatorio
+  \item Variables aleatorias y modelos estocásticos
 \end{enumerate}
 \end{columns}
 \end{frame}
@@ -2828,6 +2831,803 @@ La probabilidad comienza con una buena descripción del experimento y de sus eve
 
 \normalsize
 Contar bien es el puente entre el espacio muestral y el cálculo de probabilidades.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% Unidad integrada: Variables Aleatorias y Modelos Estocásticos
+% -----------------------------------------------------------------------------
+\part{Unidad 3: Variables Aleatorias y Modelos Estocásticos}
+
+\begin{frame}{Transición: de eventos a variables aleatorias}
+\centering
+\Large
+La probabilidad describe eventos; las variables aleatorias convierten resultados en números.
+\vspace{0.7em}
+
+\normalsize
+Así podemos calcular distribuciones, promedios, dispersión y construir modelos estocásticos.
+\end{frame}
+
+\begin{frame}{Objetivo pedagógico de la unidad}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Idea central}
+Transformar resultados de un experimento aleatorio en valores numéricos.
+\end{block}
+\begin{itemize}
+  \item Definir variables aleatorias.
+  \item Distinguir discretas y continuas.
+  \item Estudiar distribuciones.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{exampleblock}{Herramientas}
+\begin{itemize}
+  \item función de probabilidad;
+  \item densidad;
+  \item distribución acumulada;
+  \item esperanza y varianza.
+\end{itemize}
+\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Mapa conceptual de la unidad}
+\centering
+\begin{tikzpicture}[node distance=.75cm, box/.style={rectangle, rounded corners, draw=blue!65, fill=blue!8, align=center, minimum width=2.55cm, minimum height=.62cm}, arrow/.style={-{Latex}, thick}]
+\node[box] (m) {Modelo\\estocástico};
+\node[box, below=of m] (omega) {Espacio\\muestral $\Omega$};
+\node[box, below=of omega] (x) {Variable\\aleatoria $X$};
+\node[box, below left=of x] (dist) {Distribución};
+\node[box, below right=of x] (f) {FDA $F(x)$};
+\node[box, below=of dist] (e) {Esperanza};
+\node[box, below=of f] (v) {Varianza};
+\draw[arrow] (m)--(omega); \draw[arrow] (omega)--(x); \draw[arrow] (x)--(dist); \draw[arrow] (x)--(f); \draw[arrow] (dist)--(e); \draw[arrow] (f)--(v);
+\end{tikzpicture}
+\end{frame}
+
+\section{Modelos estocásticos}
+
+\begin{frame}{¿Qué es un modelo estocástico?}
+\begin{block}{Definición formal}
+Representación matemática de un fenómeno cuyo comportamiento incluye incertidumbre y se describe mediante probabilidades.
+\end{block}
+\pause
+\begin{itemize}
+  \item \intuicion{no predice un único resultado; describe un conjunto de resultados posibles y sus probabilidades.}
+  \item \textbf{Interpretación práctica:} cuantifica riesgo, variabilidad y escenarios.
+  \item \errorcomun{pensar que un modelo estocástico es menos riguroso por no entregar una respuesta única.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Modelo determinístico vs probabilístico}
+\small
+\begin{center}
+\begin{tabular}{p{0.27\textwidth}p{0.30\textwidth}p{0.30\textwidth}}
+\toprule
+Criterio & Determinístico & Probabilístico \\
+\midrule
+Salida & valor único & distribución de resultados \\
+Incertidumbre & no explícita & parte del modelo \\
+Pregunta & ¿cuánto será? & ¿con qué probabilidad ocurre? \\
+Ejemplo & $V=IR$ ideal & falla de un componente \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{alertblock}{Diferencia clave}
+El determinístico transforma entradas en una salida; el estocástico transforma entradas en una distribución.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{¿Por qué aparecen las variables aleatorias?}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Problema}
+Los resultados pueden ser cualitativos o estructurados: cara, sello, pares, rutas, fallas.
+\end{block}
+\pause
+\begin{exampleblock}{Solución}
+Asignar un número a cada resultado para poder calcular.
+\end{exampleblock}
+\column{0.48\textwidth}
+\begin{tikzpicture}[node distance=.65cm, box/.style={rectangle, rounded corners, draw=blue!65, fill=blue!8, align=center, minimum width=2.4cm}, arrow/.style={-{Latex}, thick}]
+\node[box] (r) {Resultados};
+\node[box, below=of r] (x) {$X$};
+\node[box, below=of x] (n) {Números};
+\draw[arrow] (r)--(x); \draw[arrow] (x)--(n);
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Aplicaciones de modelos estocásticos}
+\small
+\begin{tabular}{p{0.23\textwidth}p{0.35\textwidth}p{0.30\textwidth}}
+\toprule
+Área & Variable aleatoria típica & Decisión \\
+\midrule
+Confiabilidad & tiempo hasta falla & mantenimiento \\
+Electrónica & ruido o voltaje & tolerancias \\
+Minería & ley del mineral & planificación \\
+Economía & demanda o retorno & riesgo \\
+Manufactura & piezas defectuosas & control de calidad \\
+IA & error de predicción & evaluación \\
+Telecomunicaciones & paquetes perdidos & capacidad \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\section{Variables aleatorias}
+
+\begin{frame}{Variable aleatoria: definición formal}
+\begin{block}{Definición}
+Una variable aleatoria es una función que asigna un número real a cada resultado del espacio muestral:
+\[
+X:\Omega\to\mathbb{R}.
+\]
+\end{block}
+\pause
+\begin{itemize}
+  \item \textbf{Dominio:} espacio muestral $\Omega$.
+  \item \textbf{Recorrido o rango:} valores numéricos que puede tomar $X$.
+  \item \textbf{Interpretación:} $X(\omega)$ es el número asociado al resultado $\omega$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Transformar resultados en números}
+\centering
+\begin{tikzpicture}[node distance=1cm, leftset/.style={ellipse, draw=blue!70, fill=blue!8, minimum width=2.2cm, minimum height=3cm}, rightset/.style={ellipse, draw=green!60!black, fill=green!8, minimum width=2.2cm, minimum height=3cm}, arrow/.style={-{Latex}, thick}]
+\node[leftset] (omega) at (0,0) {};
+\node at (0,1.75) {$\Omega$};
+\node at (0,.8) {$C$}; \node at (0,0) {$S$};
+\node[rightset] (r) at (4,0) {};
+\node at (4,1.75) {Rango};
+\node at (4,.8) {$1$}; \node at (4,0) {$0$};
+\draw[arrow] (.45,.8)--(3.55,.8) node[midway, above] {$X$};
+\draw[arrow] (.45,0)--(3.55,0);
+\end{tikzpicture}
+\vspace{0.4em}
+\begin{exampleblock}{Ejemplo}
+Si $X=$ número de caras en una moneda, entonces $X(C)=1$ y $X(S)=0$.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Dominio, variable aleatoria y rango}
+\begin{center}
+\begin{tikzpicture}[node distance=.9cm, box/.style={rectangle, rounded corners, draw=blue!65, fill=blue!8, align=center, minimum width=3.2cm, minimum height=.7cm}, arrow/.style={-{Latex}, thick}]
+\node[box] (omega) {Espacio muestral\\$\Omega$};
+\node[box, below=of omega] (x) {Variable aleatoria\\$X:\Omega\to\mathbb{R}$};
+\node[box, below=of x] (range) {Rango\\$R_X$};
+\draw[arrow] (omega)--(x); \draw[arrow] (x)--(range);
+\end{tikzpicture}
+\end{center}
+\begin{alertblock}{Error común}
+Confundir $\Omega$ con el rango: $\Omega$ contiene resultados; el rango contiene números asignados por $X$.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Ejemplo: dado}
+\begin{block}{Experimento}
+Lanzar un dado y definir $X=$ resultado obtenido.
+\end{block}
+\begin{columns}[T]
+\column{0.45\textwidth}
+\[
+\Omega=\{1,2,3,4,5,6\}
+\]
+\[
+R_X=\{1,2,3,4,5,6\}
+\]
+\column{0.48\textwidth}
+\begin{exampleblock}{Interpretación}
+Aquí el resultado ya es numérico, por eso $X(\omega)=\omega$.
+\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Ejemplo: varias monedas}
+\small
+Lanzar tres monedas y definir $X=$ número de caras.
+\begin{center}
+\begin{tabular}{c c}
+\toprule
+Resultado $\omega$ & $X(\omega)$ \\
+\midrule
+CCC & 3 \\
+CCS, CSC, SCC & 2 \\
+CSS, SCS, SSC & 1 \\
+SSS & 0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\[
+R_X=\{0,1,2,3\}
+\]
+\end{frame}
+
+\begin{frame}{Ejemplos de ingeniería e industria}
+\small
+\begin{tabular}{p{0.30\textwidth}p{0.32\textwidth}p{0.25\textwidth}}
+\toprule
+Experimento & Variable aleatoria & Tipo esperado \\
+\midrule
+Sensores en línea & número de alertas por hora & discreta \\
+Medición industrial & diámetro de una pieza & continua \\
+Componente electrónico & tiempo hasta falla & continua \\
+Control de calidad & piezas defectuosas en lote & discreta \\
+\bottomrule
+\end{tabular}
+\observacion{La elección de $X$ depende de la pregunta que se quiere responder.}
+\end{frame}
+
+\section{Tipos de variables aleatorias}
+
+\begin{frame}{Variables aleatorias discretas}
+\begin{block}{Definición}
+Una variable aleatoria es discreta si su rango es finito o infinito numerable.
+\end{block}
+\begin{itemize}
+  \item Se puede listar: $0,1,2,\ldots$.
+  \item Sus probabilidades se asignan a puntos.
+  \item Aparece al contar ocurrencias.
+\end{itemize}
+\begin{exampleblock}{Ejemplos}
+Número de caras, clientes, fallas o piezas defectuosas.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Variables aleatorias continuas}
+\begin{block}{Definición}
+Una variable aleatoria es continua si puede tomar valores en intervalos de la recta real.
+\end{block}
+\begin{itemize}
+  \item No se enumeran punto por punto.
+  \item Las probabilidades se calculan sobre intervalos.
+  \item Aparece al medir magnitudes físicas.
+\end{itemize}
+\begin{exampleblock}{Ejemplos}
+Temperatura, voltaje, corriente, tiempo, longitud, masa y resistencia eléctrica.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Discreta vs continua}
+\small
+\begin{center}
+\begin{tabular}{p{0.27\textwidth}p{0.30\textwidth}p{0.30\textwidth}}
+\toprule
+Criterio & Discreta & Continua \\
+\midrule
+Origen & conteo & medición \\
+Valores & puntos separados & intervalos \\
+Probabilidad puntual & puede ser positiva & es cero \\
+Herramienta & función de probabilidad & densidad \\
+Gráfico típico & barras & curva/área \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}{Gráfico comparativo}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=5cm,height=3.6cm,ybar,bar width=8pt, ymin=0,ymax=.45, xtick={0,1,2,3}, xlabel={$x$}, ylabel={$f(x)$}, title={Discreta}]
+\addplot coordinates {(0,.125) (1,.375) (2,.375) (3,.125)};
+\end{axis}
+\end{tikzpicture}
+\column{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=5cm,height=3.6cm, ymin=0,ymax=.45, xmin=-3,xmax=3, xlabel={$x$}, ylabel={$\rho(x)$}, title={Continua}]
+\addplot[domain=-3:3, samples=80, blue, thick] {1/sqrt(2*pi)*exp(-x^2/2)};
+\end{axis}
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\section{Función de probabilidad}
+
+\begin{frame}{Función de probabilidad}
+\begin{block}{Definición}
+Para una variable aleatoria discreta,
+\[
+f(x)=P(X=x).
+\]
+\end{block}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item $f(x)\ge0$.
+  \item $\sum_x f(x)=1$.
+  \item Entrega probabilidades puntuales.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{alertblock}{Error común}
+Olvidar verificar que la suma de probabilidades sea 1.
+\end{alertblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Ejemplo completo: tres monedas}
+\small
+$X=$ número de caras al lanzar tres monedas.
+\begin{center}
+\begin{tabular}{c c c}
+\toprule
+$x$ & casos & $f(x)=P(X=x)$ \\
+\midrule
+0 & SSS & $1/8$ \\
+1 & CSS,SCS,SSC & $3/8$ \\
+2 & CCS,CSC,SCC & $3/8$ \\
+3 & CCC & $1/8$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\[
+\sum_x f(x)=\frac18+\frac38+\frac38+\frac18=1
+\]
+\end{frame}
+
+\begin{frame}{Gráfico de función de probabilidad}
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=9cm,height=5cm,ybar,bar width=12pt, ymin=0,ymax=.45, xtick={0,1,2,3}, xlabel={$x$ número de caras}, ylabel={$f(x)$}, nodes near coords]
+\addplot coordinates {(0,.125) (1,.375) (2,.375) (3,.125)};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Calcular probabilidades con $f(x)$}
+\begin{block}{Pregunta}
+Para tres monedas, calcular $P(X\ge2)$.
+\end{block}
+\pause
+\begin{align*}
+P(X\ge2)&=P(X=2)+P(X=3)\\
+&=f(2)+f(3)\\
+&=\frac38+\frac18=\frac48=\frac12.
+\end{align*}
+\begin{exampleblock}{Interpretación}
+La probabilidad de obtener al menos dos caras es $0{,}5$.
+\end{exampleblock}
+\end{frame}
+
+\section{Función de densidad}
+
+\begin{frame}{Función de densidad}
+\begin{block}{Definición}
+Para una variable aleatoria continua, la densidad $\rho(x)$ permite calcular probabilidades mediante áreas.
+\end{block}
+\[
+P(a<X<b)=\int_a^b \rho(x)\,dx
+\]
+\begin{itemize}
+  \item $\rho(x)\ge0$.
+  \item $\int_{-\infty}^{\infty}\rho(x)\,dx=1$.
+  \item $P(X=x)=0$ para puntos individuales.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Una densidad no es una probabilidad}
+\begin{alertblock}{Cuidado central}
+El valor $\rho(x)$ mide concentración relativa, no probabilidad puntual.
+\end{alertblock}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item Probabilidad = área.
+  \item La densidad puede ser mayor que 1.
+  \item Un punto no tiene ancho, por eso su área es 0.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}
+\begin{axis}[width=5cm,height=3.6cm, ymin=0,xmin=0,xmax=1, xlabel={$x$}, ylabel={$\rho(x)$}]
+\addplot[domain=0:1, samples=2, blue, thick] {1};
+\addplot[domain=.2:.6, draw=none, fill=blue!25] {1} \closedcycle;
+\end{axis}
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Ejemplo continuo uniforme}
+\begin{block}{Modelo}
+$X\sim U(0,10)$ con densidad $\rho(x)=1/10$ para $0\le x\le10$.
+\end{block}
+\pause
+\[
+P(2<X<5)=\int_2^5 \frac{1}{10}\,dx=\frac{3}{10}=0{,}3.
+\]
+\begin{exampleblock}{Interpretación}
+La probabilidad corresponde al área de un rectángulo de base 3 y altura 0,1.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Área bajo la curva}
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=9cm,height=5cm, ymin=0,ymax=.45, xmin=-3,xmax=3, xlabel={$x$}, ylabel={$\rho(x)$}]
+\addplot[domain=-3:3, samples=100, blue, thick] {1/sqrt(2*pi)*exp(-x^2/2)};
+\addplot[domain=-1:1, samples=80, draw=none, fill=blue!25] {1/sqrt(2*pi)*exp(-x^2/2)} \closedcycle;
+\draw[dashed] (axis cs:-1,0)--(axis cs:-1,.25);
+\draw[dashed] (axis cs:1,0)--(axis cs:1,.25);
+\end{axis}
+\end{tikzpicture}
+\begin{block}{Lectura}
+El área sombreada representa $P(-1<X<1)$.
+\end{block}
+\end{frame}
+
+\section{Función de distribución acumulada}
+
+\begin{frame}{Función de distribución acumulada}
+\begin{block}{Definición}
+La función de distribución acumulada es
+\[
+F(x)=P(X\le x).
+\]
+\end{block}
+\begin{itemize}
+  \item Acumula probabilidad desde la izquierda.
+  \item Siempre toma valores entre 0 y 1.
+  \item Resume completamente la distribución de $X$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{FDA discreta: función escalonada}
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=9cm,height=5cm, ymin=0,ymax=1.1, xmin=-.5,xmax=3.5, xtick={0,1,2,3}, xlabel={$x$}, ylabel={$F(x)$}]
+\addplot[const plot mark right, thick, blue] coordinates {(-.5,0) (0,.125) (1,.5) (2,.875) (3,1) (3.5,1)};
+\end{axis}
+\end{tikzpicture}
+\begin{alertblock}{Interpretación}
+Los saltos ocurren en los valores posibles de la variable discreta.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{FDA continua: acumulación de área}
+\[
+F(x)=\int_{-\infty}^{x}\rho(t)\,dt
+\]
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item Crece suavemente si la densidad es continua.
+  \item No tiene saltos puntuales.
+  \item La pendiente se relaciona con la densidad.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}
+\begin{axis}[width=5cm,height=3.6cm, ymin=0,ymax=1, xmin=-3,xmax=3, xlabel={$x$}, ylabel={$F(x)$}]
+\addplot[domain=-3:3, samples=100, blue, thick] {1/(1+exp(-1.7*x))};
+\end{axis}
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Propiedades de la FDA}
+\small
+\begin{tabular}{p{0.35\textwidth}p{0.50\textwidth}}
+\toprule
+Propiedad & Interpretación \\
+\midrule
+Monotonía & si $a<b$, entonces $F(a)\le F(b)$ \\
+Límite inferior & $\lim_{x\to-\infty}F(x)=0$ \\
+Límite superior & $\lim_{x\to\infty}F(x)=1$ \\
+Intervalos & $P(a<X\le b)=F(b)-F(a)$ \\
+Discreta & los saltos recuperan $f(x)$ \\
+Continua & si es derivable, $F'(x)=\rho(x)$ \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Ejemplo con FDA}
+\begin{block}{Dato}
+Para una variable discreta, $F(1)=0{,}40$ y $F(3)=0{,}85$.
+\end{block}
+\pause
+\[
+P(1<X\le3)=F(3)-F(1)=0{,}85-0{,}40=0{,}45.
+\]
+\begin{exampleblock}{Interpretación}
+La probabilidad acumulada entre 1 y 3 es $45\%$.
+\end{exampleblock}
+\end{frame}
+
+\section{Esperanza matemática}
+
+\begin{frame}{Esperanza matemática}
+\begin{block}{Idea intuitiva}
+La esperanza es el promedio a largo plazo de una variable aleatoria.
+\end{block}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{itemize}
+  \item Centro de gravedad de la distribución.
+  \item Valor medio esperado si el experimento se repite muchas veces.
+  \item No siempre es un valor observable.
+\end{itemize}
+\column{0.48\textwidth}
+\begin{tikzpicture}
+\draw[thick] (0,0)--(4,0);
+\fill[blue!20] (1.2,0) circle (.35);
+\fill[blue!20] (2.0,0) circle (.35);
+\fill[blue!20] (3.1,0) circle (.35);
+\draw[red, very thick] (2.15,-.5)--(2.15,.5) node[above] {$E(X)$};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Esperanza discreta}
+\begin{block}{Fórmula}
+\[
+E(X)=\sum_x x\,f(x)
+\]
+\end{block}
+\begin{itemize}
+  \item $x$: valor que puede tomar la variable.
+  \item $f(x)$: probabilidad de ese valor.
+  \item $x f(x)$: aporte ponderado al promedio.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo: esperanza en un dado}
+\small
+Para un dado justo, $X=$ resultado.
+\begin{align*}
+E(X)&=1\cdot\frac16+2\cdot\frac16+3\cdot\frac16+4\cdot\frac16+5\cdot\frac16+6\cdot\frac16\\
+&=\frac{21}{6}=3{,}5.
+\end{align*}
+\begin{alertblock}{Cuidado}
+Aunque $3{,}5$ no sale en un dado, sí es el promedio esperado a largo plazo.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Esperanza continua}
+\begin{block}{De suma a integral}
+\[
+E(X)=\int_{-\infty}^{\infty}x\rho(x)\,dx
+\]
+\end{block}
+\begin{itemize}
+  \item La integral suma infinitos aportes pequeños.
+  \item La densidad actúa como ponderación local.
+  \item Es el centro de gravedad de la curva.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplo continuo: uniforme $U(0,10)$}
+\[
+E(X)=\int_0^{10}x\frac{1}{10}\,dx
+=\frac{1}{10}\left[\frac{x^2}{2}\right]_0^{10}=5.
+\]
+\begin{exampleblock}{Interpretación}
+Si la medición es uniforme entre 0 y 10, su centro esperado es 5.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Esperanza de funciones}
+\begin{block}{Definición}
+Si interesa una transformación $g(X)$, entonces:
+\[
+E[g(X)]=\sum_x g(x)f(x)\quad\text{(discreta)}
+\]
+\[
+E[g(X)]=\int g(x)\rho(x)\,dx\quad\text{(continua)}
+\]
+\end{block}
+\begin{exampleblock}{Motivación}
+Costos, pérdidas, energía, potencia o utilidad suelen ser funciones de una variable aleatoria.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Propiedades de la esperanza}
+\begin{theorem}[Linealidad]
+\[
+E(aX+b)=aE(X)+b
+\]
+\[
+E(aX+bY)=aE(X)+bE(Y)
+\]
+\end{theorem}
+\begin{block}{Interpretación}
+Cambiar escala multiplica el promedio; desplazar la variable desplaza el promedio.
+\end{block}
+\end{frame}
+
+\begin{frame}{Mediana, moda y esperanza}
+\small
+\begin{tabular}{p{0.25\textwidth}p{0.35\textwidth}p{0.28\textwidth}}
+\toprule
+Medida & Definición probabilística & Sensibilidad \\
+\midrule
+Esperanza & promedio ponderado & sensible a colas \\
+Mediana & deja 50\% a cada lado & robusta \\
+Moda & valor más probable & puede no ser única \\
+\bottomrule
+\end{tabular}
+\begin{alertblock}{Error común}
+Creer que esperanza, mediana y moda siempre coinciden. Coinciden en distribuciones muy simétricas, pero no en general.
+\end{alertblock}
+\end{frame}
+
+\section{Varianza}
+
+\begin{frame}{¿Por qué la esperanza no basta?}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Dos variables pueden tener igual esperanza}
+pero distinta dispersión alrededor de ese centro.
+\end{block}
+\column{0.48\textwidth}
+\begin{tikzpicture}
+\begin{axis}[width=5cm,height=3.6cm, ymin=0,ymax=.55, xmin=-4,xmax=4, xlabel={$x$}, ylabel={}]
+\addplot[domain=-4:4, samples=80, blue, thick] {1/sqrt(2*pi)*exp(-x^2/2)};
+\addplot[domain=-4:4, samples=80, red, thick, dashed] {1/sqrt(2*pi*4)*exp(-x^2/8)};
+\end{axis}
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Varianza: definición}
+\begin{block}{Definición formal}
+\[
+\operatorname{Var}(X)=E[(X-\mu)^2],\qquad \mu=E(X).
+\]
+\end{block}
+\begin{itemize}
+  \item Mide dispersión probabilística respecto de la esperanza.
+  \item Usa cuadrados para evitar cancelaciones.
+  \item Queda en unidades al cuadrado.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Forma equivalente de la varianza}
+\begin{theorem}[Fórmula práctica]
+\[
+\operatorname{Var}(X)=E(X^2)-\mu^2
+\]
+\end{theorem}
+\begin{block}{Demostración intuitiva}
+Expandir $(X-\mu)^2=X^2-2\mu X+\mu^2$ y aplicar linealidad de la esperanza.
+\end{block}
+\end{frame}
+
+\begin{frame}{Ejemplo: varianza de un dado}
+\small
+Para un dado justo, $\mu=3{,}5$.
+\[
+E(X^2)=\frac{1^2+2^2+3^2+4^2+5^2+6^2}{6}=\frac{91}{6}
+\]
+\[
+\operatorname{Var}(X)=\frac{91}{6}-(3{,}5)^2=2{,}9167.
+\]
+\begin{exampleblock}{Lectura}
+La dispersión típica se obtiene con la desviación estándar.
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Desviación estándar}
+\begin{block}{Definición}
+\[
+\sigma=\sqrt{\operatorname{Var}(X)}
+\]
+\end{block}
+\begin{itemize}
+  \item Vuelve a las unidades originales.
+  \item Facilita interpretar la dispersión.
+  \item Para el dado: $\sigma\approx\sqrt{2{,}9167}=1{,}71$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Propiedades de la varianza}
+\begin{theorem}[Cambio de escala]
+\[
+\operatorname{Var}(aX+b)=a^2\operatorname{Var}(X)
+\]
+\end{theorem}
+\begin{itemize}
+  \item Sumar $b$ desplaza la variable, pero no cambia su dispersión.
+  \item Multiplicar por $a$ escala las distancias por $a$.
+  \item La varianza escala por $a^2$ porque mide cuadrados.
+\end{itemize}
+\end{frame}
+
+\section{Síntesis}
+
+\begin{frame}{Mapa conceptual completo}
+\centering
+\begin{tikzpicture}[node distance=.58cm, box/.style={rectangle, rounded corners, draw=blue!65, fill=blue!8, align=center, minimum width=3.1cm, minimum height=.52cm}, arrow/.style={-{Latex}, thick}]
+\node[box] (a) {Experimento aleatorio};
+\node[box, below=of a] (b) {Espacio muestral $\Omega$};
+\node[box, below=of b] (c) {Variable aleatoria $X$};
+\node[box, below=of c] (d) {Distribución};
+\node[box, below=of d] (e) {Probabilidad};
+\node[box, below=of e] (f) {Distribución acumulada $F$};
+\node[box, below=of f] (g) {Esperanza $E(X)$};
+\node[box, below=of g] (h) {Varianza $\operatorname{Var}(X)$};
+\draw[arrow] (a)--(b); \draw[arrow] (b)--(c); \draw[arrow] (c)--(d); \draw[arrow] (d)--(e); \draw[arrow] (e)--(f); \draw[arrow] (f)--(g); \draw[arrow] (g)--(h);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Tabla comparativa final}
+\tiny
+\begin{tabular}{p{0.27\textwidth}p{0.32\textwidth}p{0.32\textwidth}}
+\toprule
+Comparación & Primera idea & Segunda idea \\
+\midrule
+Discreta vs continua & conteos, puntos & mediciones, intervalos \\
+Probabilidad vs densidad & $f(x)=P(X=x)$ & $\rho(x)$ genera áreas \\
+Puntual vs acumulada & valor exacto & $F(x)=P(X\le x)$ \\
+Esperanza vs media descriptiva & promedio teórico & promedio observado \\
+Varianza probabilística vs descriptiva & dispersión del modelo & dispersión de datos \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Errores frecuentes}
+\small
+\begin{enumerate}
+  \item Confundir resultado $\omega$ con valor $X(\omega)$.
+  \item Confundir dominio $\Omega$ con rango $R_X$.
+  \item Tratar una densidad como probabilidad puntual.
+  \item Olvidar que en variables continuas $P(X=x)=0$.
+  \item Calcular $P(a<X\le b)$ sin usar $F(b)-F(a)$.
+  \item Interpretar esperanza como resultado garantizado.
+  \item Comparar varianzas sin revisar unidades.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Formulario completo de la unidad}
+\small
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{align*}
+X&:\Omega\to\mathbb{R}\\
+f(x)&=P(X=x)\\
+\sum_x f(x)&=1\\
+F(x)&=P(X\le x)\\
+P(a<X\le b)&=F(b)-F(a)
+\end{align*}
+\column{0.48\textwidth}
+\begin{align*}
+P(a<X<b)&=\int_a^b\rho(x)dx\\
+E(X)&=\sum_x xf(x)\\
+E(X)&=\int x\rho(x)dx\\
+\operatorname{Var}(X)&=E(X^2)-\mu^2\\
+\sigma&=\sqrt{\operatorname{Var}(X)}
+\end{align*}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Ejercicios integradores}
+\small
+\begin{enumerate}
+  \item Lanzar dos monedas. Defina $X=$ número de caras, construya $R_X$ y $f(x)$.
+  \item Para un dado justo, calcule $P(X\le4)$ usando la FDA.
+  \item Si $X\sim U(0,10)$, calcule $P(3<X<7)$ y explique el área.
+  \item Un sensor registra número de alarmas por hora. ¿La variable es discreta o continua?
+  \item Compare dos sistemas con igual esperanza de falla pero distinta varianza.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Preguntas conceptuales de cierre}
+\begin{enumerate}
+  \item ¿Por qué una variable aleatoria es una función?
+  \item ¿Qué se pierde si solo se informa la esperanza?
+  \item ¿Cuándo conviene usar una FDA en vez de una función puntual?
+  \item ¿Por qué la densidad puede superar 1 sin violar axiomas?
+  \item ¿Cómo conecta esta unidad con inferencia estadística?
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Cierre de variables aleatorias}
+\centering
+\Large
+Una variable aleatoria traduce incertidumbre en matemáticas operables.
+\vspace{0.8em}
+
+\normalsize
+Distribución, acumulada, esperanza y varianza son el puente hacia modelos probabilísticos e inferencia.
 \end{frame}
 
 \end{document}
